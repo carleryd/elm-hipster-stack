@@ -2,6 +2,8 @@ defmodule App.PublicSchema do
 
   alias GraphQL.Schema
   alias GraphQL.Type.ObjectType
+  alias GraphQL.Mutation
+  alias GraphQL.Type.List
 
   def schema do
     %Schema{
@@ -15,25 +17,6 @@ defmodule App.PublicSchema do
             end
           }
         }
-      }
-    }
-  end
-
-end
-
-defmodule App.Type.Store do
-
-  alias GraphQL.Schema
-  alias GraphQL.Type.ObjectType
-
-
-  def get do
-    %ObjectType{
-      name: "Store",
-      fields: %{
-        authors: App.Query.Authors.get,
-        comments: App.Query.Comments.get,
-        posts: App.Query.Posts.get,
       }
     }
   end
