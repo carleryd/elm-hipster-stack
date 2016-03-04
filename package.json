@@ -1,0 +1,50 @@
+{
+  "private": true,
+  "name": "phoenix-hipster-stack",
+  "version": "1.0.0",
+  "description": "To start your new Phoenix application:",
+  "main": "index.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "compile": "webpack -p",
+    "update-schema": "babel-node ./scripts/updateSchema.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "babel-core": "6.5.2",
+    "babel-loader": "6.2.3",
+    "babel-polyfill": "6.5.0",
+    "babel-preset-es2015": "6.5.0",
+    "babel-preset-react": "6.5.0",
+    "babel-preset-react-hmre": "1.1.0",
+    "babel-preset-stage-0": "6.5.0",
+    "babel-relay-plugin": "0.7.1",
+    "babel-relay-plugin-loader": "0.7.1",
+    "classnames": "2.2.3",
+    "graphql": "0.4.17",
+    "graphql-relay": "0.3.6",
+    "immutable": "^3.7.6",
+    "react": "0.14.7",
+    "react-dom": "0.14.7",
+    "react-relay": "^0.7.1",
+    "webpack": "^1.12.13"
+  },
+  "devDependencies": {
+    "babel-cli": "^6.5.1",
+    "babel-eslint": "^4.1.8",
+    "cors": "^2.7.1",
+    "eslint": "^2.0.0",
+    "eslint-plugin-react": "^3.16.1",
+    "express": "^4.13.4",
+    "webpack-dev-middleware": "^1.5.1",
+    "webpack-hot-middleware": "^2.7.1"
+  },
+  "metadata": {
+    "graphql": {
+      "schema": "./lib/babel/schema.json"
+    }
+  }
+}
