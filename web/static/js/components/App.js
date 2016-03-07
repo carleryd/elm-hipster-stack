@@ -10,10 +10,10 @@ class App extends React.Component {
     limit: React.PropTypes.number,
   }
 
-  static defaultProps = {
-    limit: 5,
+  setLimit = (e) => {
+    const newLimit = Number(e.target.value);
+    this.props.relay.setVariables({limit: newLimit});
   }
-
 
   render() {
     const derp = this.props.store.linkConnection.edges;
@@ -28,6 +28,11 @@ class App extends React.Component {
     return (
         <div>
             <h3>Links</h3>
+            Showing: &nbsp;
+            <select onChange={this.setLimit}>
+                <option value="5">5</option>
+                <option value="10" selected>10</option>
+            </select>
             <ul>{content}</ul>
         </div>
       );
@@ -36,7 +41,7 @@ class App extends React.Component {
 
 export default Relay.createContainer(App, {
   initialVariables:{
-    limit: 1,
+    limit: 10,
   },
   fragments: {
     store: () => {
