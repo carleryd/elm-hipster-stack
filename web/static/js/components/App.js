@@ -16,11 +16,11 @@ class App extends React.Component {
 
 
   render() {
-    const derp = this.props.store.links;
-    const content = derp.map((link) => {
+    const derp = this.props.store.linkConnection.edges;
+    const content = derp.map((edge) => {
       return (
-          <Link key={link.id}
-              link={link}
+          <Link key={edge.node.id}
+              link={edge.node}
           />
       );
     });
@@ -39,10 +39,13 @@ export default Relay.createContainer(App, {
     store: () => {
       return Relay.QL`
         fragment on Store {
-          # Fetch 5 links only
-          links {
-            id,
-            ${Link.getFragment('link')}
+          linkConnection(first:2) {
+            edges{
+              node{
+                id,
+                ${Link.getFragment('link')}
+              }
+            }
           }
         }
       `;
