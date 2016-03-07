@@ -2,6 +2,7 @@
 import React from 'react';
 import Relay from 'react-relay';
 import AuthorListItem from './AuthorListItem';
+import Link from './Link';
 
 
 class App extends React.Component {
@@ -15,12 +16,12 @@ class App extends React.Component {
 
 
   render() {
-    const derp = this.props.store.links.slice(0, this.props.limit);
+    const derp = this.props.store.links;
     const content = derp.map((link) => {
       return (
-          <li key={link.id}>
-              <a href={link.url}>{link.title}</a>
-          </li>
+          <Link key={link.id}
+              link={link}
+          />
       );
     });
 
@@ -38,10 +39,10 @@ export default Relay.createContainer(App, {
     store: () => {
       return Relay.QL`
         fragment on Store {
+          # Fetch 5 links only
           links {
-            title
-            url
-            id
+            id,
+            ${Link.getFragment('link')}
           }
         }
       `;
