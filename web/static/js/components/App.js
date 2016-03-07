@@ -35,11 +35,14 @@ class App extends React.Component {
 }
 
 export default Relay.createContainer(App, {
+  initialVariables:{
+    limit: 1,
+  },
   fragments: {
     store: () => {
       return Relay.QL`
         fragment on Store {
-          linkConnection(first:2) {
+          linkConnection(first: $limit) {
             edges{
               node{
                 id,

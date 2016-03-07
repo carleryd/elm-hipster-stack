@@ -4,8 +4,9 @@ defmodule App.Query.Link do
   def get do
     %{
       type: %List{ofType: App.Type.Link.get},
-      resolve: fn (_, _args, _) ->
+      resolve: fn (_, args, _) ->
         table("links")
+        |> DB.limit(args.first)
         |> DB.run
         |> DB.handle_graphql_resp
       end
