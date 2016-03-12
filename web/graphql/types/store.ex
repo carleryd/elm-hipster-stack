@@ -12,6 +12,7 @@ defmodule App.Type.Store do
     %ObjectType{
       name: "Store",
       fields: %{
+        id: Node.global_id_field("Store"),
         linkConnection: %{
           type: App.Type.LinkConnection.get[:connection_type],
           args: Connection.args,

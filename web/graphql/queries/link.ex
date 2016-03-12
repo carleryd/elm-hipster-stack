@@ -14,7 +14,7 @@ defmodule App.Query.Link do
     }
   end
 
-  def get_link(id) do
+  def get_from_id(id) do
     table("links")
     |> Query.get(id)
     |> DB.run

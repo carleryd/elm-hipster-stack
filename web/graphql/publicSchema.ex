@@ -33,10 +33,18 @@ defmodule App.PublicSchema do
               url: %{type: %NonNull{ofType: %String{}}}
             },
             output_fields: %{
-              link: %{
-                type: App.Type.Link.get,
+              linkEdge: %{
+                type: App.Type.LinkConnection.get[:edge_type],
                 resolve: fn (obj, _args, _info) ->
-                  App.Query.Link.get_link(first(obj[:generated_keys]))
+                  %{
+                    node: App.Query.Link.get_from_id(first(obj[:generated_keys])),
+                    cursor: first(obj[:generated_keys])
+                  }
+                end
+              },
+              store: %{
+                type: App.Type.Store.get,
+                resolve: fn (obj, _args, _info) ->
                 end
               }
             },
