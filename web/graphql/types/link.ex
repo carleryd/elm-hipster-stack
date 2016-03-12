@@ -9,7 +9,13 @@ defmodule App.Type.Link do
         fields: %{
           id: @type_string,
           title: @type_string,
-          url: @type_string
+          url: @type_string,
+          createdAt: %{
+            type: %GraphQL.Type.String{},
+            resolve: fn( obj, _args, _info) ->
+              obj.timestamp
+            end
+          }
         }
       }
   end

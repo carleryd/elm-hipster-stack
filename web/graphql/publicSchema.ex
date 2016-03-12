@@ -68,8 +68,8 @@ defmodule App.PublicSchema do
   def currentTime do
     timestamp = Timex.format(DateTime.now, "{ISO:Extended}")
     case timestamp do
-      {:ok, schema} ->
-        schema
+      {:ok, iso} ->
+        iso
       {:error, reason} ->
         IO.inspect "schema could not be created because #{reason}"
       _other ->
