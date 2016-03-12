@@ -36,3 +36,5 @@ class CreateLinkMutation extends Relay.Mutation {
     }];
   }
 }
+
+export default CreateLinkMutation;

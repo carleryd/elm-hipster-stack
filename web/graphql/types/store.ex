@@ -12,7 +12,13 @@ defmodule App.Type.Store do
     %ObjectType{
       name: "Store",
       fields: %{
-        id: Node.global_id_field("store"),
+        id: %{
+          type: %GraphQL.Type.String{},
+          args: Connection.args,
+          resolve: fn ( obj , args , _ctx) ->
+            "Hack"
+          end
+        },
         linkConnection: %{
           type: App.Type.LinkConnection.get[:connection_type],
           args: Connection.args,

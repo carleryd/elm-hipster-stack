@@ -17,7 +17,7 @@ class App extends React.Component {
 
   handleSubmit = (e) => {
     e.preventDefault();
-    Relay.Store.update(
+    Relay.Store.commitUpdate(
       new CreateLinkMutation({
         title: this.newTitle.value,
         url: this.newUrl.value,
