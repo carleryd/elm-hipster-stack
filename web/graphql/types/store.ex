@@ -7,6 +7,7 @@ defmodule App.Type.Store do
   alias GraphQL.Relay.Connection
   alias GraphQL.Relay.Mutation
   import RethinkDB.Query, only: [table: 1]
+  alias RethinkDB.Query
 
   def get do
     %ObjectType{
@@ -24,6 +25,7 @@ defmodule App.Type.Store do
           args: Connection.args,
           resolve: fn ( _, args , _ctx) ->
             query = table("links")
+              |> Query.order_by(Query.desc("timestamp"))
               |> DB.run
               |> DB.handle_graphql_resp
             Connection.List.resolve(query, args)

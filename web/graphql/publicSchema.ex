@@ -8,7 +8,7 @@ defmodule App.PublicSchema do
   alias GraphQL.Type.String
   alias GraphQL.Relay.Mutation
   alias RethinkDB.Query
-
+  use Timex
 
   def schema do
     %Schema{
@@ -50,7 +50,12 @@ defmodule App.PublicSchema do
             },
             mutate_and_get_payload: fn(input, _info) ->
               Query.table("links")
-                |> Query.insert(%{title: input["title"], url: input["url"]})
+                |> Query.insert(
+                  %{
+                    title: input["title"],
+                    url: input["url"],
+                    timestamp: currentTime
+                    })
                 |> DB.run
                 |> DB.handle_graphql_resp
             end
@@ -58,5 +63,17 @@ defmodule App.PublicSchema do
         }
       }
     }
+  end
+
+  def currentTime do
+    timestamp = Timex.format(DateTime.now, "{ISO:Extended}")
+    case timestamp do
+      {:ok, schema} ->
+        schema
+      {:error, reason} ->
+        IO.inspect "schema could not be created because #{reason}"
+      _other ->
+        IO.inspect "unknown error while creating timestamp"
+    end
   end
 end

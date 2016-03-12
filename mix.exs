@@ -19,7 +19,7 @@ defmodule App.Mixfile do
   def application do
     [mod: {App, []},
      applications: [:phoenix, :phoenix_html, :cowboy, :logger,
-                    :plug_graphql, :phoenix_ecto, :postgrex]]
+                    :plug_graphql, :phoenix_ecto, :postgrex, :tzdata]]
   end
 
   # Specifies which paths to compile per environment
@@ -34,6 +34,7 @@ defmodule App.Mixfile do
      {:phoenix_ecto, "~> 2.0"},
      {:postgrex, ">= 0.0.0"},
      {:phoenix_html, "~> 2.2"},
+     {:timex, "~> 2.1.1"},
      {:phoenix_live_reload, "~> 1.0"},
      {:cowboy, "~> 1.0"},
      {:graphql_relay, "~> 0.0.11"},

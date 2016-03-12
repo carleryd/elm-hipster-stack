@@ -1,4 +1,6 @@
-%{"connection": {:hex, :connection, "1.0.2"},
+%{"certifi": {:hex, :certifi, "0.4.0"},
+  "combine": {:hex, :combine, "0.7.0"},
+  "connection": {:hex, :connection, "1.0.2"},
   "cors_plug": {:hex, :cors_plug, "1.1.0"},
   "cowboy": {:hex, :cowboy, "1.0.4"},
   "cowlib": {:hex, :cowlib, "1.0.2"},
@@ -8,7 +10,11 @@
   "fs": {:hex, :fs, "0.9.2"},
   "graphql": {:git, "https://github.com/joshprice/graphql-elixir.git", "455eeef2250a34e07c69348529680db2af124704", []},
   "graphql_relay": {:hex, :graphql_relay, "0.0.11"},
+  "hackney": {:hex, :hackney, "1.5.1"},
+  "idna": {:hex, :idna, "1.1.0"},
   "json": {:hex, :json, "0.3.3"},
+  "metrics": {:hex, :metrics, "1.0.1"},
+  "mimerl": {:hex, :mimerl, "1.0.2"},
   "phoenix": {:hex, :phoenix, "1.1.4"},
   "phoenix_ecto": {:hex, :phoenix_ecto, "2.0.1"},
   "phoenix_html": {:hex, :phoenix_html, "2.5.1"},
@@ -19,4 +25,7 @@
   "poolboy": {:hex, :poolboy, "1.5.1"},
   "postgrex": {:hex, :postgrex, "0.11.1"},
   "ranch": {:hex, :ranch, "1.2.1"},
-  "rethinkdb": {:hex, :rethinkdb, "0.3.2"}}
+  "rethinkdb": {:hex, :rethinkdb, "0.3.2"},
+  "ssl_verify_hostname": {:hex, :ssl_verify_hostname, "1.0.6"},
+  "timex": {:hex, :timex, "2.1.1"},
+  "tzdata": {:hex, :tzdata, "0.5.6"}}

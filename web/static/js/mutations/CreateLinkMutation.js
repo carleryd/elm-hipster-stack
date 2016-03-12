@@ -31,7 +31,7 @@ class CreateLinkMutation extends Relay.Mutation {
       connectionName: 'linkConnection',
       edgeName: 'linkEdge',
       rangeBehaviors: {
-        '': 'append',
+        '': 'prepend',
       },
     }];
   }
