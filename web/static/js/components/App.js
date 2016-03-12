@@ -3,7 +3,7 @@ import React from 'react';
 import Relay from 'react-relay';
 import AuthorListItem from './AuthorListItem';
 import Link from './Link';
-
+import CreateLinkMutation from '../mutations/CreateLinkMutation';
 
 class App extends React.Component {
   static propTypes = {
@@ -13,6 +13,19 @@ class App extends React.Component {
   setLimit = (e) => {
     const newLimit = Number(e.target.value);
     this.props.relay.setVariables({limit: newLimit});
+  }
+
+  handleSubmit = (e) => {
+    e.preventDefault();
+    Relay.Store.update(
+      new CreateLinkMutation({
+        title: this.newTitle.value,
+        url: this.newUrl.value,
+        store: this.props.store,
+      })
+    );
+    this.newTitle.value = '';
+    this.newUrl.value = '';
   }
 
   render() {
@@ -28,10 +41,22 @@ class App extends React.Component {
     return (
         <div>
             <h3>Links</h3>
+            <form onSubmit={this.handleSubmit}>
+                <input placeholder="Title"
+                    ref={(c) => (this.newTitle = c)}
+                    type="text"
+                />
+                <input placeholder="Title"
+                    ref={(c) => (this.newUrl = c)}
+                    type="text"
+                />
+                <button type="submit">Add</button>
+            </form>
             Showing: &nbsp;
-            <select onChange={this.setLimit}>
+            <select onChange={this.setLimit}
+                    defaultValue={this.props.relay.variables.limit}>
                 <option value="5">5</option>
-                <option value="10" selected>10</option>
+                <option value="10">10</option>
             </select>
             <ul>{content}</ul>
         </div>
@@ -47,6 +72,7 @@ export default Relay.createContainer(App, {
     store: () => {
       return Relay.QL`
         fragment on Store {
+          id,
           linkConnection(first: $limit) {
             edges{
               node{

@@ -27,7 +27,7 @@ defmodule App.PublicSchema do
         name: "Mutation",
         fields: %{
           createLink: Mutation.new(%{
-            name: "createLink",
+            name: "CreateLink",
             input_fields: %{
               title: %{type: %NonNull{ofType: %String{}}},
               url: %{type: %NonNull{ofType: %String{}}}

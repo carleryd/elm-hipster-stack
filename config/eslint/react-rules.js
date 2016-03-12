@@ -9,7 +9,9 @@ module.exports = {
     'react/jsx-boolean-value':2,
     'react/wrap-multilines':2,
     'react/self-closing-comp':2,
-    'react/jsx-no-bind':2,
+    'react/jsx-no-bind':[2, {
+      ignoreRefs: true,
+    }],
     'react/sort-comp': 2,
     'react/no-is-mounted': 2,
     'react/display-name': [1,{ acceptTranspilerName: true }],
@@ -26,7 +28,7 @@ module.exports = {
     'react/jsx-sort-prop-types': 1,
     'react/jsx-sort-props': [1,{
       callbacksLast: true,
-      shorthandFirst: true,
+      shorthandFirst: false,
       ignoreCase: true,
     }],
     'react/jsx-uses-react': 1,
