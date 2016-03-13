@@ -11,32 +11,36 @@ defmodule App.Type.Store do
   @type_string %{type: %GraphQL.Type.String{}}
   import RethinkDB.Lambda
 
+  alias GraphQL.Type.ID
+  alias GraphQL.Type.NonNull
+
   def get do
     %ObjectType{
       name: "Store",
       fields: %{
+        # id: Node.global_id_field("Store"),
         id: %{
-          type: %GraphQL.Type.String{},
-          args: Connection.args,
-          resolve: fn ( obj , args , _ctx) ->
+          type: %NonNull{ofType: %ID{}},
+          resolve: fn( obj, args, _ctx ) ->
+            IO.puts "This is the store"
             IO.inspect obj
-            "Hack"
+            "U3RvcmU6" #"Store" in base64 
           end
-        },
+          },
         linkConnection: %{
           type: App.Type.LinkConnection.get[:connection_type],
           args: Map.merge(Connection.args, %{query: @type_string}),
           resolve: fn ( _, args , _ctx) ->
             query = table("links")
-              |> Query.filter( lambda fn(link) ->  Query.match(link[:url],args[:query]) end)
+              |> Query.filter( lambda fn(link) ->  Query.match(link[:title],args[:query]) end)
               |> Query.order_by(Query.desc("timestamp"))
               |> DB.run
               |> DB.handle_graphql_resp
           Connection.List.resolve(query, args)
-            Connection.List.resolve(query, args)
           end
         }
-      }
+      },
+      interfaces: [App.PublicSchema.node_interface]
     }
   end
 end

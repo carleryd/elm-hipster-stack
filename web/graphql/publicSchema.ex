@@ -8,13 +8,45 @@ defmodule App.PublicSchema do
   alias GraphQL.Type.String
   alias GraphQL.Relay.Mutation
   alias RethinkDB.Query
+  alias GraphQL.Relay.Connection
+  @type_string %{type: %GraphQL.Type.String{}}
   use Timex
+  alias GraphQL.Relay.Node
+
+  def node_interface do
+    Node.define_interface(fn(obj) ->
+      IO.puts "define_interface"
+      IO.inspect obj
+      case obj do
+        %{text: _text} ->
+          App.Type.Store.get
+        _ ->
+          App.Type.Store.get
+      end
+    end)
+  end
+
+  def node_field do
+    Node.define_field(node_interface, fn (_item, args, _ctx) ->
+      [type, id] = Node.from_global_id(args[:id])
+      IO.puts "This is the node_field"
+      IO.inspect type
+      IO.inspect id
+      case type do
+        "Store" ->
+          %{}
+        _ ->
+          %{}
+      end
+    end)
+  end
 
   def schema do
     %Schema{
       query: %ObjectType{
         name: "Query",
         fields: %{
+          node: node_field,
           store: %{
             type: App.Type.Store.get,
             resolve: fn (doc, _args, _) ->
