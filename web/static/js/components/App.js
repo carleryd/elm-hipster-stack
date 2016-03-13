@@ -1,13 +1,17 @@
 
 import React from 'react';
 import Relay from 'react-relay';
-import AuthorListItem from './AuthorListItem';
 import Link from './Link';
 import CreateLinkMutation from '../mutations/CreateLinkMutation';
 
 class App extends React.Component {
   static propTypes = {
     limit: React.PropTypes.number,
+  }
+
+  handleSearch = (e) => {
+    const query = e.target.value;
+    this.props.relay.setVariables({ query})
   }
 
   setLimit = (e) => {
@@ -53,8 +57,12 @@ class App extends React.Component {
                 <button type="submit">Add</button>
             </form>
             Showing: &nbsp;
+            <input placeholder="Serach"
+                type="text"
+                onChange={this.handleSearch}
+            />
             <select onChange={this.setLimit}
-                    defaultValue={this.props.relay.variables.limit}>
+                defaultValue={this.props.relay.variables.limit}>
                 <option value="5">5</option>
                 <option value="10">10</option>
             </select>
@@ -67,13 +75,14 @@ class App extends React.Component {
 export default Relay.createContainer(App, {
   initialVariables:{
     limit: 10,
+    query: '',
   },
   fragments: {
     store: () => {
       return Relay.QL`
         fragment on Store {
           id,
-          linkConnection(first: $limit) {
+          linkConnection(first: $limit, query: $query) {
             edges{
               node{
                 id,
