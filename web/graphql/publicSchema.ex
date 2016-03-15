@@ -10,7 +10,6 @@ defmodule App.PublicSchema do
   alias RethinkDB.Query
   alias GraphQL.Relay.Connection
   @type_string %{type: %GraphQL.Type.String{}}
-  use Timex
   alias GraphQL.Relay.Node
 
   @store %{
@@ -88,7 +87,7 @@ defmodule App.PublicSchema do
                   %{
                     title: input["title"],
                     url: input["url"],
-                    timestamp: currentTime
+                    timestamp: TimeHelper.currentTime
                     })
                 |> DB.run
                 |> DB.handle_graphql_resp
@@ -97,17 +96,5 @@ defmodule App.PublicSchema do
         }
       }
     }
-  end
-
-  def currentTime do
-    timestamp = Timex.format(DateTime.now, "{ISO:Extended}")
-    case timestamp do
-      {:ok, iso} ->
-        iso
-      {:error, reason} ->
-        IO.inspect "schema could not be created because #{reason}"
-      _other ->
-        IO.inspect "unknown error while creating timestamp"
-    end
   end
 end

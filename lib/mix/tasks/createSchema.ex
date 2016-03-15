@@ -9,7 +9,7 @@ defmodule Mix.Tasks.CreateSchema do
     case response do
       {:ok, schema} ->
         json = Poison.encode!(schema)
-        File.write("./lib/babel/schema.json", json)
+        File.write("./lib/babel-relay/schema.json", json)
       {:error, reason} ->
         IO.inspect "schema could not be created because #{reason}"
       _other ->

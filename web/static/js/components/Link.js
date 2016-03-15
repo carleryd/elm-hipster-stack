@@ -9,6 +9,11 @@ class Link extends React.Component {
     marginRight: '0.5em',
   });
 
+  urlStyle = () => ({
+    color: '#062',
+    fontSize: '0.85em',
+  });
+
 
   dateLabel = () => {
     const { link , relay } = this.props;
@@ -16,16 +21,32 @@ class Link extends React.Component {
       return 'Saveing...';
     }
     return moment(link.createdAt).format('L');
-  }
+  };
+
+  url = () => {
+    return this.props.link.url.replace(/^https?:\/\/|\/$/ig,'');
+  };
+
 
   render() {
-    const { link } = this.props;
+    let { link } = this.props;
     return (
         <li>
-            <span style={this.dateStyle()}>
-              {this.dateLabel()}
-            </span>
-            <a href={link.url}>{link.title}</a>
+            <div className="card-panel"
+                style={{ padding: '1em' }}
+            >
+                <a href={link.url}>{link.title}</a>
+                <div className="truncate">
+                    <span style={this.dateStyle()}>
+                      {this.dateLabel()}
+                    </span>
+                    <a href={link.url}
+                        style={this.urlStyle()}
+                    >
+                      {this.url()}
+                    </a>
+                </div>
+            </div>
         </li>
     );
   }
