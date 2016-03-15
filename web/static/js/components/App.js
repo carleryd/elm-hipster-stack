@@ -32,7 +32,7 @@ class App extends React.Component {
   handleSubmit = (e) => {
     e.preventDefault();
     const onSuccess = () => {
-      $('modal').closeModal();
+      $('#modal').closeModal();
     };
 
     const onFailure = (transaction) => {
@@ -70,11 +70,12 @@ class App extends React.Component {
     return (
         <div>
             <div className="input-field">
-                <input placeholder="Serach"
+                <input
+                    id="search"
                     type="text"
                     onChange={this.handleSearch}
                 />
-                <lable htmlFor="search">Search All Resources</lable>
+                <label htmlFor="search">Search All Resources</label>
             </div>
 
             <div className="row">
