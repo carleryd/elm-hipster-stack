@@ -24,29 +24,44 @@ class App extends React.Component {
    this.props.relay.setVariables({ query });
   };
 
-  setLimit = (e) => {
+  handleSetLimit = (e) => {
     const newLimit = Number(e.target.value);
     this.props.relay.setVariables({limit: newLimit});
   }
 
   handleSubmit = (e) => {
     e.preventDefault();
+    const onSuccess = () => {
+      $('modal').closeModal();
+    };
+
+    const onFailure = (transaction) => {
+      const error = transaction.getError() || new Error('Mutation failed.');
+      console.log(error);
+    };
+
     Relay.Store.commitUpdate(
       new CreateLinkMutation({
         title: this.newTitle.value,
         url: this.newUrl.value,
         store: this.props.store,
-      })
+      }),
+      { onFailure, onSuccess }
     );
     this.newTitle.value = '';
     this.newUrl.value = '';
   }
 
+  componentDidMount() {
+    $('.modal-trigger').leanModal();
+  }
+
   render() {
-    const derp = this.props.store.linkConnection.edges;
-    const content = derp.map((edge) => {
+    const edges = this.props.store.linkConnection.edges;
+    const content = edges.map((edge) => {
       return (
-          <Link key={edge.node.id}
+          <Link
+              key={edge.node.id}
               link={edge.node}
           />
       );
@@ -54,29 +69,101 @@ class App extends React.Component {
 
     return (
         <div>
-            <h3>Links</h3>
-            <form onSubmit={this.handleSubmit}>
-                <input placeholder="Title"
-                    ref={(c) => (this.newTitle = c)}
+            <div className="input-field">
+                <input placeholder="Serach"
                     type="text"
+                    onChange={this.handleSearch}
                 />
-                <input placeholder="Title"
-                    ref={(c) => (this.newUrl = c)}
-                    type="text"
-                />
-                <button type="submit">Add</button>
-            </form>
-            Showing: &nbsp;
-            <input placeholder="Serach"
-                type="text"
-                onChange={this.handleSearch}
-            />
-            <select onChange={this.setLimit}
-                defaultValue={this.props.relay.variables.limit}>
-                <option value="5">5</option>
-                <option value="10">10</option>
-            </select>
-            <ul>{content}</ul>
+                <lable htmlFor="search">Search All Resources</lable>
+            </div>
+
+            <div className="row">
+                <a
+                  className="waves-effect waves-light btn modal-trigger right light-blue white-text"       href="#modal"
+                >Add New Resource
+                </a>
+            </div>
+
+            <ul>
+              {content}
+            </ul>
+
+            <div className="row">
+                <div className="col m9 s12">
+                    <div className="flow-text">
+                        <a
+                            href="https://twitter.com/RGRjs"
+                            target="_blank"
+                        >
+                          @RGRjs
+                        </a>
+                    </div>
+                </div>
+                <div className="col m3 hide-on-small-only">
+                    <div className="input-field">
+                        <select
+                            className="browser-default"
+                            defaultValue={this.props.relay.variables.limit}
+                            id="showing"
+                            onChange={this.handleSetLimit}
+                        >
+                            <option value="50">Show 50</option>
+                            <option value="100">Show 100</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <div
+                className="modal modal-fixed-footer"
+                id="modal"
+            >
+                <form onSubmit={this.handleSubmit}>
+                    <div className="modal-content">
+                        <h5>Add New Resource</h5>
+                        <div className="input-field">
+                            <input
+                                className="validate"
+                                id="newTitle"
+                                ref={(c) => (this.newTitle = c)}
+                                required
+                                type="text"
+                            />
+                            <label htmlFor="newTitle">
+                              Title
+                            </label>
+                        </div>
+                        <div className="input-field">
+                            <input
+                                className="validate"
+                                id="newUrl"
+                                ref={(c) => (this.newUrl = c)}
+                                required
+                                type="url"
+                            />
+                            <label htmlFor="newUrl">
+                              Url
+                            </label>
+                        </div>
+                    </div>
+                    <div className="modal-footer">
+                        <button
+                            className="waves-effect waves-green btn-flat green darken-3 white-text"
+                            type="submit"
+                        >
+                            <strong>
+                              Add
+                            </strong>
+                        </button>
+                        <a
+                            className="modal-action modal-close waves-effect waves-red btn-flat"
+                            href="#!"
+                        >
+                          Cancel
+                        </a>
+                    </div>
+                </form>
+            </div>
         </div>
       );
   }
@@ -84,7 +171,7 @@ class App extends React.Component {
 
 export default Relay.createContainer(App, {
   initialVariables:{
-    limit: 10,
+    limit: 50,
     query: '',
   },
   fragments: {
