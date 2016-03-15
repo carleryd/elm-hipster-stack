@@ -10,13 +10,13 @@
      <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
      <script src="https://code.jquery.com/jquery-1.11.3.min.js"></script>
      <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.5/js/materialize.min.js"></script>
-    <title>Phoenix-hipster-stack</title>
+     <title>Phoenix-hipster-stack</title>
   </head>
 
   <body>
     <div id="main" class="container">
         <h4>
-            <strong>R</strong>eact, <strong>G</strong>raphQL, and <strong>R</strong>elay
+            <strong>P</strong>hoenix, <strong>R</strong>ethinkDB, <strong>R</strong>eact, <strong>G</strong>raphQL, and <strong>R</strong>elay
         </h4>
         <div id="root">
           Loading...
@@ -24,9 +24,9 @@
         <ul>
           <li>This is a reimplementation of the <a target="_blank" href="http://rgrjs.com/">rgrjs.com</a> site.</li>
           <li>Find that project here <a target="_blank" href="https://github.com/RGRjs/rgrjs.com">Github</a></li>
-          <li>Watch how build this site with node.js at <a target="_blank" href="https://www.pluralsight.com/courses/react-apps-with-relay-graphql-flux">Pluralsight </a></li>
+          <li>Learn how to build this site from scratch using nodejs with <a target="_blank" href="https://www.pluralsight.com/courses/react-apps-with-relay-graphql-flux">this Pluralsight course</a></li>
         </ul>
-        <a href="https://github.com/RGRjs/rgrjs.com" class="hide-on-small-only"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://camo.githubusercontent.com/38ef81f8aca64bb9a64448d0d70f1308ef5341ab/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f6461726b626c75655f3132313632312e706e67" alt="Fork me on GitHub" data-canonical-src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png"></a>
+        <a href="https://github.com/graphql-elixir/phoenix-hipster-stack" class="hide-on-small-only"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://camo.githubusercontent.com/38ef81f8aca64bb9a64448d0d70f1308ef5341ab/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f6461726b626c75655f3132313632312e706e67" alt="Fork me on GitHub" data-canonical-src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png"></a>
       </div>
     </div>
 

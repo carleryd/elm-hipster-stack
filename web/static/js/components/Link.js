@@ -32,15 +32,22 @@ class Link extends React.Component {
     let { link } = this.props;
     return (
         <li>
-            <div className="card-panel"
+            <div
+                className="card-panel"
                 style={{ padding: '1em' }}
             >
-                <a href={link.url}>{link.title}</a>
+                <a
+                    href={link.url}
+                    target="_blank"
+                >
+                  {link.title}
+                </a>
                 <div className="truncate">
                     <span style={this.dateStyle()}>
                       {this.dateLabel()}
                     </span>
-                    <a href={link.url}
+                    <a
+                        href={link.url}
                         style={this.urlStyle()}
                     >
                       {this.url()}

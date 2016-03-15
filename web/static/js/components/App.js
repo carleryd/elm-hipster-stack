@@ -108,6 +108,8 @@ class App extends React.Component {
                             id="showing"
                             onChange={this.handleSetLimit}
                         >
+                            <option value="10">Show 10</option>
+                            <option value="25">Show 25</option>
                             <option value="50">Show 50</option>
                             <option value="100">Show 100</option>
                         </select>
@@ -172,7 +174,7 @@ class App extends React.Component {
 
 export default Relay.createContainer(App, {
   initialVariables:{
-    limit: 50,
+    limit: 10,
     query: '',
   },
   fragments: {
