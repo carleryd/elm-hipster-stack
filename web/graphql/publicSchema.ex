@@ -13,15 +13,19 @@ defmodule App.PublicSchema do
   use Timex
   alias GraphQL.Relay.Node
 
+  @store %{
+    id: 1
+  }
+
   def node_interface do
     Node.define_interface(fn(obj) ->
-      IO.puts "define_interface"
+      IO.puts "node_interface"
       IO.inspect obj
       case obj do
-        %{text: _text} ->
+        @store ->
           App.Type.Store.get
         _ ->
-          App.Type.Store.get
+          %{}
       end
     end)
   end
@@ -29,12 +33,9 @@ defmodule App.PublicSchema do
   def node_field do
     Node.define_field(node_interface, fn (_item, args, _ctx) ->
       [type, id] = Node.from_global_id(args[:id])
-      IO.puts "This is the node_field"
-      IO.inspect type
-      IO.inspect id
       case type do
         "Store" ->
-          %{}
+          @store
         _ ->
           %{}
       end
@@ -50,7 +51,7 @@ defmodule App.PublicSchema do
           store: %{
             type: App.Type.Store.get,
             resolve: fn (doc, _args, _) ->
-              %{}
+              %{id: 1}
             end
           }
         }

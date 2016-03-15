@@ -2,6 +2,7 @@
 import React from 'react';
 import Relay from 'react-relay';
 import Link from './Link';
+import { debounce } from 'lodash';
 import CreateLinkMutation from '../mutations/CreateLinkMutation';
 
 class App extends React.Component {
@@ -9,10 +10,19 @@ class App extends React.Component {
     limit: React.PropTypes.number,
   }
 
-  handleSearch = (e) => {
-    const query = e.target.value;
-    this.props.relay.setVariables({ query})
+  constructor(props) {
+    super(props);
+    this.search = debounce(this.search,300);
   }
+
+
+  handleSearch = (e) => {
+    this.search(e.target.value);
+  };
+
+  search = (query) => {
+   this.props.relay.setVariables({ query });
+  };
 
   setLimit = (e) => {
     const newLimit = Number(e.target.value);

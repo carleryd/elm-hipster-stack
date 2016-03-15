@@ -18,15 +18,7 @@ defmodule App.Type.Store do
     %ObjectType{
       name: "Store",
       fields: %{
-        # id: Node.global_id_field("Store"),
-        id: %{
-          type: %NonNull{ofType: %ID{}},
-          resolve: fn( obj, args, _ctx ) ->
-            IO.puts "This is the store"
-            IO.inspect obj
-            "U3RvcmU6" #"Store" in base64 
-          end
-          },
+        id: Node.global_id_field("Store"),
         linkConnection: %{
           type: App.Type.LinkConnection.get[:connection_type],
           args: Map.merge(Connection.args, %{query: @type_string}),

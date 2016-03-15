@@ -16,7 +16,7 @@ class CreateLinkMutation extends Relay.Mutation {
 
   getFatQuery() {
     return Relay.QL`
-      fragment on CreateLinkPayload @relay(pattern: true){
+      fragment on CreateLinkPayload {
         linkEdge,
         store { linkConnection }
       }
