@@ -24,6 +24,7 @@ class CreateLinkMutation extends Relay.Mutation {
   }
 
   getConfigs() {
+    console.log(this);
     return [{
       type: 'RANGE_ADD',
       parentName: 'store',

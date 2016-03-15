@@ -51,7 +51,7 @@ defmodule App.PublicSchema do
           store: %{
             type: App.Type.Store.get,
             resolve: fn (doc, _args, _) ->
-              %{id: 1}
+              @store
             end
           }
         }
@@ -78,6 +78,7 @@ defmodule App.PublicSchema do
               store: %{
                 type: App.Type.Store.get,
                 resolve: fn (obj, _args, _info) ->
+                  @store
                 end
               }
             },
