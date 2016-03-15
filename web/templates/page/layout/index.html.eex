@@ -22,7 +22,7 @@
           Loading...
         </div>
         <ul>
-          <li>This site is a reimplementation of the <a href="http://rgrjs.com"></a> site.</li>
+          <li>This site is a reimplementation of the <a target="_blank" href="http://rgrjs.com/">rgrjs.com</a> site.</li>
           <li>Find that project here <a target="_blank" href="https://github.com/RGRjs/rgrjs.com">Fork us</a></li>
           <li>Watch how this site with node.js with <a target="_blank" href="https://www.pluralsight.com/courses/react-apps-with-relay-graphql-flux">this Pluralsight course</a></li>
         </ul>
