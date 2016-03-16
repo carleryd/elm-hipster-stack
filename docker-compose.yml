@@ -1,0 +1,14 @@
+phoenix:
+  build: .
+  ports:
+    - "4001:4001"
+  environment:
+    - MIX_ENV=prod
+    - PORT=4001
+  links:
+    - rethinkdb:localhost
+
+rethinkdb:
+  image: rethinkdb
+  volumes:
+    - ".:/data"
