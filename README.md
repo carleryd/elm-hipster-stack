@@ -12,7 +12,8 @@
 * [Jest](https://facebook.github.io/jest/)
 
 ### Example app
-Phoenix hipster stack commes with an example app [see it here](http://phoenix-hipster-stack.ventureinto.space/).
+Phoenix hipster stack commes with an example app [SEE IT HERE](http://phoenix-hipster-stack.ventureinto.space/).
+
 The app is a port of the node.js app built in the [Building Data-driven React Applications with Relay, GraphQL, and Flux](http://app.pluralsight.com/courses/react-apps-with-relay-graphql-flux) course from Pluralsight.
 The app is running on a 512mb single core droplet on digitalocean.
 
