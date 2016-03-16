@@ -36,7 +36,18 @@ Clone this repo then:
 
 **Jest is not implemented. Feel free to contribute :)**
 
+## DOCKER 
+`docker-compose build`
+`docker-compose up`
+`visit localhost:4001/reset`
+`visit localhost:4001`
+
 ## Make your own project
+`git clone git@github.com:graphql-elixir/phoenix-hipster-stack.git <name-of-your-project>`
+`cd <name-of-your-project> rm -rf .git`
+`git init`
+`git remote add orgin <your-new-repo>`
+`git push -u orgin master`
 When changeing the graphql schemas run 
 `mix CreateSchema` to make a new `schema.json`. 
 This `schema.json` is used by Relay.
