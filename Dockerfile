@@ -46,6 +46,7 @@ RUN npm install
 RUN yes | mix deps.get
 
 #build production
+RUN MIX_ENV=prod mix compile
 RUN MIX_ENV=prod mix phoenix.digest
 
 #start app
