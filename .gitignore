@@ -8,7 +8,15 @@
 erl_crash.dump
 
 # Static artifacts
-/node_modules
+!node_modules/
+
+node_modules/*
+!node_modules/__mocks__
+!node_modules/__tests__
+
+
+
+
 
 # Since we are building assets from web/static,
 # we ignore priv/static. You may want to comment
