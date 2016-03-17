@@ -1,7 +1,9 @@
 'use strict';
 
 jest.unmock('../../web/static/js/components/Link');
+jest.unmock('../../web/static/js/utils/RelayTestUtils');
 import TestUtils from 'react-addons-test-utils';
+import RelayTestUtils from '../../web/static/js/utils/RelayTestUtils';
 import React from 'react';
 import ReactDOM from 'react-dom';
 
@@ -16,7 +18,7 @@ describe('the Link component', () => {
         createdAt: Date.now(),
       };
 
-      const linkComponent = TestUtils.renderIntoDocument(
+      const linkComponent = RelayTestUtils.renderContainerIntoDocument(
         <Link link={node} />
       );
       //
