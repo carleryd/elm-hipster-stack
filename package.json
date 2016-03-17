@@ -7,13 +7,21 @@
   "scripts": {
     "compile": "webpack -p",
     "eslint": "node node_modules/eslint/bin/eslint.js ./",
-    "test" : "jest"
+    "test": "jest"
   },
   "jest": {
+    "rootDir": "",
     "scriptPreprocessor": "<rootDir>/node_modules/babel-jest",
-    "testFileExtensions": ["js"],
-    "moduleFileExtensions": ["js"],
-    "collectCoverage": true
+    "testFileExtensions": [
+      "js"
+    ],
+    "moduleFileExtensions": [
+      "js"
+    ],
+    "collectCoverage": true,
+    "unmockedModulePathPatterns": [
+      "react"
+    ]
   },
   "author": "",
   "license": "ISC",
@@ -42,16 +50,17 @@
   },
   "devDependencies": {
     "babel-eslint": "^5.0.0",
+    "babel-jest": "^9.0.3",
+    "babel-polyfill": "6.7.2",
     "cors": "^2.7.1",
     "eslint": "^2.4.0",
     "eslint-plugin-react": "^4.2.2",
     "express": "^4.13.4",
     "fbjs-scripts": "^0.5.0",
-    "webpack-dev-middleware": "^1.5.1",
-    "webpack-hot-middleware": "^2.7.1",
     "jest-cli": "^0.9.2",
-    "babel-jest": "^9.0.3",
-    "babel-polyfill": "6.7.2"
+    "react-addons-test-utils": "^0.14.7",
+    "webpack-dev-middleware": "^1.5.1",
+    "webpack-hot-middleware": "^2.7.1"
   },
   "metadata": {
     "graphql": {
