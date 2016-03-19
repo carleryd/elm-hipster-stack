@@ -2,6 +2,7 @@
 
 jest.unmock('../../web/static/js/components/Link');
 jest.unmock('../../web/static/js/utils/RelayTestUtils');
+jest.unmock('../../web/static/js/shared/urlPrettify');
 import TestUtils from 'react-addons-test-utils';
 import RelayTestUtils from '../../web/static/js/utils/RelayTestUtils';
 import React from 'react';
@@ -38,35 +39,6 @@ describe('the Link component', () => {
                  .findRenderedDOMComponentWithTag(linkComponent,'span');
 
     expect(date.textContent).toEqual('03/19/2016');
-  });
-
-  it('should test https', () => {
-    const https = {
-      url: 'https://www.facebook.com/',
-      title: 'Facebook',
-      createdAt: 1458300000000,
-    };
-
-    const linkComponent = RelayTestUtils.renderContainerIntoDocument(
-      <Link link={https} />
-    );
-
-    const labels = TestUtils
-                    .scryRenderedDOMComponentsWithTag(linkComponent,'a');
-
-    // Title
-    expect(labels[0].textContent).toEqual(https.title);
-    expect(labels[0].getAttribute('href')).toEqual(https.url);
-
-    // URL
-    expect(labels[1].textContent).not.toEqual(https.url);
-    expect(labels[1].textContent).toEqual('www.facebook.com');
-    expect(labels[1].getAttribute('href')).toEqual(https.url);
-    // Date
-    const date = TestUtils
-                .findRenderedDOMComponentWithTag(linkComponent,'span');
-
-    expect(date.textContent).toEqual('03/18/2016');
   });
 
   it('should have optimistic update', () => {
