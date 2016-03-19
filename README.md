@@ -10,6 +10,7 @@
 * [Flow](http://flowtype.org/)
 * [Eslint](http://eslint.org/)
 * [Jest](https://facebook.github.io/jest/)
+* [Docker](https://www.docker.com/)
 
 ### Example app
 Phoenix hipster stack commes with an example app [SEE IT HERE](http://phoenix-hipster-stack.ventureinto.space/).
