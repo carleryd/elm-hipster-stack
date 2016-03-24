@@ -1,6 +1,7 @@
 import React from 'react';
 import Relay from 'react-relay';
 import moment from 'moment';
+import urlPrettify from '../shared/urlPrettify';
 
 class Link extends React.Component {
   dateStyle = () => ({
@@ -22,11 +23,6 @@ class Link extends React.Component {
     }
     return moment(link.createdAt).format('L');
   };
-
-  url = () => {
-    return this.props.link.url.replace(/^https?:\/\/|\/$/ig,'');
-  };
-
 
   render() {
     let { link } = this.props;
@@ -50,7 +46,7 @@ class Link extends React.Component {
                         href={link.url}
                         style={this.urlStyle()}
                     >
-                      {this.url()}
+                      {urlPrettify(link.url)}
                     </a>
                 </div>
             </div>
