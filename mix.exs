@@ -37,8 +37,8 @@ defmodule App.Mixfile do
      {:timex, "~> 2.1.1"},
      {:phoenix_live_reload, "~> 1.0"},
      {:cowboy, "~> 1.0"},
-     {:graphql_relay, "~> 0.0.11"},
-     {:plug_graphql, git: "https://github.com/seanabrahams/plug_graphql.git", branch: "relay"},
+     {:graphql_relay, "~> 0.0.15"},
+     {:plug_graphql, "~> 0.2"},
      {:rethinkdb,"~> 0.3.2"},
      {:cors_plug, "~> 1.1"},
      {:json, "~> 0.3.0"}
