@@ -20,14 +20,17 @@ type alias ItemId =
 type alias Model =
   { items : List Item
   , item : Item
-  , nextId : Int
+  , nextId : ItemId
   }
 
 
 type Action
   = Remove ItemId
-  | Add Item
+  | Add
+  | UpdateTitle String
+  | UpdateUrl String
   | NoOp
+
 
 newItem : Item
 newItem =
@@ -35,6 +38,7 @@ newItem =
   , title = ""
   , url = ""
   }
+
 
 initialModel : Model
 initialModel =
@@ -44,20 +48,38 @@ initialModel =
   }
 
 
-
 update : Action -> Model -> Model
 update action model =
   case action of
-    Remove itemEntryId ->
-      model
-      -- { model | items = [] }
+    Remove id ->
+      { model
+        | items =
+            List.filter (\mappedItem -> id /= mappedItem.id ) model.items
+      }
 
-    Add itemEntry ->
+    -- { model | items = [] }
+    Add ->
       { model
         | items = model.item :: model.items
         , item = { newItem | id = model.nextId }
         , nextId = model.nextId + 1
       }
+
+    UpdateTitle str ->
+      let
+        item = model.item
+        updatedItem = { item | title = str }
+        newModel = { model | item = updatedItem }
+      in
+        newModel
+
+    UpdateUrl str ->
+      let
+        item = model.item
+        updatedItem = { item | url = str }
+        newModel = { model | item = updatedItem }
+      in
+        newModel
 
     NoOp ->
       model
@@ -65,6 +87,8 @@ update action model =
 
 dummyItem =
   Item 0 "Elm language" "http://elm-lang.org/"
+
+
 
 -- handleKeyPress : Int -> Action
 -- handleKeyPress code =
@@ -75,68 +99,61 @@ dummyItem =
 --       NoOp
 
 
-viewBook : Item -> Html
-viewBook { title, url } =
+viewItem : Address Action -> Item -> Html
+viewItem address { id, title, url } =
   div
     []
     [ div [ class "item-title" ] [ text title ]
     , a [ class "item-url", href url ] [ text url ]
+    , button
+        [ onClick address (Remove id) ]
+        [ text "Remove" ]
     ]
 
 
-viewBookList : List (Item) -> Html
-viewBookList itemList =
+viewItemList : Address Action -> List (Item) -> Html
+viewItemList address itemList =
   itemList
-    |> List.map viewBook
-    |> div [ class "item-collection-container" ]
+    |> List.map (viewItem address)
+    |> div []
 
 
-viewItemBasket : Model -> Html
-viewItemBasket model =
+viewItems : Address Action -> Model -> Html
+viewItems address model =
   let
-    yourBasket =
-      model.items
-        -- This gets us just the values in a list
-        |> viewBookList
+    itemsHtml =
+      viewItemList address model.items
   in
     div
       []
       [ h3 [] [ text "Elm Phoenix RethinkDB" ]
-      , yourBasket
+      , itemsHtml
       ]
 
 
 view : Address Action -> Model -> Html
 view address model =
-  let
-    entry =
-      dummyItem
-  in
-    div
-      []
-      [ viewItemBasket model
-      , input
-          [ placeholder "Enter Title" ]
-          []
-      , input
-          [ placeholder "Enter URL" ]
-          []
-      , button
-          [ onClick address (Add entry) ]
-          [ text "Add" ]
-      , button
-          [ onClick address (Remove entry.id) ]
-          [ text "Remove" ]
-      -- , input
-      --     [ class "new-todo"
-      --     , placeholder "What needs to be done?"
-      --     -- We'll explicitly set the value to the model's todo's title
-      --     , value model.todo.title
-      --     , autofocus True
-      --     , onKeyPress address handleKeyPress
-      --     ]
-      --     []
-      ]
+  div
+    []
+    [ viewItems address model
+    , input
+        [ placeholder "Enter Title"
+        , value model.item.title
+        , on "input" targetValue
+            (\str -> Signal.message address (UpdateTitle str))
+        ]
+        []
+    , input
+        [ placeholder "Enter URL"
+        , value model.item.url
+        , on "input" targetValue
+            (\str -> Signal.message address (UpdateUrl str))
+        ]
+        []
+    , button
+        [ onClick address Add ]
+        [ text "Add" ]
+    ]
 
 
 inbox : Signal.Mailbox Action

@@ -14,49 +14,99 @@ Elm.Main.make = function (_elm) {
    $Result = Elm.Result.make(_elm),
    $Signal = Elm.Signal.make(_elm);
    var _op = {};
-   var viewBook = function (_p0) {
-      var _p1 = _p0;
-      var _p2 = _p1.url;
-      return A2($Html.div,
-      _U.list([]),
-      _U.list([A2($Html.div,
-              _U.list([$Html$Attributes.$class("item-title")]),
-              _U.list([$Html.text(_p1.title)]))
-              ,A2($Html.a,
-              _U.list([$Html$Attributes.$class("item-url")
-                      ,$Html$Attributes.href(_p2)]),
-              _U.list([$Html.text(_p2)]))]));
-   };
-   var viewBookList = function (itemList) {
-      return A2($Html.div,
-      _U.list([$Html$Attributes.$class("item-collection-container")]),
-      A2($List.map,viewBook,itemList));
-   };
-   var viewItemBasket = function (model) {
-      var yourBasket = viewBookList(model.items);
-      return A2($Html.div,
-      _U.list([]),
-      _U.list([A2($Html.h3,
-              _U.list([]),
-              _U.list([$Html.text("Elm Phoenix RethinkDB")]))
-              ,yourBasket]));
-   };
    var newItem = {id: 0,title: "",url: ""};
    var update = F2(function (action,model) {
-      var _p3 = action;
-      switch (_p3.ctor)
-      {case "Remove": return model;
+      var _p0 = action;
+      switch (_p0.ctor)
+      {case "Remove": return _U.update(model,
+           {items: A2($List.filter,
+           function (mappedItem) {
+              return !_U.eq(_p0._0,mappedItem.id);
+           },
+           model.items)});
          case "Add": return _U.update(model,
            {items: A2($List._op["::"],model.item,model.items)
            ,item: _U.update(newItem,{id: model.nextId})
            ,nextId: model.nextId + 1});
+         case "UpdateTitle": var item = model.item;
+           var updatedItem = _U.update(item,{title: _p0._0});
+           var newModel = _U.update(model,{item: updatedItem});
+           return newModel;
+         case "UpdateUrl": var item = model.item;
+           var updatedItem = _U.update(item,{url: _p0._0});
+           var newModel = _U.update(model,{item: updatedItem});
+           return newModel;
          default: return model;}
    });
    var NoOp = {ctor: "NoOp"};
    var inbox = $Signal.mailbox(NoOp);
    var actions = inbox.signal;
-   var Add = function (a) {    return {ctor: "Add",_0: a};};
+   var UpdateUrl = function (a) {
+      return {ctor: "UpdateUrl",_0: a};
+   };
+   var UpdateTitle = function (a) {
+      return {ctor: "UpdateTitle",_0: a};
+   };
+   var Add = {ctor: "Add"};
    var Remove = function (a) {    return {ctor: "Remove",_0: a};};
+   var viewItem = F2(function (address,_p1) {
+      var _p2 = _p1;
+      var _p3 = _p2.url;
+      return A2($Html.div,
+      _U.list([]),
+      _U.list([A2($Html.div,
+              _U.list([$Html$Attributes.$class("item-title")]),
+              _U.list([$Html.text(_p2.title)]))
+              ,A2($Html.a,
+              _U.list([$Html$Attributes.$class("item-url")
+                      ,$Html$Attributes.href(_p3)]),
+              _U.list([$Html.text(_p3)]))
+              ,A2($Html.button,
+              _U.list([A2($Html$Events.onClick,address,Remove(_p2.id))]),
+              _U.list([$Html.text("Remove")]))]));
+   });
+   var viewItemList = F2(function (address,itemList) {
+      return A2($Html.div,
+      _U.list([]),
+      A2($List.map,viewItem(address),itemList));
+   });
+   var viewItems = F2(function (address,model) {
+      var itemsHtml = A2(viewItemList,address,model.items);
+      return A2($Html.div,
+      _U.list([]),
+      _U.list([A2($Html.h3,
+              _U.list([]),
+              _U.list([$Html.text("Elm Phoenix RethinkDB")]))
+              ,itemsHtml]));
+   });
+   var view = F2(function (address,model) {
+      return A2($Html.div,
+      _U.list([]),
+      _U.list([A2(viewItems,address,model)
+              ,A2($Html.input,
+              _U.list([$Html$Attributes.placeholder("Enter Title")
+                      ,$Html$Attributes.value(model.item.title)
+                      ,A3($Html$Events.on,
+                      "input",
+                      $Html$Events.targetValue,
+                      function (str) {
+                         return A2($Signal.message,address,UpdateTitle(str));
+                      })]),
+              _U.list([]))
+              ,A2($Html.input,
+              _U.list([$Html$Attributes.placeholder("Enter URL")
+                      ,$Html$Attributes.value(model.item.url)
+                      ,A3($Html$Events.on,
+                      "input",
+                      $Html$Events.targetValue,
+                      function (str) {
+                         return A2($Signal.message,address,UpdateUrl(str));
+                      })]),
+              _U.list([]))
+              ,A2($Html.button,
+              _U.list([A2($Html$Events.onClick,address,Add)]),
+              _U.list([$Html.text("Add")]))]));
+   });
    var Model = F3(function (a,b,c) {
       return {items: a,item: b,nextId: c};
    });
@@ -70,42 +120,26 @@ Elm.Main.make = function (_elm) {
                       ,item: newItem
                       ,nextId: 1};
    var model = A3($Signal.foldp,update,initialModel,actions);
+   var main = A2($Signal.map,view(inbox.address),model);
    var dummyItem = A3(Item,
    0,
    "Elm language",
    "http://elm-lang.org/");
-   var view = F2(function (address,model) {
-      var entry = dummyItem;
-      return A2($Html.div,
-      _U.list([]),
-      _U.list([viewItemBasket(model)
-              ,A2($Html.input,
-              _U.list([$Html$Attributes.placeholder("Enter Title")]),
-              _U.list([]))
-              ,A2($Html.input,
-              _U.list([$Html$Attributes.placeholder("Enter URL")]),
-              _U.list([]))
-              ,A2($Html.button,
-              _U.list([A2($Html$Events.onClick,address,Add(entry))]),
-              _U.list([$Html.text("Add")]))
-              ,A2($Html.button,
-              _U.list([A2($Html$Events.onClick,address,Remove(entry.id))]),
-              _U.list([$Html.text("Remove")]))]));
-   });
-   var main = A2($Signal.map,view(inbox.address),model);
    return _elm.Main.values = {_op: _op
                              ,Item: Item
                              ,Model: Model
                              ,Remove: Remove
                              ,Add: Add
+                             ,UpdateTitle: UpdateTitle
+                             ,UpdateUrl: UpdateUrl
                              ,NoOp: NoOp
                              ,newItem: newItem
                              ,initialModel: initialModel
                              ,update: update
                              ,dummyItem: dummyItem
-                             ,viewBook: viewBook
-                             ,viewBookList: viewBookList
-                             ,viewItemBasket: viewItemBasket
+                             ,viewItem: viewItem
+                             ,viewItemList: viewItemList
+                             ,viewItems: viewItems
                              ,view: view
                              ,inbox: inbox
                              ,actions: actions
