@@ -1,5 +1,5 @@
 <script type="text/javascript">
   document.addEventListener("DOMContentLoaded", function(event) {
-    Elm.fullscreen(Elm.App);
+    Elm.fullscreen(Elm.Main);
   });
 </script>

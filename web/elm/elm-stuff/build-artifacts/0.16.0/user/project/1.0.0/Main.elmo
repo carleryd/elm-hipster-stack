@@ -1,0 +1,114 @@
+Elm.Main = Elm.Main || {};
+Elm.Main.make = function (_elm) {
+   "use strict";
+   _elm.Main = _elm.Main || {};
+   if (_elm.Main.values) return _elm.Main.values;
+   var _U = Elm.Native.Utils.make(_elm),
+   $Basics = Elm.Basics.make(_elm),
+   $Debug = Elm.Debug.make(_elm),
+   $Html = Elm.Html.make(_elm),
+   $Html$Attributes = Elm.Html.Attributes.make(_elm),
+   $Html$Events = Elm.Html.Events.make(_elm),
+   $List = Elm.List.make(_elm),
+   $Maybe = Elm.Maybe.make(_elm),
+   $Result = Elm.Result.make(_elm),
+   $Signal = Elm.Signal.make(_elm);
+   var _op = {};
+   var viewBook = function (_p0) {
+      var _p1 = _p0;
+      var _p2 = _p1.url;
+      return A2($Html.div,
+      _U.list([]),
+      _U.list([A2($Html.div,
+              _U.list([$Html$Attributes.$class("item-title")]),
+              _U.list([$Html.text(_p1.title)]))
+              ,A2($Html.a,
+              _U.list([$Html$Attributes.$class("item-url")
+                      ,$Html$Attributes.href(_p2)]),
+              _U.list([$Html.text(_p2)]))]));
+   };
+   var viewBookList = function (itemList) {
+      return A2($Html.div,
+      _U.list([$Html$Attributes.$class("item-collection-container")]),
+      A2($List.map,viewBook,itemList));
+   };
+   var viewItemBasket = function (model) {
+      var yourBasket = viewBookList(model.items);
+      return A2($Html.div,
+      _U.list([]),
+      _U.list([A2($Html.h3,
+              _U.list([]),
+              _U.list([$Html.text("Elm Phoenix RethinkDB")]))
+              ,yourBasket]));
+   };
+   var newItem = {id: 0,title: "",url: ""};
+   var update = F2(function (action,model) {
+      var _p3 = action;
+      switch (_p3.ctor)
+      {case "Remove": return model;
+         case "Add": return _U.update(model,
+           {items: A2($List._op["::"],model.item,model.items)
+           ,item: _U.update(newItem,{id: model.nextId})
+           ,nextId: model.nextId + 1});
+         default: return model;}
+   });
+   var NoOp = {ctor: "NoOp"};
+   var inbox = $Signal.mailbox(NoOp);
+   var actions = inbox.signal;
+   var Add = function (a) {    return {ctor: "Add",_0: a};};
+   var Remove = function (a) {    return {ctor: "Remove",_0: a};};
+   var Model = F3(function (a,b,c) {
+      return {items: a,item: b,nextId: c};
+   });
+   var Item = F3(function (a,b,c) {
+      return {id: a,title: b,url: c};
+   });
+   var initialModel = {items: _U.list([A3(Item,
+                      0,
+                      "Elm language",
+                      "http://elm-lang.org/")])
+                      ,item: newItem
+                      ,nextId: 1};
+   var model = A3($Signal.foldp,update,initialModel,actions);
+   var dummyItem = A3(Item,
+   0,
+   "Elm language",
+   "http://elm-lang.org/");
+   var view = F2(function (address,model) {
+      var entry = dummyItem;
+      return A2($Html.div,
+      _U.list([]),
+      _U.list([viewItemBasket(model)
+              ,A2($Html.input,
+              _U.list([$Html$Attributes.placeholder("Enter Title")]),
+              _U.list([]))
+              ,A2($Html.input,
+              _U.list([$Html$Attributes.placeholder("Enter URL")]),
+              _U.list([]))
+              ,A2($Html.button,
+              _U.list([A2($Html$Events.onClick,address,Add(entry))]),
+              _U.list([$Html.text("Add")]))
+              ,A2($Html.button,
+              _U.list([A2($Html$Events.onClick,address,Remove(entry.id))]),
+              _U.list([$Html.text("Remove")]))]));
+   });
+   var main = A2($Signal.map,view(inbox.address),model);
+   return _elm.Main.values = {_op: _op
+                             ,Item: Item
+                             ,Model: Model
+                             ,Remove: Remove
+                             ,Add: Add
+                             ,NoOp: NoOp
+                             ,newItem: newItem
+                             ,initialModel: initialModel
+                             ,update: update
+                             ,dummyItem: dummyItem
+                             ,viewBook: viewBook
+                             ,viewBookList: viewBookList
+                             ,viewItemBasket: viewItemBasket
+                             ,view: view
+                             ,inbox: inbox
+                             ,actions: actions
+                             ,model: model
+                             ,main: main};
+};

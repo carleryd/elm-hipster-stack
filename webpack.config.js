@@ -1,10 +1,9 @@
-const elmSource = __dirname + '/web/static/js/elm';
+const elmSource = __dirname + '/web/elm';
 
 module.exports = {
   entry: {
     app: [
-      "./web/static/js/app.js",
-      "./web/static/js/elm/Main.elm"
+      "./web/static/js/app.js"
     ]
   },
   output: {

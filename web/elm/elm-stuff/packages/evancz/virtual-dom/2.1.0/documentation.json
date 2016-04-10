@@ -1,0 +1,96 @@
+[
+  {
+    "name": "VirtualDom",
+    "comment": "API to the core diffing algorithm. Can serve as a foundation for libraries\nthat expose more helper functions for HTML or SVG.\n\n# Create\n@docs Node, text, node\n\n# Declare Properties and Attributes\n@docs Property, property, attribute, attributeNS\n\n# Events\n@docs on, onWithOptions, Options, defaultOptions\n\n# Optimizations\n@docs lazy, lazy2, lazy3\n\n# Conversions\n@docs toElement, fromElement",
+    "aliases": [
+      {
+        "name": "Options",
+        "comment": "Options for an event listener. If `stopPropagation` is true, it means the\nevent stops traveling through the DOM so it will not trigger any other event\nlisteners. If `preventDefault` is true, any built-in browser behavior related\nto the event is prevented. For example, this is used with touch events when you\nwant to treat them as gestures of your own, not as scrolls.",
+        "args": [],
+        "type": "{ stopPropagation : Bool, preventDefault : Bool }"
+      }
+    ],
+    "types": [
+      {
+        "name": "Node",
+        "comment": "An immutable chunk of data representing a DOM node. This can be HTML or SVG.",
+        "args": [],
+        "cases": []
+      },
+      {
+        "name": "Property",
+        "comment": "When using HTML and JS, there are two ways to specify parts of a DOM node.\n\n  1. Attributes &mdash; You can set things in HTML itself. So the `class`\n     in `<div class=\"greeting\"></div>` is called an *attribute*.\n\n  2. Properties &mdash; You can also set things in JS. So the `className`\n     in `div.className = 'greeting'` is called a *property*.\n\nSo the `class` attribute corresponds to the `className` property. At first\nglance, perhaps this distinction is defensible, but it gets much crazier.\n*There is not always a one-to-one mapping between attributes and properties!*\nYes, that is a true fact. Sometimes an attribute exists, but there is no\ncorresponding property. Sometimes changing an attribute does not change the\nunderlying property. For example, as of this writing, the `webkit-playsinline`\nattribute can be used in HTML, but there is no corresponding property!",
+        "args": [],
+        "cases": []
+      }
+    ],
+    "values": [
+      {
+        "name": "attribute",
+        "comment": "Create arbitrary HTML *attributes*. Maps onto JavaScript’s `setAttribute`\nfunction under the hood.\n\n    greeting : Html\n    greeting =\n        node \"div\" [ attribute \"class\" \"greeting\" ] [\n          text \"Hello!\"\n        ]\n\nNotice that you must give the *attribute* name, so we use `class` as it would\nbe in HTML, not `className` as it would appear in JS.",
+        "type": "String -> String -> VirtualDom.Property"
+      },
+      {
+        "name": "attributeNS",
+        "comment": "Would you believe that there is another way to do this?! This corresponds\nto JavaScript's `setAttributeNS` function under the hood. It is doing pretty\nmuch the same thing as `attribute` but you are able to have \"namespaced\"\nattributes. This is used in some SVG stuff at least.",
+        "type": "String -> String -> String -> VirtualDom.Property"
+      },
+      {
+        "name": "defaultOptions",
+        "comment": "Everything is `False` by default.\n\n    defaultOptions =\n        { stopPropagation = False\n        , preventDefault = False\n        }",
+        "type": "VirtualDom.Options"
+      },
+      {
+        "name": "fromElement",
+        "comment": "Embed an `Element` as `Html`.",
+        "type": "Graphics.Element.Element -> VirtualDom.Node"
+      },
+      {
+        "name": "lazy",
+        "comment": "A performance optimization that delays the building of virtual DOM nodes.\n\nCalling `(view model)` will definitely build some virtual DOM, perhaps a lot of\nit. Calling `(lazy view model)` delays the call until later. During diffing, we\ncan check to see if `model` is referentially equal to the previous value used,\nand if so, we just stop. No need to build up the tree structure and diff it,\nwe know if the input to `view` is the same, the output must be the same!",
+        "type": "(a -> VirtualDom.Node) -> a -> VirtualDom.Node"
+      },
+      {
+        "name": "lazy2",
+        "comment": "Same as `lazy` but checks on two arguments.",
+        "type": "(a -> b -> VirtualDom.Node) -> a -> b -> VirtualDom.Node"
+      },
+      {
+        "name": "lazy3",
+        "comment": "Same as `lazy` but checks on three arguments.",
+        "type": "(a -> b -> c -> VirtualDom.Node) -> a -> b -> c -> VirtualDom.Node"
+      },
+      {
+        "name": "node",
+        "comment": "Create a DOM node with a tag name, a list of HTML properties that can\ninclude styles and event listeners, a list of CSS properties like `color`, and\na list of child nodes.\n\n    import Json.Encode as Json\n\n    hello : Node\n    hello =\n        node \"div\" [] [ text \"Hello!\" ]\n\n    greeting : Node\n    greeting =\n        node \"div\"\n            [ property \"id\" (Json.string \"greeting\") ]\n            [ text \"Hello!\" ]",
+        "type": "String -> List VirtualDom.Property -> List VirtualDom.Node -> VirtualDom.Node"
+      },
+      {
+        "name": "on",
+        "comment": "Create a custom event listener.\n\n    import Json.Decode as Json\n\n    onClick : Signal.Address a -> Property\n    onClick address =\n        on \"click\" Json.value (\\_ -> Signal.message address ())\n\nYou first specify the name of the event in the same format as with\nJavaScript’s `addEventListener`. Next you give a JSON decoder, which lets\nyou pull information out of the event object. If that decoder is successful,\nthe resulting value is given to a function that creates a `Signal.Message`.\nSo in our example, we will send `()` to the given `address`.",
+        "type": "String -> Json.Decode.Decoder a -> (a -> Signal.Message) -> VirtualDom.Property"
+      },
+      {
+        "name": "onWithOptions",
+        "comment": "Same as `on` but you can set a few options.",
+        "type": "String -> VirtualDom.Options -> Json.Decode.Decoder a -> (a -> Signal.Message) -> VirtualDom.Property"
+      },
+      {
+        "name": "property",
+        "comment": "Create arbitrary *properties*.\n\n    import JavaScript.Encode as Json\n\n    greeting : Html\n    greeting =\n        node \"div\" [ property \"className\" (Json.string \"greeting\") ] [\n          text \"Hello!\"\n        ]\n\nNotice that you must give the *property* name, so we use `className` as it\nwould be in JavaScript, not `class` as it would appear in HTML.",
+        "type": "String -> Json.Decode.Value -> VirtualDom.Property"
+      },
+      {
+        "name": "text",
+        "comment": "Just put plain text in the DOM. It will escape the string so that it appears\nexactly as you specify.\n\n    text \"Hello World!\"",
+        "type": "String -> VirtualDom.Node"
+      },
+      {
+        "name": "toElement",
+        "comment": "Embed an `Node` value in Elm's rendering system. Like any other `Element`,\nthis requires a known width and height, so it is not yet clear if this can be\nmade more convenient in the future.",
+        "type": "Int -> Int -> VirtualDom.Node -> Graphics.Element.Element"
+      }
+    ],
+    "generated-with-elm-version": "0.15.1"
+  }
+]
