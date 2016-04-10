@@ -1,0 +1,28 @@
+Elm.Trampoline = Elm.Trampoline || {};
+Elm.Trampoline.make = function (_elm) {
+   "use strict";
+   _elm.Trampoline = _elm.Trampoline || {};
+   if (_elm.Trampoline.values) return _elm.Trampoline.values;
+   var _U = Elm.Native.Utils.make(_elm);
+   var _op = {};
+   var trampoline = function (tramp) {
+      trampoline: while (true) {
+         var _p0 = tramp;
+         if (_p0.ctor === "Done") {
+               return _p0._0;
+            } else {
+               var _v1 = _p0._0({ctor: "_Tuple0"});
+               tramp = _v1;
+               continue trampoline;
+            }
+      }
+   };
+   var Continue = function (a) {
+      return {ctor: "Continue",_0: a};
+   };
+   var Done = function (a) {    return {ctor: "Done",_0: a};};
+   return _elm.Trampoline.values = {_op: _op
+                                   ,trampoline: trampoline
+                                   ,Done: Done
+                                   ,Continue: Continue};
+};

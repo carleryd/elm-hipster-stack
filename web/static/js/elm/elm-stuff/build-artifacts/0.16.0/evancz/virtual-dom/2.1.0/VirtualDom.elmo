@@ -1,0 +1,57 @@
+Elm.VirtualDom = Elm.VirtualDom || {};
+Elm.VirtualDom.make = function (_elm) {
+   "use strict";
+   _elm.VirtualDom = _elm.VirtualDom || {};
+   if (_elm.VirtualDom.values) return _elm.VirtualDom.values;
+   var _U = Elm.Native.Utils.make(_elm),
+   $Basics = Elm.Basics.make(_elm),
+   $Debug = Elm.Debug.make(_elm),
+   $Graphics$Element = Elm.Graphics.Element.make(_elm),
+   $Json$Decode = Elm.Json.Decode.make(_elm),
+   $List = Elm.List.make(_elm),
+   $Maybe = Elm.Maybe.make(_elm),
+   $Native$VirtualDom = Elm.Native.VirtualDom.make(_elm),
+   $Result = Elm.Result.make(_elm),
+   $Signal = Elm.Signal.make(_elm);
+   var _op = {};
+   var lazy3 = $Native$VirtualDom.lazy3;
+   var lazy2 = $Native$VirtualDom.lazy2;
+   var lazy = $Native$VirtualDom.lazy;
+   var defaultOptions = {stopPropagation: false
+                        ,preventDefault: false};
+   var Options = F2(function (a,b) {
+      return {stopPropagation: a,preventDefault: b};
+   });
+   var onWithOptions = $Native$VirtualDom.on;
+   var on = F3(function (eventName,decoder,toMessage) {
+      return A4($Native$VirtualDom.on,
+      eventName,
+      defaultOptions,
+      decoder,
+      toMessage);
+   });
+   var attributeNS = $Native$VirtualDom.attributeNS;
+   var attribute = $Native$VirtualDom.attribute;
+   var property = $Native$VirtualDom.property;
+   var Property = {ctor: "Property"};
+   var fromElement = $Native$VirtualDom.fromElement;
+   var toElement = $Native$VirtualDom.toElement;
+   var text = $Native$VirtualDom.text;
+   var node = $Native$VirtualDom.node;
+   var Node = {ctor: "Node"};
+   return _elm.VirtualDom.values = {_op: _op
+                                   ,text: text
+                                   ,node: node
+                                   ,toElement: toElement
+                                   ,fromElement: fromElement
+                                   ,property: property
+                                   ,attribute: attribute
+                                   ,attributeNS: attributeNS
+                                   ,on: on
+                                   ,onWithOptions: onWithOptions
+                                   ,defaultOptions: defaultOptions
+                                   ,lazy: lazy
+                                   ,lazy2: lazy2
+                                   ,lazy3: lazy3
+                                   ,Options: Options};
+};

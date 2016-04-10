@@ -1,0 +1,113 @@
+Elm.Maybe = Elm.Maybe || {};
+Elm.Maybe.make = function (_elm) {
+   "use strict";
+   _elm.Maybe = _elm.Maybe || {};
+   if (_elm.Maybe.values) return _elm.Maybe.values;
+   var _U = Elm.Native.Utils.make(_elm);
+   var _op = {};
+   var withDefault = F2(function ($default,maybe) {
+      var _p0 = maybe;
+      if (_p0.ctor === "Just") {
+            return _p0._0;
+         } else {
+            return $default;
+         }
+   });
+   var Nothing = {ctor: "Nothing"};
+   var oneOf = function (maybes) {
+      oneOf: while (true) {
+         var _p1 = maybes;
+         if (_p1.ctor === "[]") {
+               return Nothing;
+            } else {
+               var _p3 = _p1._0;
+               var _p2 = _p3;
+               if (_p2.ctor === "Nothing") {
+                     var _v3 = _p1._1;
+                     maybes = _v3;
+                     continue oneOf;
+                  } else {
+                     return _p3;
+                  }
+            }
+      }
+   };
+   var andThen = F2(function (maybeValue,callback) {
+      var _p4 = maybeValue;
+      if (_p4.ctor === "Just") {
+            return callback(_p4._0);
+         } else {
+            return Nothing;
+         }
+   });
+   var Just = function (a) {    return {ctor: "Just",_0: a};};
+   var map = F2(function (f,maybe) {
+      var _p5 = maybe;
+      if (_p5.ctor === "Just") {
+            return Just(f(_p5._0));
+         } else {
+            return Nothing;
+         }
+   });
+   var map2 = F3(function (func,ma,mb) {
+      var _p6 = {ctor: "_Tuple2",_0: ma,_1: mb};
+      if (_p6.ctor === "_Tuple2" && _p6._0.ctor === "Just" && _p6._1.ctor === "Just")
+      {
+            return Just(A2(func,_p6._0._0,_p6._1._0));
+         } else {
+            return Nothing;
+         }
+   });
+   var map3 = F4(function (func,ma,mb,mc) {
+      var _p7 = {ctor: "_Tuple3",_0: ma,_1: mb,_2: mc};
+      if (_p7.ctor === "_Tuple3" && _p7._0.ctor === "Just" && _p7._1.ctor === "Just" && _p7._2.ctor === "Just")
+      {
+            return Just(A3(func,_p7._0._0,_p7._1._0,_p7._2._0));
+         } else {
+            return Nothing;
+         }
+   });
+   var map4 = F5(function (func,ma,mb,mc,md) {
+      var _p8 = {ctor: "_Tuple4",_0: ma,_1: mb,_2: mc,_3: md};
+      if (_p8.ctor === "_Tuple4" && _p8._0.ctor === "Just" && _p8._1.ctor === "Just" && _p8._2.ctor === "Just" && _p8._3.ctor === "Just")
+      {
+            return Just(A4(func,
+            _p8._0._0,
+            _p8._1._0,
+            _p8._2._0,
+            _p8._3._0));
+         } else {
+            return Nothing;
+         }
+   });
+   var map5 = F6(function (func,ma,mb,mc,md,me) {
+      var _p9 = {ctor: "_Tuple5"
+                ,_0: ma
+                ,_1: mb
+                ,_2: mc
+                ,_3: md
+                ,_4: me};
+      if (_p9.ctor === "_Tuple5" && _p9._0.ctor === "Just" && _p9._1.ctor === "Just" && _p9._2.ctor === "Just" && _p9._3.ctor === "Just" && _p9._4.ctor === "Just")
+      {
+            return Just(A5(func,
+            _p9._0._0,
+            _p9._1._0,
+            _p9._2._0,
+            _p9._3._0,
+            _p9._4._0));
+         } else {
+            return Nothing;
+         }
+   });
+   return _elm.Maybe.values = {_op: _op
+                              ,andThen: andThen
+                              ,map: map
+                              ,map2: map2
+                              ,map3: map3
+                              ,map4: map4
+                              ,map5: map5
+                              ,withDefault: withDefault
+                              ,oneOf: oneOf
+                              ,Just: Just
+                              ,Nothing: Nothing};
+};

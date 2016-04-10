@@ -1,0 +1,5 @@
+<script type="text/javascript">
+  document.addEventListener("DOMContentLoaded", function(event) {
+    Elm.fullscreen(Elm.App);
+  });
+</script>

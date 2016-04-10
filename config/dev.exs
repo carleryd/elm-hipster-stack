@@ -10,15 +10,13 @@ config :app, App.Endpoint,
   http: [port: 4000],
   debug_errors: true,
   code_reloader: true,
-  cache_static_lookup: false,
-  watchers: [{Path.expand("webpack.dev.js"), []}]
-
-
+  check_origin: false,
+  watchers: [{Path.expand("node_modules/webpack/bin/webpack.js"), ["--watch", "--colors", "--progress"]}]
 # Watch static and templates for browser reloading.
 config :app, App.Endpoint,
   live_reload: [
     patterns: [
-    #  ~r{priv/static/.*(js|css|png|jpeg|jpg|gif)$},
+      ~r{priv/static/.*(js|css|png|jpeg|jpg|gif|svg)$},
       ~r{priv/gettext/.*(po)$},
       ~r{web/views/.*(ex)$},
       ~r{web/templates/.*(eex)$}
@@ -28,10 +26,7 @@ config :app, App.Endpoint,
 # Do not include metadata nor timestamps in development logs
 config :logger, :console, format: "[$level] $message\n"
 
-# Configure your database
-# config :app, App.Repo,
-#   adapter: Ecto.Adapters.Postgres,
-#   username: "postgres",
-#   password: "postgres",
-#   database: "app_dev",
-#   pool_size: 10 # The amount of database connections in the pool
+# Set a higher stacktrace during development.
+# Do not configure such in production as keeping
+# and calculating stacktraces is usually expensive.
+config :phoenix, :stacktrace_depth, 20

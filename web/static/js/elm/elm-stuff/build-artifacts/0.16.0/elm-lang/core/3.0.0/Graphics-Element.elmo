@@ -1,0 +1,330 @@
+Elm.Graphics = Elm.Graphics || {};
+Elm.Graphics.Element = Elm.Graphics.Element || {};
+Elm.Graphics.Element.make = function (_elm) {
+   "use strict";
+   _elm.Graphics = _elm.Graphics || {};
+   _elm.Graphics.Element = _elm.Graphics.Element || {};
+   if (_elm.Graphics.Element.values)
+   return _elm.Graphics.Element.values;
+   var _U = Elm.Native.Utils.make(_elm),
+   $Basics = Elm.Basics.make(_elm),
+   $Color = Elm.Color.make(_elm),
+   $List = Elm.List.make(_elm),
+   $Maybe = Elm.Maybe.make(_elm),
+   $Native$Graphics$Element = Elm.Native.Graphics.Element.make(_elm),
+   $Text = Elm.Text.make(_elm);
+   var _op = {};
+   var DOut = {ctor: "DOut"};
+   var outward = DOut;
+   var DIn = {ctor: "DIn"};
+   var inward = DIn;
+   var DRight = {ctor: "DRight"};
+   var right = DRight;
+   var DLeft = {ctor: "DLeft"};
+   var left = DLeft;
+   var DDown = {ctor: "DDown"};
+   var down = DDown;
+   var DUp = {ctor: "DUp"};
+   var up = DUp;
+   var RawPosition = F4(function (a,b,c,d) {
+      return {horizontal: a,vertical: b,x: c,y: d};
+   });
+   var Position = function (a) {
+      return {ctor: "Position",_0: a};
+   };
+   var Relative = function (a) {
+      return {ctor: "Relative",_0: a};
+   };
+   var relative = Relative;
+   var Absolute = function (a) {
+      return {ctor: "Absolute",_0: a};
+   };
+   var absolute = Absolute;
+   var N = {ctor: "N"};
+   var bottomLeft = Position({horizontal: N
+                             ,vertical: N
+                             ,x: Absolute(0)
+                             ,y: Absolute(0)});
+   var bottomLeftAt = F2(function (x,y) {
+      return Position({horizontal: N,vertical: N,x: x,y: y});
+   });
+   var Z = {ctor: "Z"};
+   var middle = Position({horizontal: Z
+                         ,vertical: Z
+                         ,x: Relative(0.5)
+                         ,y: Relative(0.5)});
+   var midLeft = Position({horizontal: N
+                          ,vertical: Z
+                          ,x: Absolute(0)
+                          ,y: Relative(0.5)});
+   var midBottom = Position({horizontal: Z
+                            ,vertical: N
+                            ,x: Relative(0.5)
+                            ,y: Absolute(0)});
+   var middleAt = F2(function (x,y) {
+      return Position({horizontal: Z,vertical: Z,x: x,y: y});
+   });
+   var midLeftAt = F2(function (x,y) {
+      return Position({horizontal: N,vertical: Z,x: x,y: y});
+   });
+   var midBottomAt = F2(function (x,y) {
+      return Position({horizontal: Z,vertical: N,x: x,y: y});
+   });
+   var P = {ctor: "P"};
+   var topLeft = Position({horizontal: N
+                          ,vertical: P
+                          ,x: Absolute(0)
+                          ,y: Absolute(0)});
+   var topRight = Position({horizontal: P
+                           ,vertical: P
+                           ,x: Absolute(0)
+                           ,y: Absolute(0)});
+   var bottomRight = Position({horizontal: P
+                              ,vertical: N
+                              ,x: Absolute(0)
+                              ,y: Absolute(0)});
+   var midRight = Position({horizontal: P
+                           ,vertical: Z
+                           ,x: Absolute(0)
+                           ,y: Relative(0.5)});
+   var midTop = Position({horizontal: Z
+                         ,vertical: P
+                         ,x: Relative(0.5)
+                         ,y: Absolute(0)});
+   var topLeftAt = F2(function (x,y) {
+      return Position({horizontal: N,vertical: P,x: x,y: y});
+   });
+   var topRightAt = F2(function (x,y) {
+      return Position({horizontal: P,vertical: P,x: x,y: y});
+   });
+   var bottomRightAt = F2(function (x,y) {
+      return Position({horizontal: P,vertical: N,x: x,y: y});
+   });
+   var midRightAt = F2(function (x,y) {
+      return Position({horizontal: P,vertical: Z,x: x,y: y});
+   });
+   var midTopAt = F2(function (x,y) {
+      return Position({horizontal: Z,vertical: P,x: x,y: y});
+   });
+   var justified = $Native$Graphics$Element.block("justify");
+   var centered = $Native$Graphics$Element.block("center");
+   var rightAligned = $Native$Graphics$Element.block("right");
+   var leftAligned = $Native$Graphics$Element.block("left");
+   var show = function (value) {
+      return leftAligned($Text.monospace($Text.fromString($Basics.toString(value))));
+   };
+   var Tiled = {ctor: "Tiled"};
+   var Cropped = function (a) {
+      return {ctor: "Cropped",_0: a};
+   };
+   var Fitted = {ctor: "Fitted"};
+   var Plain = {ctor: "Plain"};
+   var Custom = {ctor: "Custom"};
+   var RawHtml = {ctor: "RawHtml"};
+   var Spacer = {ctor: "Spacer"};
+   var Flow = F2(function (a,b) {
+      return {ctor: "Flow",_0: a,_1: b};
+   });
+   var Container = F2(function (a,b) {
+      return {ctor: "Container",_0: a,_1: b};
+   });
+   var Image = F4(function (a,b,c,d) {
+      return {ctor: "Image",_0: a,_1: b,_2: c,_3: d};
+   });
+   var newElement = $Native$Graphics$Element.newElement;
+   var image = F3(function (w,h,src) {
+      return A3(newElement,w,h,A4(Image,Plain,w,h,src));
+   });
+   var fittedImage = F3(function (w,h,src) {
+      return A3(newElement,w,h,A4(Image,Fitted,w,h,src));
+   });
+   var croppedImage = F4(function (pos,w,h,src) {
+      return A3(newElement,w,h,A4(Image,Cropped(pos),w,h,src));
+   });
+   var tiledImage = F3(function (w,h,src) {
+      return A3(newElement,w,h,A4(Image,Tiled,w,h,src));
+   });
+   var container = F4(function (w,h,_p0,e) {
+      var _p1 = _p0;
+      return A3(newElement,w,h,A2(Container,_p1._0,e));
+   });
+   var spacer = F2(function (w,h) {
+      return A3(newElement,w,h,Spacer);
+   });
+   var sizeOf = function (_p2) {
+      var _p3 = _p2;
+      var _p4 = _p3._0;
+      return {ctor: "_Tuple2"
+             ,_0: _p4.props.width
+             ,_1: _p4.props.height};
+   };
+   var heightOf = function (_p5) {
+      var _p6 = _p5;
+      return _p6._0.props.height;
+   };
+   var widthOf = function (_p7) {
+      var _p8 = _p7;
+      return _p8._0.props.width;
+   };
+   var above = F2(function (hi,lo) {
+      return A3(newElement,
+      A2($Basics.max,widthOf(hi),widthOf(lo)),
+      heightOf(hi) + heightOf(lo),
+      A2(Flow,DDown,_U.list([hi,lo])));
+   });
+   var below = F2(function (lo,hi) {
+      return A3(newElement,
+      A2($Basics.max,widthOf(hi),widthOf(lo)),
+      heightOf(hi) + heightOf(lo),
+      A2(Flow,DDown,_U.list([hi,lo])));
+   });
+   var beside = F2(function (lft,rht) {
+      return A3(newElement,
+      widthOf(lft) + widthOf(rht),
+      A2($Basics.max,heightOf(lft),heightOf(rht)),
+      A2(Flow,right,_U.list([lft,rht])));
+   });
+   var layers = function (es) {
+      var hs = A2($List.map,heightOf,es);
+      var ws = A2($List.map,widthOf,es);
+      return A3(newElement,
+      A2($Maybe.withDefault,0,$List.maximum(ws)),
+      A2($Maybe.withDefault,0,$List.maximum(hs)),
+      A2(Flow,DOut,es));
+   };
+   var empty = A2(spacer,0,0);
+   var flow = F2(function (dir,es) {
+      var newFlow = F2(function (w,h) {
+         return A3(newElement,w,h,A2(Flow,dir,es));
+      });
+      var maxOrZero = function (list) {
+         return A2($Maybe.withDefault,0,$List.maximum(list));
+      };
+      var hs = A2($List.map,heightOf,es);
+      var ws = A2($List.map,widthOf,es);
+      if (_U.eq(es,_U.list([]))) return empty; else {
+            var _p9 = dir;
+            switch (_p9.ctor)
+            {case "DUp": return A2(newFlow,maxOrZero(ws),$List.sum(hs));
+               case "DDown": return A2(newFlow,maxOrZero(ws),$List.sum(hs));
+               case "DLeft": return A2(newFlow,$List.sum(ws),maxOrZero(hs));
+               case "DRight": return A2(newFlow,$List.sum(ws),maxOrZero(hs));
+               case "DIn": return A2(newFlow,maxOrZero(ws),maxOrZero(hs));
+               default: return A2(newFlow,maxOrZero(ws),maxOrZero(hs));}
+         }
+   });
+   var Properties = F9(function (a,b,c,d,e,f,g,h,i) {
+      return {id: a
+             ,width: b
+             ,height: c
+             ,opacity: d
+             ,color: e
+             ,href: f
+             ,tag: g
+             ,hover: h
+             ,click: i};
+   });
+   var Element_elm_builtin = function (a) {
+      return {ctor: "Element_elm_builtin",_0: a};
+   };
+   var width = F2(function (newWidth,_p10) {
+      var _p11 = _p10;
+      var _p14 = _p11._0.props;
+      var _p13 = _p11._0.element;
+      var newHeight = function () {
+         var _p12 = _p13;
+         switch (_p12.ctor)
+         {case "Image":
+            return $Basics.round($Basics.toFloat(_p12._2) / $Basics.toFloat(_p12._1) * $Basics.toFloat(newWidth));
+            case "RawHtml":
+            return $Basics.snd(A2($Native$Graphics$Element.htmlHeight,
+              newWidth,
+              _p13));
+            default: return _p14.height;}
+      }();
+      return Element_elm_builtin({element: _p13
+                                 ,props: _U.update(_p14,{width: newWidth,height: newHeight})});
+   });
+   var height = F2(function (newHeight,_p15) {
+      var _p16 = _p15;
+      return Element_elm_builtin({element: _p16._0.element
+                                 ,props: _U.update(_p16._0.props,{height: newHeight})});
+   });
+   var size = F3(function (w,h,e) {
+      return A2(height,h,A2(width,w,e));
+   });
+   var opacity = F2(function (givenOpacity,_p17) {
+      var _p18 = _p17;
+      return Element_elm_builtin({element: _p18._0.element
+                                 ,props: _U.update(_p18._0.props,{opacity: givenOpacity})});
+   });
+   var color = F2(function (clr,_p19) {
+      var _p20 = _p19;
+      return Element_elm_builtin({element: _p20._0.element
+                                 ,props: _U.update(_p20._0.props,{color: $Maybe.Just(clr)})});
+   });
+   var tag = F2(function (name,_p21) {
+      var _p22 = _p21;
+      return Element_elm_builtin({element: _p22._0.element
+                                 ,props: _U.update(_p22._0.props,{tag: name})});
+   });
+   var link = F2(function (href,_p23) {
+      var _p24 = _p23;
+      return Element_elm_builtin({element: _p24._0.element
+                                 ,props: _U.update(_p24._0.props,{href: href})});
+   });
+   return _elm.Graphics.Element.values = {_op: _op
+                                         ,image: image
+                                         ,fittedImage: fittedImage
+                                         ,croppedImage: croppedImage
+                                         ,tiledImage: tiledImage
+                                         ,leftAligned: leftAligned
+                                         ,rightAligned: rightAligned
+                                         ,centered: centered
+                                         ,justified: justified
+                                         ,show: show
+                                         ,width: width
+                                         ,height: height
+                                         ,size: size
+                                         ,color: color
+                                         ,opacity: opacity
+                                         ,link: link
+                                         ,tag: tag
+                                         ,widthOf: widthOf
+                                         ,heightOf: heightOf
+                                         ,sizeOf: sizeOf
+                                         ,flow: flow
+                                         ,up: up
+                                         ,down: down
+                                         ,left: left
+                                         ,right: right
+                                         ,inward: inward
+                                         ,outward: outward
+                                         ,layers: layers
+                                         ,above: above
+                                         ,below: below
+                                         ,beside: beside
+                                         ,empty: empty
+                                         ,spacer: spacer
+                                         ,container: container
+                                         ,middle: middle
+                                         ,midTop: midTop
+                                         ,midBottom: midBottom
+                                         ,midLeft: midLeft
+                                         ,midRight: midRight
+                                         ,topLeft: topLeft
+                                         ,topRight: topRight
+                                         ,bottomLeft: bottomLeft
+                                         ,bottomRight: bottomRight
+                                         ,absolute: absolute
+                                         ,relative: relative
+                                         ,middleAt: middleAt
+                                         ,midTopAt: midTopAt
+                                         ,midBottomAt: midBottomAt
+                                         ,midLeftAt: midLeftAt
+                                         ,midRightAt: midRightAt
+                                         ,topLeftAt: topLeftAt
+                                         ,topRightAt: topRightAt
+                                         ,bottomLeftAt: bottomLeftAt
+                                         ,bottomRightAt: bottomRightAt};
+};

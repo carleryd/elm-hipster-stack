@@ -1,0 +1,18 @@
+{
+    "version": "1.0.0",
+    "summary": "Test for VirtualDom",
+    "license": "BSD3",
+    "repository": "https://github.com/evancz/virtual-dom.git",
+    "exposed-modules": [],
+    "source-directories": [
+        ".",
+        "build/virtual-dom/"
+    ],
+    "native-modules": true,
+    "dependencies": {
+        "elm-lang/core": "2.1.0 <= v < 3.0.0",
+        "maxsnew/IO": "1.0.0 <= v < 2.0.0",
+        "deadfoxygrandpa/Elm-Test": "1.0.3 <= v < 2.0.0"
+    },
+    "elm-version": "0.15.1 <= v < 0.16.0"
+}

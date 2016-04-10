@@ -1,0 +1,175 @@
+Elm.Task = Elm.Task || {};
+Elm.Task.make = function (_elm) {
+   "use strict";
+   _elm.Task = _elm.Task || {};
+   if (_elm.Task.values) return _elm.Task.values;
+   var _U = Elm.Native.Utils.make(_elm),
+   $List = Elm.List.make(_elm),
+   $Maybe = Elm.Maybe.make(_elm),
+   $Native$Task = Elm.Native.Task.make(_elm),
+   $Result = Elm.Result.make(_elm);
+   var _op = {};
+   var sleep = $Native$Task.sleep;
+   var spawn = $Native$Task.spawn;
+   var ThreadID = function (a) {
+      return {ctor: "ThreadID",_0: a};
+   };
+   var onError = $Native$Task.catch_;
+   var andThen = $Native$Task.andThen;
+   var fail = $Native$Task.fail;
+   var mapError = F2(function (f,task) {
+      return A2(onError,
+      task,
+      function (err) {
+         return fail(f(err));
+      });
+   });
+   var succeed = $Native$Task.succeed;
+   var map = F2(function (func,taskA) {
+      return A2(andThen,
+      taskA,
+      function (a) {
+         return succeed(func(a));
+      });
+   });
+   var map2 = F3(function (func,taskA,taskB) {
+      return A2(andThen,
+      taskA,
+      function (a) {
+         return A2(andThen,
+         taskB,
+         function (b) {
+            return succeed(A2(func,a,b));
+         });
+      });
+   });
+   var map3 = F4(function (func,taskA,taskB,taskC) {
+      return A2(andThen,
+      taskA,
+      function (a) {
+         return A2(andThen,
+         taskB,
+         function (b) {
+            return A2(andThen,
+            taskC,
+            function (c) {
+               return succeed(A3(func,a,b,c));
+            });
+         });
+      });
+   });
+   var map4 = F5(function (func,taskA,taskB,taskC,taskD) {
+      return A2(andThen,
+      taskA,
+      function (a) {
+         return A2(andThen,
+         taskB,
+         function (b) {
+            return A2(andThen,
+            taskC,
+            function (c) {
+               return A2(andThen,
+               taskD,
+               function (d) {
+                  return succeed(A4(func,a,b,c,d));
+               });
+            });
+         });
+      });
+   });
+   var map5 = F6(function (func,taskA,taskB,taskC,taskD,taskE) {
+      return A2(andThen,
+      taskA,
+      function (a) {
+         return A2(andThen,
+         taskB,
+         function (b) {
+            return A2(andThen,
+            taskC,
+            function (c) {
+               return A2(andThen,
+               taskD,
+               function (d) {
+                  return A2(andThen,
+                  taskE,
+                  function (e) {
+                     return succeed(A5(func,a,b,c,d,e));
+                  });
+               });
+            });
+         });
+      });
+   });
+   var andMap = F2(function (taskFunc,taskValue) {
+      return A2(andThen,
+      taskFunc,
+      function (func) {
+         return A2(andThen,
+         taskValue,
+         function (value) {
+            return succeed(func(value));
+         });
+      });
+   });
+   var sequence = function (tasks) {
+      var _p0 = tasks;
+      if (_p0.ctor === "[]") {
+            return succeed(_U.list([]));
+         } else {
+            return A3(map2,
+            F2(function (x,y) {    return A2($List._op["::"],x,y);}),
+            _p0._0,
+            sequence(_p0._1));
+         }
+   };
+   var toMaybe = function (task) {
+      return A2(onError,
+      A2(map,$Maybe.Just,task),
+      function (_p1) {
+         return succeed($Maybe.Nothing);
+      });
+   };
+   var fromMaybe = F2(function ($default,maybe) {
+      var _p2 = maybe;
+      if (_p2.ctor === "Just") {
+            return succeed(_p2._0);
+         } else {
+            return fail($default);
+         }
+   });
+   var toResult = function (task) {
+      return A2(onError,
+      A2(map,$Result.Ok,task),
+      function (msg) {
+         return succeed($Result.Err(msg));
+      });
+   };
+   var fromResult = function (result) {
+      var _p3 = result;
+      if (_p3.ctor === "Ok") {
+            return succeed(_p3._0);
+         } else {
+            return fail(_p3._0);
+         }
+   };
+   var Task = {ctor: "Task"};
+   return _elm.Task.values = {_op: _op
+                             ,succeed: succeed
+                             ,fail: fail
+                             ,map: map
+                             ,map2: map2
+                             ,map3: map3
+                             ,map4: map4
+                             ,map5: map5
+                             ,andMap: andMap
+                             ,sequence: sequence
+                             ,andThen: andThen
+                             ,onError: onError
+                             ,mapError: mapError
+                             ,toMaybe: toMaybe
+                             ,fromMaybe: fromMaybe
+                             ,toResult: toResult
+                             ,fromResult: fromResult
+                             ,spawn: spawn
+                             ,sleep: sleep};
+};

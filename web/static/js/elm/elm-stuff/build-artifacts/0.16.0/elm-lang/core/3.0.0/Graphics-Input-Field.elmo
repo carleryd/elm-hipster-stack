@@ -1,0 +1,68 @@
+Elm.Graphics = Elm.Graphics || {};
+Elm.Graphics.Input = Elm.Graphics.Input || {};
+Elm.Graphics.Input.Field = Elm.Graphics.Input.Field || {};
+Elm.Graphics.Input.Field.make = function (_elm) {
+   "use strict";
+   _elm.Graphics = _elm.Graphics || {};
+   _elm.Graphics.Input = _elm.Graphics.Input || {};
+   _elm.Graphics.Input.Field = _elm.Graphics.Input.Field || {};
+   if (_elm.Graphics.Input.Field.values)
+   return _elm.Graphics.Input.Field.values;
+   var _U = Elm.Native.Utils.make(_elm),
+   $Color = Elm.Color.make(_elm),
+   $Graphics$Element = Elm.Graphics.Element.make(_elm),
+   $Native$Graphics$Input = Elm.Native.Graphics.Input.make(_elm),
+   $Signal = Elm.Signal.make(_elm),
+   $Text = Elm.Text.make(_elm);
+   var _op = {};
+   var email = $Native$Graphics$Input.email;
+   var password = $Native$Graphics$Input.password;
+   var field = $Native$Graphics$Input.field;
+   var Backward = {ctor: "Backward"};
+   var Forward = {ctor: "Forward"};
+   var Selection = F3(function (a,b,c) {
+      return {start: a,end: b,direction: c};
+   });
+   var Content = F2(function (a,b) {
+      return {string: a,selection: b};
+   });
+   var noContent = A2(Content,"",A3(Selection,0,0,Forward));
+   var Style = F4(function (a,b,c,d) {
+      return {padding: a,outline: b,highlight: c,style: d};
+   });
+   var Highlight = F2(function (a,b) {
+      return {color: a,width: b};
+   });
+   var noHighlight = A2(Highlight,$Color.blue,0);
+   var Outline = F3(function (a,b,c) {
+      return {color: a,width: b,radius: c};
+   });
+   var Dimensions = F4(function (a,b,c,d) {
+      return {left: a,right: b,top: c,bottom: d};
+   });
+   var uniformly = function (n) {
+      return A4(Dimensions,n,n,n,n);
+   };
+   var noOutline = A3(Outline,$Color.grey,uniformly(0),0);
+   var defaultStyle = {padding: uniformly(4)
+                      ,outline: A3(Outline,$Color.grey,uniformly(1),2)
+                      ,highlight: A2(Highlight,$Color.blue,1)
+                      ,style: $Text.defaultStyle};
+   return _elm.Graphics.Input.Field.values = {_op: _op
+                                             ,field: field
+                                             ,password: password
+                                             ,email: email
+                                             ,noContent: noContent
+                                             ,defaultStyle: defaultStyle
+                                             ,noOutline: noOutline
+                                             ,noHighlight: noHighlight
+                                             ,uniformly: uniformly
+                                             ,Content: Content
+                                             ,Selection: Selection
+                                             ,Style: Style
+                                             ,Outline: Outline
+                                             ,Highlight: Highlight
+                                             ,Dimensions: Dimensions
+                                             ,Forward: Forward
+                                             ,Backward: Backward};
+};
