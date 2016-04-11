@@ -53,7 +53,7 @@
 
 	'use strict';
 
-	var _Main = __webpack_require__(2);
+	var _Main = __webpack_require__(3);
 
 	var _Main2 = _interopRequireDefault(_Main);
 
@@ -62,7 +62,8 @@
 	window.Elm = _Main2.default;
 
 /***/ },
-/* 2 */
+/* 2 */,
+/* 3 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var require;var require;/* WEBPACK VAR INJECTION */(function(global) {var Elm = Elm || { Native: {} };
@@ -11427,23 +11428,83 @@
 	                                    ,keyCode: keyCode
 	                                    ,Options: Options};
 	};
-	Elm.Main = Elm.Main || {};
-	Elm.Main.make = function (_elm) {
+	Elm.Model = Elm.Model || {};
+	Elm.Model.make = function (_elm) {
 	   "use strict";
-	   _elm.Main = _elm.Main || {};
-	   if (_elm.Main.values) return _elm.Main.values;
+	   _elm.Model = _elm.Model || {};
+	   if (_elm.Model.values) return _elm.Model.values;
 	   var _U = Elm.Native.Utils.make(_elm),
 	   $Basics = Elm.Basics.make(_elm),
 	   $Debug = Elm.Debug.make(_elm),
-	   $Html = Elm.Html.make(_elm),
-	   $Html$Attributes = Elm.Html.Attributes.make(_elm),
-	   $Html$Events = Elm.Html.Events.make(_elm),
 	   $List = Elm.List.make(_elm),
 	   $Maybe = Elm.Maybe.make(_elm),
 	   $Result = Elm.Result.make(_elm),
 	   $Signal = Elm.Signal.make(_elm);
 	   var _op = {};
 	   var newItem = {id: 0,title: "",url: ""};
+	   var Model = F3(function (a,b,c) {
+	      return {items: a,item: b,nextId: c};
+	   });
+	   var Item = F3(function (a,b,c) {
+	      return {id: a,title: b,url: c};
+	   });
+	   var initialModel = {items: _U.list([A3(Item,
+	                      0,
+	                      "Elm language",
+	                      "http://elm-lang.org/")])
+	                      ,item: newItem
+	                      ,nextId: 1};
+	   return _elm.Model.values = {_op: _op
+	                              ,Item: Item
+	                              ,Model: Model
+	                              ,newItem: newItem
+	                              ,initialModel: initialModel};
+	};
+	Elm.Actions = Elm.Actions || {};
+	Elm.Actions.make = function (_elm) {
+	   "use strict";
+	   _elm.Actions = _elm.Actions || {};
+	   if (_elm.Actions.values) return _elm.Actions.values;
+	   var _U = Elm.Native.Utils.make(_elm),
+	   $Basics = Elm.Basics.make(_elm),
+	   $Debug = Elm.Debug.make(_elm),
+	   $List = Elm.List.make(_elm),
+	   $Maybe = Elm.Maybe.make(_elm),
+	   $Model = Elm.Model.make(_elm),
+	   $Result = Elm.Result.make(_elm),
+	   $Signal = Elm.Signal.make(_elm);
+	   var _op = {};
+	   var NoOp = {ctor: "NoOp"};
+	   var UpdateUrl = function (a) {
+	      return {ctor: "UpdateUrl",_0: a};
+	   };
+	   var UpdateTitle = function (a) {
+	      return {ctor: "UpdateTitle",_0: a};
+	   };
+	   var Add = {ctor: "Add"};
+	   var Remove = function (a) {    return {ctor: "Remove",_0: a};};
+	   return _elm.Actions.values = {_op: _op
+	                                ,Remove: Remove
+	                                ,Add: Add
+	                                ,UpdateTitle: UpdateTitle
+	                                ,UpdateUrl: UpdateUrl
+	                                ,NoOp: NoOp};
+	};
+	Elm.Update = Elm.Update || {};
+	Elm.Update.make = function (_elm) {
+	   "use strict";
+	   _elm.Update = _elm.Update || {};
+	   if (_elm.Update.values) return _elm.Update.values;
+	   var _U = Elm.Native.Utils.make(_elm),
+	   $Actions = Elm.Actions.make(_elm),
+	   $Basics = Elm.Basics.make(_elm),
+	   $Debug = Elm.Debug.make(_elm),
+	   $List = Elm.List.make(_elm),
+	   $Maybe = Elm.Maybe.make(_elm),
+	   $Model = Elm.Model.make(_elm),
+	   $Result = Elm.Result.make(_elm),
+	   $Signal = Elm.Signal.make(_elm);
+	   var _op = {};
 	   var update = F2(function (action,model) {
 	      var _p0 = action;
 	      switch (_p0.ctor)
@@ -11455,7 +11516,7 @@
 	           model.items)});
 	         case "Add": return _U.update(model,
 	           {items: A2($List._op["::"],model.item,model.items)
-	           ,item: _U.update(newItem,{id: model.nextId})
+	           ,item: _U.update($Model.newItem,{id: model.nextId})
 	           ,nextId: model.nextId + 1});
 	         case "UpdateTitle": var item = model.item;
 	           var updatedItem = _U.update(item,{title: _p0._0});
@@ -11467,31 +11528,42 @@
 	           return newModel;
 	         default: return model;}
 	   });
-	   var NoOp = {ctor: "NoOp"};
-	   var inbox = $Signal.mailbox(NoOp);
-	   var actions = inbox.signal;
-	   var UpdateUrl = function (a) {
-	      return {ctor: "UpdateUrl",_0: a};
-	   };
-	   var UpdateTitle = function (a) {
-	      return {ctor: "UpdateTitle",_0: a};
-	   };
-	   var Add = {ctor: "Add"};
-	   var Remove = function (a) {    return {ctor: "Remove",_0: a};};
-	   var viewItem = F2(function (address,_p1) {
-	      var _p2 = _p1;
-	      var _p3 = _p2.url;
+	   return _elm.Update.values = {_op: _op,update: update};
+	};
+	Elm.View = Elm.View || {};
+	Elm.View.make = function (_elm) {
+	   "use strict";
+	   _elm.View = _elm.View || {};
+	   if (_elm.View.values) return _elm.View.values;
+	   var _U = Elm.Native.Utils.make(_elm),
+	   $Actions = Elm.Actions.make(_elm),
+	   $Basics = Elm.Basics.make(_elm),
+	   $Debug = Elm.Debug.make(_elm),
+	   $Html = Elm.Html.make(_elm),
+	   $Html$Attributes = Elm.Html.Attributes.make(_elm),
+	   $Html$Events = Elm.Html.Events.make(_elm),
+	   $List = Elm.List.make(_elm),
+	   $Maybe = Elm.Maybe.make(_elm),
+	   $Model = Elm.Model.make(_elm),
+	   $Result = Elm.Result.make(_elm),
+	   $Signal = Elm.Signal.make(_elm);
+	   var _op = {};
+	   var viewItem = F2(function (address,_p0) {
+	      var _p1 = _p0;
+	      var _p2 = _p1.url;
 	      return A2($Html.div,
 	      _U.list([]),
 	      _U.list([A2($Html.div,
 	              _U.list([$Html$Attributes.$class("item-title")]),
-	              _U.list([$Html.text(_p2.title)]))
+	              _U.list([$Html.text(_p1.title)]))
 	              ,A2($Html.a,
 	              _U.list([$Html$Attributes.$class("item-url")
-	                      ,$Html$Attributes.href(_p3)]),
-	              _U.list([$Html.text(_p3)]))
+	                      ,$Html$Attributes.href(_p2)]),
+	              _U.list([$Html.text(_p2)]))
 	              ,A2($Html.button,
-	              _U.list([A2($Html$Events.onClick,address,Remove(_p2.id))]),
+	              _U.list([A2($Html$Events.onClick,
+	              address,
+	              $Actions.Remove(_p1.id))]),
 	              _U.list([$Html.text("Remove")]))]));
 	   });
 	   var viewItemList = F2(function (address,itemList) {
@@ -11519,7 +11591,7 @@
 	                      "input",
 	                      $Html$Events.targetValue,
 	                      function (str) {
-	                         return A2($Signal.message,address,UpdateTitle(str));
+	                         return A2($Signal.message,address,$Actions.UpdateTitle(str));
 	                      })]),
 	              _U.list([]))
 	              ,A2($Html.input,
@@ -11529,47 +11601,45 @@
 	                      "input",
 	                      $Html$Events.targetValue,
 	                      function (str) {
-	                         return A2($Signal.message,address,UpdateUrl(str));
+	                         return A2($Signal.message,address,$Actions.UpdateUrl(str));
 	                      })]),
 	              _U.list([]))
 	              ,A2($Html.button,
-	              _U.list([A2($Html$Events.onClick,address,Add)]),
+	              _U.list([A2($Html$Events.onClick,address,$Actions.Add)]),
 	              _U.list([$Html.text("Add")]))]));
 	   });
-	   var Model = F3(function (a,b,c) {
-	      return {items: a,item: b,nextId: c};
-	   });
-	   var Item = F3(function (a,b,c) {
-	      return {id: a,title: b,url: c};
-	   });
-	   var initialModel = {items: _U.list([A3(Item,
-	                      0,
-	                      "Elm language",
-	                      "http://elm-lang.org/")])
-	                      ,item: newItem
-	                      ,nextId: 1};
-	   var model = A3($Signal.foldp,update,initialModel,actions);
-	   var main = A2($Signal.map,view(inbox.address),model);
-	   var dummyItem = A3(Item,
-	   0,
-	   "Elm language",
-	   "http://elm-lang.org/");
-	   return _elm.Main.values = {_op: _op
-	                             ,Item: Item
-	                             ,Model: Model
-	                             ,Remove: Remove
-	                             ,Add: Add
-	                             ,UpdateTitle: UpdateTitle
-	                             ,UpdateUrl: UpdateUrl
-	                             ,NoOp: NoOp
-	                             ,newItem: newItem
-	                             ,initialModel: initialModel
-	                             ,update: update
-	                             ,dummyItem: dummyItem
+	   return _elm.View.values = {_op: _op
 	                             ,viewItem: viewItem
 	                             ,viewItemList: viewItemList
 	                             ,viewItems: viewItems
-	                             ,view: view
+	                             ,view: view};
+	};
+	Elm.Main = Elm.Main || {};
+	Elm.Main.make = function (_elm) {
+	   "use strict";
+	   _elm.Main = _elm.Main || {};
+	   if (_elm.Main.values) return _elm.Main.values;
+	   var _U = Elm.Native.Utils.make(_elm),
+	   $Actions = Elm.Actions.make(_elm),
+	   $Basics = Elm.Basics.make(_elm),
+	   $Debug = Elm.Debug.make(_elm),
+	   $Html = Elm.Html.make(_elm),
+	   $List = Elm.List.make(_elm),
+	   $Maybe = Elm.Maybe.make(_elm),
+	   $Model = Elm.Model.make(_elm),
+	   $Result = Elm.Result.make(_elm),
+	   $Signal = Elm.Signal.make(_elm),
+	   $Update = Elm.Update.make(_elm),
+	   $View = Elm.View.make(_elm);
+	   var _op = {};
+	   var inbox = $Signal.mailbox($Actions.NoOp);
+	   var actions = inbox.signal;
+	   var model = A3($Signal.foldp,
+	   $Update.update,
+	   $Model.initialModel,
+	   actions);
+	   var main = A2($Signal.map,$View.view(inbox.address),model);
+	   return _elm.Main.values = {_op: _op
 	                             ,inbox: inbox
 	                             ,actions: actions
 	                             ,model: model
