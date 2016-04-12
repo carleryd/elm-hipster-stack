@@ -1,0 +1,30 @@
+Elm.Main = Elm.Main || {};
+Elm.Main.make = function (_elm) {
+   "use strict";
+   _elm.Main = _elm.Main || {};
+   if (_elm.Main.values) return _elm.Main.values;
+   var _U = Elm.Native.Utils.make(_elm),
+   $Basics = Elm.Basics.make(_elm),
+   $Debug = Elm.Debug.make(_elm),
+   $Effects = Elm.Effects.make(_elm),
+   $List = Elm.List.make(_elm),
+   $Maybe = Elm.Maybe.make(_elm),
+   $Model = Elm.Model.make(_elm),
+   $Result = Elm.Result.make(_elm),
+   $Signal = Elm.Signal.make(_elm),
+   $StartApp = Elm.StartApp.make(_elm),
+   $Task = Elm.Task.make(_elm),
+   $Update = Elm.Update.make(_elm),
+   $View = Elm.View.make(_elm);
+   var _op = {};
+   var app = $StartApp.start({init: {ctor: "_Tuple2"
+                                    ,_0: $Model.initialModel
+                                    ,_1: $Effects.none}
+                             ,update: $Update.update
+                             ,view: $View.view
+                             ,inputs: _U.list([])});
+   var main = app.html;
+   var tasks = Elm.Native.Task.make(_elm).performSignal("tasks",
+   app.tasks);
+   return _elm.Main.values = {_op: _op,app: app,main: main};
+};

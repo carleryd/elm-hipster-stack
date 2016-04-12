@@ -1,0 +1,71 @@
+Elm.Counter = Elm.Counter || {};
+Elm.Counter.make = function (_elm) {
+   "use strict";
+   _elm.Counter = _elm.Counter || {};
+   if (_elm.Counter.values) return _elm.Counter.values;
+   var _U = Elm.Native.Utils.make(_elm),
+   $Basics = Elm.Basics.make(_elm),
+   $Debug = Elm.Debug.make(_elm),
+   $Html = Elm.Html.make(_elm),
+   $Html$Attributes = Elm.Html.Attributes.make(_elm),
+   $Html$Events = Elm.Html.Events.make(_elm),
+   $List = Elm.List.make(_elm),
+   $Maybe = Elm.Maybe.make(_elm),
+   $Result = Elm.Result.make(_elm),
+   $Signal = Elm.Signal.make(_elm);
+   var _op = {};
+   var countStyle = $Html$Attributes.style(_U.list([{ctor: "_Tuple2"
+                                                    ,_0: "font-size"
+                                                    ,_1: "20px"}
+                                                   ,{ctor: "_Tuple2",_0: "font-family",_1: "monospace"}
+                                                   ,{ctor: "_Tuple2",_0: "display",_1: "inline-block"}
+                                                   ,{ctor: "_Tuple2",_0: "width",_1: "50px"}
+                                                   ,{ctor: "_Tuple2",_0: "text-align",_1: "center"}]));
+   var viewRemove = F2(function (remove,model) {
+      return _U.list([A2($Html.button,
+      _U.list([A2($Html$Events.onClick,remove,{ctor: "_Tuple0"})]),
+      _U.list([$Html.text("X")]))]);
+   });
+   var update = F2(function (action,model) {
+      var _p0 = action;
+      if (_p0.ctor === "Increment") {
+            return model + 1;
+         } else {
+            return model - 1;
+         }
+   });
+   var Decrement = {ctor: "Decrement"};
+   var Increment = {ctor: "Increment"};
+   var view = F2(function (address,model) {
+      return A2($Html.div,
+      _U.list([]),
+      _U.list([A2($Html.button,
+              _U.list([A2($Html$Events.onClick,address,Decrement)]),
+              _U.list([$Html.text("-")]))
+              ,A2($Html.div,
+              _U.list([countStyle]),
+              _U.list([$Html.text($Basics.toString(model))]))
+              ,A2($Html.button,
+              _U.list([A2($Html$Events.onClick,address,Increment)]),
+              _U.list([$Html.text("+")]))]));
+   });
+   var viewAction = F2(function (actions,model) {
+      return _U.list([A2($Html.button,
+                     _U.list([A2($Html$Events.onClick,actions,Decrement)]),
+                     _U.list([$Html.text("-")]))
+                     ,A2($Html.div,
+                     _U.list([countStyle]),
+                     _U.list([$Html.text($Basics.toString(model))]))
+                     ,A2($Html.button,
+                     _U.list([A2($Html$Events.onClick,actions,Increment)]),
+                     _U.list([$Html.text("+")]))
+                     ,A2($Html.div,_U.list([countStyle]),_U.list([]))]);
+   });
+   var init = function (count) {    return count;};
+   return _elm.Counter.values = {_op: _op
+                                ,init: init
+                                ,update: update
+                                ,view: view
+                                ,viewAction: viewAction
+                                ,viewRemove: viewRemove};
+};

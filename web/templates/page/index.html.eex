@@ -1,5 +1,16 @@
 <script type="text/javascript">
   document.addEventListener("DOMContentLoaded", function(event) {
-    Elm.fullscreen(Elm.Main);
+    var div = document.getElementById('root');
+    var main = Elm.embed(Elm.Main, div);
+
+    main.ports.increment.subscribe(function() {
+      console.log("model change");
+      $('#modal1').closeModal();
+    });
+
+    $(main).ready(function() {
+      $('.modal-trigger').leanModal();
+    });
   });
+
 </script>

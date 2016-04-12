@@ -1,0 +1,105 @@
+Elm.RandomGif = Elm.RandomGif || {};
+Elm.RandomGif.make = function (_elm) {
+   "use strict";
+   _elm.RandomGif = _elm.RandomGif || {};
+   if (_elm.RandomGif.values) return _elm.RandomGif.values;
+   var _U = Elm.Native.Utils.make(_elm),
+   $Basics = Elm.Basics.make(_elm),
+   $Debug = Elm.Debug.make(_elm),
+   $Effects = Elm.Effects.make(_elm),
+   $Html = Elm.Html.make(_elm),
+   $Html$Attributes = Elm.Html.Attributes.make(_elm),
+   $Html$Events = Elm.Html.Events.make(_elm),
+   $Http = Elm.Http.make(_elm),
+   $Json$Decode = Elm.Json.Decode.make(_elm),
+   $List = Elm.List.make(_elm),
+   $Maybe = Elm.Maybe.make(_elm),
+   $Result = Elm.Result.make(_elm),
+   $Signal = Elm.Signal.make(_elm),
+   $Task = Elm.Task.make(_elm);
+   var _op = {};
+   var decodeUrl = A2($Json$Decode.at,
+   _U.list(["data","image_url"]),
+   $Json$Decode.string);
+   _op["=>"] = F2(function (v0,v1) {
+      return {ctor: "_Tuple2",_0: v0,_1: v1};
+   });
+   var headerStyle = $Html$Attributes.style(_U.list([A2(_op["=>"],
+                                                    "width",
+                                                    "200px")
+                                                    ,A2(_op["=>"],"text-align","center")]));
+   var imgStyle = function (url) {
+      return $Html$Attributes.style(_U.list([A2(_op["=>"],
+                                            "display",
+                                            "inline-block")
+                                            ,A2(_op["=>"],"width","200px")
+                                            ,A2(_op["=>"],"height","200px")
+                                            ,A2(_op["=>"],"background-position","center center")
+                                            ,A2(_op["=>"],"background-size","cover")
+                                            ,A2(_op["=>"],
+                                            "background-image",
+                                            A2($Basics._op["++"],
+                                            "url(\'",
+                                            A2($Basics._op["++"],url,"\')")))]));
+   };
+   var randomUrl = function (topic) {
+      return A2($Http.url,
+      "http://api.giphy.com/v1/gifs/random",
+      _U.list([A2(_op["=>"],"api_key","dc6zaTOxFJmzC")
+              ,A2(_op["=>"],"tag",topic)]));
+   };
+   var NewGif = function (a) {    return {ctor: "NewGif",_0: a};};
+   var getRandomGif = function (topic) {
+      return $Effects.task(A2($Task.map,
+      NewGif,
+      $Task.toMaybe(A2($Http.get,decodeUrl,randomUrl(topic)))));
+   };
+   var RequestMore = {ctor: "RequestMore"};
+   var view = F2(function (address,model) {
+      return A2($Html.div,
+      _U.list([$Html$Attributes.style(_U.list([A2(_op["=>"],
+      "width",
+      "200px")]))]),
+      _U.list([A2($Html.h2,
+              _U.list([headerStyle]),
+              _U.list([$Html.text(model.topic)]))
+              ,A2($Html.div,_U.list([imgStyle(model.gifUrl)]),_U.list([]))
+              ,A2($Html.button,
+              _U.list([A2($Html$Events.onClick,address,RequestMore)]),
+              _U.list([$Html.text("More Please!")]))]));
+   });
+   var Model = F2(function (a,b) {
+      return {topic: a,gifUrl: b};
+   });
+   var init = function (topic) {
+      return {ctor: "_Tuple2"
+             ,_0: A2(Model,topic,"assets/waiting.gif")
+             ,_1: getRandomGif(topic)};
+   };
+   var update = F2(function (action,model) {
+      var _p0 = action;
+      if (_p0.ctor === "RequestMore") {
+            return {ctor: "_Tuple2"
+                   ,_0: model
+                   ,_1: getRandomGif(model.topic)};
+         } else {
+            return {ctor: "_Tuple2"
+                   ,_0: A2(Model,
+                   model.topic,
+                   A2($Maybe.withDefault,model.gifUrl,_p0._0))
+                   ,_1: $Effects.none};
+         }
+   });
+   return _elm.RandomGif.values = {_op: _op
+                                  ,Model: Model
+                                  ,init: init
+                                  ,RequestMore: RequestMore
+                                  ,NewGif: NewGif
+                                  ,update: update
+                                  ,view: view
+                                  ,headerStyle: headerStyle
+                                  ,imgStyle: imgStyle
+                                  ,getRandomGif: getRandomGif
+                                  ,randomUrl: randomUrl
+                                  ,decodeUrl: decodeUrl};
+};

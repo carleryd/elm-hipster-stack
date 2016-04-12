@@ -1,0 +1,58 @@
+[
+  {
+    "name": "StartApp.Simple",
+    "comment": " This module makes it super simple to get started making a typical web app.\nThis is what you want if you are new to Elm, still getting a handle on the\nsyntax and patterns.\n\nIt is designed to work perfectly with [the Elm Architecture][arch] which\ndescribes a simple architecture pattern that makes testing and refactoring\nshockingly pleasant. Definitely read [the tutorial][arch] to get started!\n\n[arch]: https://github.com/evancz/elm-architecture-tutorial/\n\n# Start your Application\n@docs start, Config\n",
+    "aliases": [
+      {
+        "name": "Config",
+        "comment": " The configuration has three key components:\n\n  * `model` &mdash; a big chunk of data fully describing your application.\n\n  * `view` &mdash; a way to show your model on screen. It takes in two\n    arguments. One is the model, which contains *all* the information about our\n    app. The other is an [`Address`][address] that helps us handle user input.\n    Whenever there is a click or key press, we send a message to the address\n    describing what happened and where.\n\n  * `update` &mdash; a function to update your model. Whenever a UI event\n    occurs, is routed through the `Address` to this update function. We take\n    in the message and the current model, then we give back a new model!\n\n[The Elm Architecture][arch] augments this basic pattern to give you all the\nmodularity you want. But since we have whole model in one place, it is\nalso really easy to support features like *save* and *undo* that can be quite\nhard in other languages.\n\n[address]: http://package.elm-lang.org/packages/elm-lang/core/2.0.1/Signal#Mailbox\n[arch]: https://github.com/evancz/elm-architecture-tutorial/\n",
+        "args": [
+          "model",
+          "action"
+        ],
+        "type": "{ model : model , view : Signal.Address action -> model -> Html.Html , update : action -> model -> model }"
+      }
+    ],
+    "types": [],
+    "values": [
+      {
+        "name": "start",
+        "comment": " This starts up your application. The following code sets up a counter\nthat can be incremented and decremented. You can read more about writing\nprograms like this [here](https://github.com/evancz/elm-architecture-tutorial/).\n\n    import Html exposing (div, button, text)\n    import Html.Events exposing (onClick)\n    import StartApp.Simple as StartApp\n\n    main =\n      StartApp.start { model = model, view = view, update = update }\n\n    model = 0\n\n    view address model =\n      div []\n        [ button [ onClick address Decrement ] [ text \"-\" ]\n        , div [] [ text (toString model) ]\n        , button [ onClick address Increment ] [ text \"+\" ]\n        ]\n\n    type Action = Increment | Decrement\n\n    update action model =\n      case action of\n        Increment -> model + 1\n        Decrement -> model - 1\n\nNotice that the program cleanly breaks up into model, update, and view.\nThis means it is super easy to test your update logic independent of any\nrendering.\n",
+        "type": "StartApp.Simple.Config model action -> Signal.Signal Html.Html"
+      }
+    ],
+    "generated-with-elm-version": "0.16.0"
+  },
+  {
+    "name": "StartApp",
+    "comment": " This module helps you start your application in a typical Elm workflow.\nIt assumes you are following [the Elm Architecture][arch] and using\n[elm-effects][]. From there it will wire everything up for you!\n\n**Be sure to [read the Elm Architecture tutorial][arch] to learn how this all\nworks!**\n\n[arch]: https://github.com/evancz/elm-architecture-tutorial\n[elm-effects]: http://package.elm-lang.org/packages/evancz/elm-effects/latest\n\n# Start your Application\n@docs start, Config, App\n\n",
+    "aliases": [
+      {
+        "name": "App",
+        "comment": " An `App` is made up of a couple signals:\n\n  * `html` &mdash; a signal of `Html` representing the current visual\n    representation of your app. This should be fed into `main`.\n\n  * `model` &mdash; a signal representing the current model. Generally you\n    will not need this one, but it is there just in case. You will know if you\n    need this.\n\n  * `tasks` &mdash; a signal of tasks that need to get run. Your app is going\n    to be producing tasks in response to all sorts of events, so this needs to\n    be hooked up to a `port` to ensure they get run.\n",
+        "args": [
+          "model"
+        ],
+        "type": "{ html : Signal.Signal Html.Html , model : Signal.Signal model , tasks : Signal.Signal (Task.Task Effects.Never ()) }"
+      },
+      {
+        "name": "Config",
+        "comment": " The configuration of an app follows the basic model / update / view pattern\nthat you see in every Elm program.\n\nThe `init` transaction will give you an initial model and create any tasks that\nare needed on start up.\n\nThe `update` and `view` fields describe how to step the model and view the\nmodel.\n\nThe `inputs` field is for any external signals you might need. If you need to\nget values from JavaScript, they will come in through a port as a signal which\nyou can pipe into your app as one of the `inputs`.\n",
+        "args": [
+          "model",
+          "action"
+        ],
+        "type": "{ init : ( model, Effects.Effects action ) , update : action -> model -> ( model, Effects.Effects action ) , view : Signal.Address action -> model -> Html.Html , inputs : List (Signal.Signal action) }"
+      }
+    ],
+    "types": [],
+    "values": [
+      {
+        "name": "start",
+        "comment": " Start an application. It requires a bit of wiring once you have created an\n`App`. It should pretty much always look like this:\n\n    app =\n        start { init = init, view = view, update = update, inputs = [] }\n\n    main =\n        app.html\n\n    port tasks : Signal (Task.Task Never ())\n    port tasks =\n        app.tasks\n\nSo once we start the `App` we feed the HTML into `main` and feed the resulting\ntasks into a `port` that will run them all.\n",
+        "type": "StartApp.Config model action -> StartApp.App model"
+      }
+    ],
+    "generated-with-elm-version": "0.16.0"
+  }
+]

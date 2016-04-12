@@ -1,0 +1,72 @@
+Elm.CounterPair = Elm.CounterPair || {};
+Elm.CounterPair.make = function (_elm) {
+   "use strict";
+   _elm.CounterPair = _elm.CounterPair || {};
+   if (_elm.CounterPair.values) return _elm.CounterPair.values;
+   var _U = Elm.Native.Utils.make(_elm),
+   $Basics = Elm.Basics.make(_elm),
+   $Counter = Elm.Counter.make(_elm),
+   $Debug = Elm.Debug.make(_elm),
+   $Html = Elm.Html.make(_elm),
+   $Html$Events = Elm.Html.Events.make(_elm),
+   $List = Elm.List.make(_elm),
+   $Maybe = Elm.Maybe.make(_elm),
+   $Result = Elm.Result.make(_elm),
+   $Signal = Elm.Signal.make(_elm);
+   var _op = {};
+   var Bottom = function (a) {    return {ctor: "Bottom",_0: a};};
+   var Top = function (a) {    return {ctor: "Top",_0: a};};
+   var Reset = {ctor: "Reset"};
+   var inbox = $Signal.mailbox(Reset);
+   var actions = inbox.signal;
+   var view = F2(function (address,model) {
+      return A2($Html.div,
+      _U.list([]),
+      _U.list([A4($Debug.log,
+              "3. Pair-View Top ",
+              $Counter.view,
+              A2($Signal.forwardTo,address,Top),
+              2)
+              ,A4($Debug.log,
+              "3. Pair-View Bottom ",
+              $Counter.view,
+              A2($Signal.forwardTo,address,Bottom),
+              model.bottomCounter)
+              ,A2($Html.button,
+              _U.list([A2($Html$Events.onClick,address,Reset)]),
+              _U.list([$Html.text("RESET")]))
+              ,$Html.text($Basics.toString(model.topCounter))]));
+   });
+   var init = F2(function (top,bottom) {
+      return {topCounter: $Counter.init(top)
+             ,bottomCounter: $Counter.init(bottom)};
+   });
+   var update = F2(function (action,model) {
+      var _p0 = action;
+      switch (_p0.ctor)
+      {case "Reset": return A4($Debug.log,"Reset",init,0,0);
+         case "Top": return A2($Debug.log,
+           "2. Pair-update",
+           _U.update(model,
+           {topCounter: A2($Counter.update,_p0._0,model.topCounter)}));
+         default: return A2($Debug.log,
+           "2. Pair-update",
+           _U.update(model,
+           {bottomCounter: A2($Counter.update,
+           _p0._0,
+           model.bottomCounter)}));}
+   });
+   var Model = F2(function (a,b) {
+      return {topCounter: a,bottomCounter: b};
+   });
+   return _elm.CounterPair.values = {_op: _op
+                                    ,Model: Model
+                                    ,init: init
+                                    ,Reset: Reset
+                                    ,Top: Top
+                                    ,Bottom: Bottom
+                                    ,inbox: inbox
+                                    ,actions: actions
+                                    ,update: update
+                                    ,view: view};
+};

@@ -15,3 +15,5 @@ erl_crash.dump
 # variables.
 /config/prod.secret.exs
 node_modules
+elm_stuff/build-artifacts
+elm_stuff/packages

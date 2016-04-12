@@ -1,0 +1,30 @@
+Elm.Actions = Elm.Actions || {};
+Elm.Actions.make = function (_elm) {
+   "use strict";
+   _elm.Actions = _elm.Actions || {};
+   if (_elm.Actions.values) return _elm.Actions.values;
+   var _U = Elm.Native.Utils.make(_elm),
+   $Basics = Elm.Basics.make(_elm),
+   $Debug = Elm.Debug.make(_elm),
+   $Item$Model = Elm.Item.Model.make(_elm),
+   $List = Elm.List.make(_elm),
+   $Maybe = Elm.Maybe.make(_elm),
+   $Result = Elm.Result.make(_elm),
+   $Signal = Elm.Signal.make(_elm);
+   var _op = {};
+   var UpdateUrl = function (a) {
+      return {ctor: "UpdateUrl",_0: a};
+   };
+   var UpdateTitle = function (a) {
+      return {ctor: "UpdateTitle",_0: a};
+   };
+   var Add = {ctor: "Add"};
+   var Remove = function (a) {    return {ctor: "Remove",_0: a};};
+   var NoOp = {ctor: "NoOp"};
+   return _elm.Actions.values = {_op: _op
+                                ,NoOp: NoOp
+                                ,Remove: Remove
+                                ,Add: Add
+                                ,UpdateTitle: UpdateTitle
+                                ,UpdateUrl: UpdateUrl};
+};

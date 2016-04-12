@@ -1,0 +1,56 @@
+[
+  {
+    "name": "Effects",
+    "comment": " This module provides all the tools necessary to create modular components\nthat manage their own effects. **It is very important that you go through\n[this tutorial](https://github.com/evancz/elm-architecture-tutorial/).** It\ndescribes a pattern that is crucial for any of these functions to make sense.\n\n# Basic Effects\n@docs Effects, none, task, tick\n\n# Combining Effects\n@docs map, batch\n\n# Helpers\n\nThere are some common patterns that will show up in folks code a lot, so there\nare some helper functions you may want to define in your own code. For example,\nthe `noFx` function makes it easier to return a model without any effects.\n\n    import Effects exposing (Effects)\n\n    noFx : model -> (model, Effects a)\n    noFx model =\n        (model, Effects.none)\n\nThis way you don't have to add the tuple in, just say something like\n`(noFx <| ...)` and get the same result.\n\nIf folks find this helpful, we will add it to this library. Let us know your\nexperience in an issue.\n\n\n# Running Effects\n@docs toTask, Never\n",
+    "aliases": [],
+    "types": [
+      {
+        "name": "Effects",
+        "comment": " Represents some kind of effect. Right now this library supports tasks for\narbitrary effects and clock ticks for animations.\n",
+        "args": [
+          "a"
+        ],
+        "cases": []
+      },
+      {
+        "name": "Never",
+        "comment": " A type that is \"uninhabited\". There are no values of type `Never`, so if\nsomething has this type, it is a guarantee that it can never happen. It is\nuseful for demanding that a `Task` can never fail.\n",
+        "args": [],
+        "cases": []
+      }
+    ],
+    "values": [
+      {
+        "name": "batch",
+        "comment": " Create a batch of effects. The following example requests two tasks: one\nfor the user’s picture and one for their age. You could put a bunch more stuff\nin that batch if you wanted!\n\n    init : String -> (Model, Effects Action)\n    init userID =\n        ( { id = userID\n          , picture = Nothing\n          , age = Nothing\n          }\n        , batch [ getPicture userID, getAge userID ]\n        )\n\n    -- getPicture : String -> Effects Action\n    -- getAge : String -> Effects Action\n\nExample 6 in [elm-architecture-tutorial](https://github.com/evancz/elm-architecture-tutorial/)\nhas a nice example of this with further explanation in the tutorial itself.\n",
+        "type": "List (Effects.Effects a) -> Effects.Effects a"
+      },
+      {
+        "name": "map",
+        "comment": " Transform the return type of a bunch of `Effects`. This is primarily useful\nfor adding tags to route `Actions` to the right place in The Elm Architecture.\n\nExample 6 in [elm-architecture-tutorial](https://github.com/evancz/elm-architecture-tutorial/)\nhas a nice example of this with further explanation in the tutorial itself.\n",
+        "type": "(a -> b) -> Effects.Effects a -> Effects.Effects b"
+      },
+      {
+        "name": "none",
+        "comment": " The simplest effect of them all: don’t do anything! This is useful when\nsome branches of your update function request effects and others do not.\n\nExample 5 in [elm-architecture-tutorial](https://github.com/evancz/elm-architecture-tutorial/)\nhas a nice example of this with further explanation in the tutorial itself.\n",
+        "type": "Effects.Effects a"
+      },
+      {
+        "name": "task",
+        "comment": " Turn a `Task` into an `Effects` that results in an `a` value.\n\nNormally a `Task` has a error type and a success type. In this case the error\ntype is `Never` meaning that you must provide a task that never fails. Lots of\ntasks can fail (like HTTP requests), so you will want to use `Task.toMaybe`\nand `Task.toResult` to move potential errors into the success type so they can\nbe handled explicitly.\n\nExample 5 in [elm-architecture-tutorial](https://github.com/evancz/elm-architecture-tutorial/)\nhas a nice example of this with further explanation in the tutorial itself.\n",
+        "type": "Task.Task Effects.Never a -> Effects.Effects a"
+      },
+      {
+        "name": "tick",
+        "comment": " Request a clock tick for animations. This function takes a function to turn\nthe current time into an `a` value that can be handled by the relevant component.\n\nExample 8 in [elm-architecture-tutorial](https://github.com/evancz/elm-architecture-tutorial/)\nhas a nice example of this with further explanation in the tutorial itself.\n",
+        "type": "(Time.Time -> a) -> Effects.Effects a"
+      },
+      {
+        "name": "toTask",
+        "comment": " Convert an `Effects` into a task that cannot fail. When run, the resulting\ntask will send a bunch of message lists to the given `Address`. As an invariant,\nno empty list will ever be sent. Non-singleton lists will only ever be sent for\neffects created with [`tick`](#tick). Those may be batched even over different\ncalls to `toTask` with the same `Address`. In such lists, the order of elements\nis not significant.\n\nGenerally speaking, you should not need this function, particularly if you are\nusing [start-app](http://package.elm-lang.org/packages/evancz/start-app/latest).\nIt is mainly useful at the very root of your program where you actually need to\ngive all the effects to a port. So in the common case you should use this\nfunction 0 times per project, and if you are doing very special things for\nexpert reasons, you should probably have either 0 or 1 uses of this per\nproject.\n",
+        "type": "Signal.Address (List a) -> Effects.Effects a -> Task.Task Effects.Never ()"
+      }
+    ],
+    "generated-with-elm-version": "0.16.0"
+  }
+]

@@ -1,0 +1,63 @@
+Elm.Update = Elm.Update || {};
+Elm.Update.make = function (_elm) {
+   "use strict";
+   _elm.Update = _elm.Update || {};
+   if (_elm.Update.values) return _elm.Update.values;
+   var _U = Elm.Native.Utils.make(_elm),
+   $Actions = Elm.Actions.make(_elm),
+   $Basics = Elm.Basics.make(_elm),
+   $Debug = Elm.Debug.make(_elm),
+   $Effects = Elm.Effects.make(_elm),
+   $Item$Model = Elm.Item.Model.make(_elm),
+   $List = Elm.List.make(_elm),
+   $Maybe = Elm.Maybe.make(_elm),
+   $Model = Elm.Model.make(_elm),
+   $Result = Elm.Result.make(_elm),
+   $Signal = Elm.Signal.make(_elm);
+   var _op = {};
+   var incrementMailbox = $Signal.mailbox({ctor: "_Tuple0"});
+   var sendToIncrementMailbox = A2($Effects.map,
+   $Basics.always($Actions.NoOp),
+   $Effects.task(A2($Signal.send,
+   incrementMailbox.address,
+   {ctor: "_Tuple0"})));
+   var update = F2(function (action,model) {
+      var _p0 = action;
+      switch (_p0.ctor)
+      {case "NoOp": return {ctor: "_Tuple2"
+                           ,_0: model
+                           ,_1: $Effects.none};
+         case "Remove": return {ctor: "_Tuple2"
+                               ,_0: _U.update(model,
+                               {items: A2($List.filter,
+                               function (mappedItem) {
+                                  return !_U.eq(_p0._0,mappedItem.id);
+                               },
+                               model.items)})
+                               ,_1: $Effects.none};
+         case "Add": var newNextId = model.nextId + 1;
+           var newItem = A3($Item$Model.Item,model.nextId,"","");
+           var newItems = A2($List._op["::"],model.item,model.items);
+           return {ctor: "_Tuple2"
+                  ,_0: _U.update(model,
+                  {items: newItems,item: newItem,nextId: newNextId})
+                  ,_1: sendToIncrementMailbox};
+         case "UpdateTitle": var item = model.item;
+           var updatedItem = _U.update(item,{title: _p0._0});
+           var newModel = _U.update(model,{item: updatedItem});
+           return {ctor: "_Tuple2",_0: newModel,_1: $Effects.none};
+         default: var item = model.item;
+           var updatedItem = _U.update(item,{url: _p0._0});
+           var newModel = _U.update(model,{item: updatedItem});
+           return {ctor: "_Tuple2",_0: newModel,_1: $Effects.none};}
+   });
+   var increment = Elm.Native.Port.make(_elm).outboundSignal("increment",
+   function (v) {
+      return [];
+   },
+   incrementMailbox.signal);
+   return _elm.Update.values = {_op: _op
+                               ,incrementMailbox: incrementMailbox
+                               ,sendToIncrementMailbox: sendToIncrementMailbox
+                               ,update: update};
+};

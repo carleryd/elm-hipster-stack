@@ -1,0 +1,112 @@
+Elm.View = Elm.View || {};
+Elm.View.make = function (_elm) {
+   "use strict";
+   _elm.View = _elm.View || {};
+   if (_elm.View.values) return _elm.View.values;
+   var _U = Elm.Native.Utils.make(_elm),
+   $Actions = Elm.Actions.make(_elm),
+   $Basics = Elm.Basics.make(_elm),
+   $Debug = Elm.Debug.make(_elm),
+   $Html = Elm.Html.make(_elm),
+   $Html$Attributes = Elm.Html.Attributes.make(_elm),
+   $Html$Events = Elm.Html.Events.make(_elm),
+   $Item$View = Elm.Item.View.make(_elm),
+   $Json$Decode = Elm.Json.Decode.make(_elm),
+   $List = Elm.List.make(_elm),
+   $Maybe = Elm.Maybe.make(_elm),
+   $Model = Elm.Model.make(_elm),
+   $Result = Elm.Result.make(_elm),
+   $Signal = Elm.Signal.make(_elm);
+   var _op = {};
+   var onSubmitWithOptions = F3(function (options,addr,msg) {
+      return A4($Html$Events.onWithOptions,
+      "submit",
+      options,
+      $Json$Decode.value,
+      function (_p0) {
+         return A2($Signal.message,addr,msg);
+      });
+   });
+   var onSubmitOptions = {stopPropagation: true
+                         ,preventDefault: true};
+   var view = F2(function (address,model) {
+      var allStuff = A2($Html.div,
+      _U.list([$Html$Attributes.id("modal1")
+              ,$Html$Attributes.$class("modal modal-fixed-footer")]),
+      _U.list([A2($Html.form,
+      _U.list([A3(onSubmitWithOptions,
+      onSubmitOptions,
+      address,
+      $Actions.Add)]),
+      _U.list([A2($Html.div,
+              _U.list([$Html$Attributes.$class("modal-content")]),
+              _U.list([A2($Html.h5,
+                      _U.list([]),
+                      _U.list([$Html.text("Add New Resource")]))
+                      ,A2($Html.div,
+                      _U.list([$Html$Attributes.$class("input-field")]),
+                      _U.list([A2($Html.input,
+                              _U.list([$Html$Attributes.$class("validate")
+                                      ,$Html$Attributes.id("newTitle")
+                                      ,$Html$Attributes.required(true)
+                                      ,$Html$Attributes.type$("text")
+                                      ,$Html$Attributes.value(model.item.title)
+                                      ,A3($Html$Events.on,
+                                      "input",
+                                      $Html$Events.targetValue,
+                                      function (str) {
+                                         return A2($Signal.message,address,$Actions.UpdateTitle(str));
+                                      })]),
+                              _U.list([]))
+                              ,A2($Html.label,
+                              _U.list([$Html$Attributes.$for("newTitle")]),
+                              _U.list([$Html.text("Title")]))]))
+                      ,A2($Html.div,
+                      _U.list([$Html$Attributes.$class("input-field")]),
+                      _U.list([A2($Html.input,
+                              _U.list([$Html$Attributes.$class("validate")
+                                      ,$Html$Attributes.id("newUrl")
+                                      ,$Html$Attributes.required(true)
+                                      ,$Html$Attributes.type$("url")
+                                      ,$Html$Attributes.value(model.item.url)
+                                      ,A3($Html$Events.on,
+                                      "input",
+                                      $Html$Events.targetValue,
+                                      function (str) {
+                                         return A2($Signal.message,address,$Actions.UpdateUrl(str));
+                                      })]),
+                              _U.list([]))
+                              ,A2($Html.label,
+                              _U.list([$Html$Attributes.$for("newUrl")]),
+                              _U.list([$Html.text("Url")]))]))]))
+              ,A2($Html.div,
+              _U.list([$Html$Attributes.$class("modal-footer")]),
+              _U.list([A2($Html.button,
+                      _U.list([$Html$Attributes.$class(A2($Basics._op["++"],
+                              "waves-effect waves-green btn-flat green darken-3 ",
+                              "white-text"))
+                              ,$Html$Attributes.type$("submit")]),
+                      _U.list([A2($Html.strong,
+                      _U.list([]),
+                      _U.list([$Html.text("Add")]))]))
+                      ,A2($Html.a,
+                      _U.list([$Html$Attributes.$class(A2($Basics._op["++"],
+                      "modal-action modal-close waves-effect waves-red ",
+                      "btn-flat"))]),
+                      _U.list([$Html.text("Cancel")]))]))]))]));
+      return A2($Html.div,
+      _U.list([]),
+      _U.list([A2($Item$View.viewItems,address,model)
+              ,allStuff
+              ,A2($Html.a,
+              _U.list([$Html$Attributes.href("#modal1")
+                      ,$Html$Attributes.$class(A2($Basics._op["++"],
+                      "waves-effect waves-light btn modal-trigger right light-blue",
+                      " white-text"))]),
+              _U.list([$Html.text("Add new resource")]))]));
+   });
+   return _elm.View.values = {_op: _op
+                             ,onSubmitOptions: onSubmitOptions
+                             ,onSubmitWithOptions: onSubmitWithOptions
+                             ,view: view};
+};

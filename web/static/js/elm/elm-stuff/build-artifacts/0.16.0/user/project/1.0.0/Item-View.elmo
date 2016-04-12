@@ -1,0 +1,50 @@
+Elm.Item = Elm.Item || {};
+Elm.Item.View = Elm.Item.View || {};
+Elm.Item.View.make = function (_elm) {
+   "use strict";
+   _elm.Item = _elm.Item || {};
+   _elm.Item.View = _elm.Item.View || {};
+   if (_elm.Item.View.values) return _elm.Item.View.values;
+   var _U = Elm.Native.Utils.make(_elm),
+   $Actions = Elm.Actions.make(_elm),
+   $Basics = Elm.Basics.make(_elm),
+   $Debug = Elm.Debug.make(_elm),
+   $Html = Elm.Html.make(_elm),
+   $Html$Attributes = Elm.Html.Attributes.make(_elm),
+   $Html$Events = Elm.Html.Events.make(_elm),
+   $Item$Model = Elm.Item.Model.make(_elm),
+   $List = Elm.List.make(_elm),
+   $Maybe = Elm.Maybe.make(_elm),
+   $Model = Elm.Model.make(_elm),
+   $Result = Elm.Result.make(_elm),
+   $Signal = Elm.Signal.make(_elm);
+   var _op = {};
+   var viewItem = F2(function (address,_p0) {
+      var _p1 = _p0;
+      var _p2 = _p1.url;
+      return A2($Html.div,
+      _U.list([]),
+      _U.list([A2($Html.div,
+              _U.list([$Html$Attributes.$class("item-title")]),
+              _U.list([$Html.text(_p1.title)]))
+              ,A2($Html.a,
+              _U.list([$Html$Attributes.$class("item-url")
+                      ,$Html$Attributes.href(_p2)]),
+              _U.list([$Html.text(_p2)]))
+              ,A2($Html.button,
+              _U.list([A2($Html$Events.onClick,
+              address,
+              $Actions.Remove(_p1.id))]),
+              _U.list([$Html.text("Remove")]))]));
+   });
+   var viewItemList = F2(function (address,itemList) {
+      return A2($Html.div,
+      _U.list([]),
+      A2($List.map,viewItem(address),itemList));
+   });
+   var viewItems = F2(function (address,model) {
+      var itemsHtml = A2(viewItemList,address,model.items);
+      return A2($Html.div,_U.list([]),_U.list([itemsHtml]));
+   });
+   return _elm.Item.View.values = {_op: _op,viewItems: viewItems};
+};

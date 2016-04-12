@@ -1,4 +1,4 @@
-const elmSource = __dirname + '/web/elm';
+const elmSource = __dirname + '/web/static/js/elm';
 
 module.exports = {
   entry: {
@@ -25,6 +25,7 @@ module.exports = {
           presets: ['es2015']
         }
       },
-    ]
+    ],
+    noParse: [/.elm$/],
   }
 };

@@ -1,0 +1,28 @@
+Elm.Model = Elm.Model || {};
+Elm.Model.make = function (_elm) {
+   "use strict";
+   _elm.Model = _elm.Model || {};
+   if (_elm.Model.values) return _elm.Model.values;
+   var _U = Elm.Native.Utils.make(_elm),
+   $Basics = Elm.Basics.make(_elm),
+   $Debug = Elm.Debug.make(_elm),
+   $Item$Model = Elm.Item.Model.make(_elm),
+   $List = Elm.List.make(_elm),
+   $Maybe = Elm.Maybe.make(_elm),
+   $Result = Elm.Result.make(_elm),
+   $Signal = Elm.Signal.make(_elm);
+   var _op = {};
+   var dummyItems = _U.list([]);
+   var dummyLength = $List.length(dummyItems);
+   var initialModel = {items: dummyItems
+                      ,item: A3($Item$Model.Item,dummyLength,"","")
+                      ,nextId: dummyLength};
+   var Model = F3(function (a,b,c) {
+      return {items: a,item: b,nextId: c};
+   });
+   return _elm.Model.values = {_op: _op
+                              ,Model: Model
+                              ,dummyItems: dummyItems
+                              ,dummyLength: dummyLength
+                              ,initialModel: initialModel};
+};

@@ -1,0 +1,20 @@
+Elm.Item = Elm.Item || {};
+Elm.Item.Model = Elm.Item.Model || {};
+Elm.Item.Model.make = function (_elm) {
+   "use strict";
+   _elm.Item = _elm.Item || {};
+   _elm.Item.Model = _elm.Item.Model || {};
+   if (_elm.Item.Model.values) return _elm.Item.Model.values;
+   var _U = Elm.Native.Utils.make(_elm),
+   $Basics = Elm.Basics.make(_elm),
+   $Debug = Elm.Debug.make(_elm),
+   $List = Elm.List.make(_elm),
+   $Maybe = Elm.Maybe.make(_elm),
+   $Result = Elm.Result.make(_elm),
+   $Signal = Elm.Signal.make(_elm);
+   var _op = {};
+   var Item = F3(function (a,b,c) {
+      return {id: a,title: b,url: c};
+   });
+   return _elm.Item.Model.values = {_op: _op,Item: Item};
+};
