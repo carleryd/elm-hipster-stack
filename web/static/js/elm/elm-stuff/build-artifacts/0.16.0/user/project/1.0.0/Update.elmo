@@ -15,11 +15,11 @@ Elm.Update.make = function (_elm) {
    $Result = Elm.Result.make(_elm),
    $Signal = Elm.Signal.make(_elm);
    var _op = {};
-   var incrementMailbox = $Signal.mailbox({ctor: "_Tuple0"});
-   var sendToIncrementMailbox = A2($Effects.map,
+   var closeModalMailbox = $Signal.mailbox({ctor: "_Tuple0"});
+   var sendToCloseModalMailbox = A2($Effects.map,
    $Basics.always($Actions.NoOp),
    $Effects.task(A2($Signal.send,
-   incrementMailbox.address,
+   closeModalMailbox.address,
    {ctor: "_Tuple0"})));
    var update = F2(function (action,model) {
       var _p0 = action;
@@ -41,7 +41,7 @@ Elm.Update.make = function (_elm) {
            return {ctor: "_Tuple2"
                   ,_0: _U.update(model,
                   {items: newItems,item: newItem,nextId: newNextId})
-                  ,_1: sendToIncrementMailbox};
+                  ,_1: sendToCloseModalMailbox};
          case "UpdateTitle": var item = model.item;
            var updatedItem = _U.update(item,{title: _p0._0});
            var newModel = _U.update(model,{item: updatedItem});
@@ -51,13 +51,13 @@ Elm.Update.make = function (_elm) {
            var newModel = _U.update(model,{item: updatedItem});
            return {ctor: "_Tuple2",_0: newModel,_1: $Effects.none};}
    });
-   var increment = Elm.Native.Port.make(_elm).outboundSignal("increment",
+   var closeModal = Elm.Native.Port.make(_elm).outboundSignal("closeModal",
    function (v) {
       return [];
    },
-   incrementMailbox.signal);
+   closeModalMailbox.signal);
    return _elm.Update.values = {_op: _op
-                               ,incrementMailbox: incrementMailbox
-                               ,sendToIncrementMailbox: sendToIncrementMailbox
+                               ,closeModalMailbox: closeModalMailbox
+                               ,sendToCloseModalMailbox: sendToCloseModalMailbox
                                ,update: update};
 };

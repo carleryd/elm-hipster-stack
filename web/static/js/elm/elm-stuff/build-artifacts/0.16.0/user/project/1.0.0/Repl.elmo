@@ -6,9 +6,9 @@ Elm.Repl.make = function (_elm) {
    var _U = Elm.Native.Utils.make(_elm),
    $Basics = Elm.Basics.make(_elm),
    $Debug = Elm.Debug.make(_elm),
-   $Html$Attributes = Elm.Html.Attributes.make(_elm),
    $List = Elm.List.make(_elm),
    $Maybe = Elm.Maybe.make(_elm),
+   $Regex = Elm.Regex.make(_elm),
    $Result = Elm.Result.make(_elm),
    $Signal = Elm.Signal.make(_elm);
    var _op = {};
@@ -20,7 +20,7 @@ Elm.Repl.make = function (_elm) {
    var oddSquare = function (_p0) {
       return $Basics.not(isEven(square(_p0)));
    };
-   var deltron3030 = $Html$Attributes.id;
+   var deltron3030 = $Regex.escape;
    return _elm.Repl.values = {_op: _op
                              ,deltron3030: deltron3030
                              ,isEven: isEven

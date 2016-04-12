@@ -12,7 +12,7 @@ type alias Model =
 
 dummyItems : List Item
 dummyItems =
-  []
+  [ Item 0 "E to the L to the M" "http://elm-lang.org/" ]
 
 
 dummyLength : Int

@@ -6,19 +6,19 @@ import Item.Model exposing (Item)
 import Effects exposing (Effects)
 
 
-port increment : Signal ()
-port increment =
-  incrementMailbox.signal
+port closeModal : Signal ()
+port closeModal =
+  closeModalMailbox.signal
 
 
-incrementMailbox : Signal.Mailbox ()
-incrementMailbox =
+closeModalMailbox : Signal.Mailbox ()
+closeModalMailbox =
   Signal.mailbox ()
 
 
-sendToIncrementMailbox : Effects Action
-sendToIncrementMailbox =
-  Signal.send incrementMailbox.address ()
+sendToCloseModalMailbox : Effects Action
+sendToCloseModalMailbox =
+  Signal.send closeModalMailbox.address ()
     |> Effects.task
     |> Effects.map (always NoOp)
 
@@ -55,7 +55,7 @@ update action model =
             , item = newItem
             , nextId = newNextId
           }
-        , sendToIncrementMailbox
+        , sendToCloseModalMailbox
         )
 
     UpdateTitle str ->

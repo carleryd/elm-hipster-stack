@@ -29,7 +29,7 @@ onSubmitWithOptions options addr msg =
 view : Signal.Address Action -> Model -> Html
 view address model =
   let
-    allStuff =
+    modal =
       div
         [ id "modal1"
         , class "modal modal-fixed-footer"
@@ -92,27 +92,10 @@ view address model =
                 ]
             ]
         ]
-
-    -- h5
-    --     []
-    --     [ text "Add New Resource" ]
-    --     input
-    --     input
-    --     [ placeholder "Enter URL"
-    --     , value model.item.url
-    --     , on
-    --         "input"
-    --         targetValue
-    --         (\str -> Signal.message address (UpdateUrl str))
-    --     ]
-    --     []
-    -- ]
   in
     div
       []
-      [ viewItems address model
-      , allStuff
-      , a
+      [ a
           [ href "#modal1"
           , class
               ("waves-effect waves-light btn modal-trigger right light-blue"
@@ -120,4 +103,6 @@ view address model =
               )
           ]
           [ text "Add new resource" ]
+      , viewItems address model
+      , modal
       ]

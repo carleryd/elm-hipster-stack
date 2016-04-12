@@ -11,31 +11,54 @@ Elm.Item.View.make = function (_elm) {
    $Debug = Elm.Debug.make(_elm),
    $Html = Elm.Html.make(_elm),
    $Html$Attributes = Elm.Html.Attributes.make(_elm),
-   $Html$Events = Elm.Html.Events.make(_elm),
    $Item$Model = Elm.Item.Model.make(_elm),
    $List = Elm.List.make(_elm),
    $Maybe = Elm.Maybe.make(_elm),
    $Model = Elm.Model.make(_elm),
+   $Regex = Elm.Regex.make(_elm),
    $Result = Elm.Result.make(_elm),
    $Signal = Elm.Signal.make(_elm);
    var _op = {};
-   var viewItem = F2(function (address,_p0) {
-      var _p1 = _p0;
-      var _p2 = _p1.url;
-      return A2($Html.div,
-      _U.list([]),
+   var dateStyle = $Html$Attributes.style(_U.list([{ctor: "_Tuple2"
+                                                   ,_0: "color"
+                                                   ,_1: "#888"}
+                                                  ,{ctor: "_Tuple2",_0: "fontSize",_1: "0.7em"}
+                                                  ,{ctor: "_Tuple2",_0: "marginRight",_1: "0.5em"}]));
+   var urlStyle = $Html$Attributes.style(_U.list([{ctor: "_Tuple2"
+                                                  ,_0: "color"
+                                                  ,_1: "#062"}
+                                                 ,{ctor: "_Tuple2",_0: "fontSize",_1: "0.85"}]));
+   var regex = A3($Regex.replace,
+   $Regex.All,
+   $Regex.regex("^https?://|/$"),
+   function (_p0) {
+      return " ";
+   });
+   var urlPrettify = function (url) {    return regex(url);};
+   var viewItem = F2(function (address,_p1) {
+      var _p2 = _p1;
+      var _p3 = _p2.url;
+      return A2($Html.li,
+      _U.list([$Html$Attributes.style(_U.list([{ctor: "_Tuple2"
+                                               ,_0: "list-style-type"
+                                               ,_1: "none"}]))]),
       _U.list([A2($Html.div,
-              _U.list([$Html$Attributes.$class("item-title")]),
-              _U.list([$Html.text(_p1.title)]))
-              ,A2($Html.a,
-              _U.list([$Html$Attributes.$class("item-url")
-                      ,$Html$Attributes.href(_p2)]),
-              _U.list([$Html.text(_p2)]))
-              ,A2($Html.button,
-              _U.list([A2($Html$Events.onClick,
-              address,
-              $Actions.Remove(_p1.id))]),
-              _U.list([$Html.text("Remove")]))]));
+      _U.list([$Html$Attributes.$class("card-panel")
+              ,$Html$Attributes.style(_U.list([{ctor: "_Tuple2"
+                                               ,_0: "padding"
+                                               ,_1: "1em"}]))]),
+      _U.list([A2($Html.a,
+              _U.list([$Html$Attributes.href(_p3)
+                      ,$Html$Attributes.target("_blank")]),
+              _U.list([$Html.text(_p2.title)]))
+              ,A2($Html.div,
+              _U.list([$Html$Attributes.$class("truncate")]),
+              _U.list([A2($Html.span,
+                      _U.list([dateStyle]),
+                      _U.list([$Html.text("DATUM")]))
+                      ,A2($Html.a,
+                      _U.list([$Html$Attributes.href(_p3),urlStyle]),
+                      _U.list([$Html.text(urlPrettify(_p3))]))]))]))]));
    });
    var viewItemList = F2(function (address,itemList) {
       return A2($Html.div,

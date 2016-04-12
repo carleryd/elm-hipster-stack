@@ -30,7 +30,7 @@ Elm.View.make = function (_elm) {
    var onSubmitOptions = {stopPropagation: true
                          ,preventDefault: true};
    var view = F2(function (address,model) {
-      var allStuff = A2($Html.div,
+      var modal = A2($Html.div,
       _U.list([$Html$Attributes.id("modal1")
               ,$Html$Attributes.$class("modal modal-fixed-footer")]),
       _U.list([A2($Html.form,
@@ -96,14 +96,14 @@ Elm.View.make = function (_elm) {
                       _U.list([$Html.text("Cancel")]))]))]))]));
       return A2($Html.div,
       _U.list([]),
-      _U.list([A2($Item$View.viewItems,address,model)
-              ,allStuff
-              ,A2($Html.a,
+      _U.list([A2($Html.a,
               _U.list([$Html$Attributes.href("#modal1")
                       ,$Html$Attributes.$class(A2($Basics._op["++"],
                       "waves-effect waves-light btn modal-trigger right light-blue",
                       " white-text"))]),
-              _U.list([$Html.text("Add new resource")]))]));
+              _U.list([$Html.text("Add new resource")]))
+              ,A2($Item$View.viewItems,address,model)
+              ,modal]));
    });
    return _elm.View.values = {_op: _op
                              ,onSubmitOptions: onSubmitOptions

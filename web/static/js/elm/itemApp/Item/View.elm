@@ -1,23 +1,66 @@
 module Item.View (viewItems) where
 
 import Html exposing (..)
-import Html.Attributes exposing (..)
-import Html.Events exposing (..)
+import Html.Attributes exposing (class, style, href, target)
 import Signal exposing (..)
 import Model exposing (Model)
 import Item.Model exposing (Item)
 import Actions exposing (..)
+import Regex
 
 
 viewItem : Address Action -> Item -> Html
 viewItem address { id, title, url } =
-  div
-    []
-    [ div [ class "item-title" ] [ text title ]
-    , a [ class "item-url", href url ] [ text url ]
-    , button
-        [ onClick address (Remove id) ]
-        [ text "Remove" ]
+  li
+    -- Should not need this. It is defined in Materialize CSS
+    [ style [ ( "list-style-type", "none" ) ] ]
+    [ div
+        [ class "card-panel"
+        , style [ ( "padding", "1em" ) ]
+        ]
+        [ a
+            [ href url, target "_blank" ]
+            [ text title ]
+        , div
+            [ class "truncate" ]
+            [ span
+                [ dateStyle ]
+                [ text "DATUM" ]
+            , a
+                [ href url
+                , urlStyle
+                ]
+                [ text (urlPrettify url) ]
+            ]
+        ]
+    ]
+
+
+regex : String -> String
+regex =
+  Regex.replace Regex.All (Regex.regex "^https?://|/$") (\_ -> " ")
+
+
+urlPrettify : String -> String
+urlPrettify url =
+  url
+    |> regex
+
+
+urlStyle : Attribute
+urlStyle =
+  style
+    [ ( "color", "#062" )
+    , ( "fontSize", "0.85" )
+    ]
+
+
+dateStyle : Attribute
+dateStyle =
+  style
+    [ ( "color", "#888" )
+    , ( "fontSize", "0.7em" )
+    , ( "marginRight", "0.5em" )
     ]
 
 
