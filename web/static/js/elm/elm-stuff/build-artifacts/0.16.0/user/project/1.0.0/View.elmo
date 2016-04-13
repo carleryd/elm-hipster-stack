@@ -94,14 +94,27 @@ Elm.View.make = function (_elm) {
                       "modal-action modal-close waves-effect waves-red ",
                       "btn-flat"))]),
                       _U.list([$Html.text("Cancel")]))]))]))]));
+      var addButton = A2($Html.a,
+      _U.list([$Html$Attributes.href("#modal1")
+              ,$Html$Attributes.$class(A2($Basics._op["++"],
+              "waves-effect waves-light btn modal-trigger right light-blue",
+              " white-text"))]),
+      _U.list([$Html.text("Add new resource")]));
+      var searchField = A2($Html.div,
+      _U.list([$Html$Attributes.$class("input-field")]),
+      _U.list([A2($Html.input,
+              _U.list([$Html$Attributes.id("search")
+                      ,$Html$Attributes.type$("text")]),
+              _U.list([]))
+              ,A2($Html.label,
+              _U.list([$Html$Attributes.$for("search")]),
+              _U.list([$Html.text("Search All Resources")]))]));
       return A2($Html.div,
       _U.list([]),
-      _U.list([A2($Html.a,
-              _U.list([$Html$Attributes.href("#modal1")
-                      ,$Html$Attributes.$class(A2($Basics._op["++"],
-                      "waves-effect waves-light btn modal-trigger right light-blue",
-                      " white-text"))]),
-              _U.list([$Html.text("Add new resource")]))
+      _U.list([searchField
+              ,A2($Html.div,
+              _U.list([$Html$Attributes.$class("row")]),
+              _U.list([addButton]))
               ,A2($Item$View.viewItems,address,model)
               ,modal]));
    });

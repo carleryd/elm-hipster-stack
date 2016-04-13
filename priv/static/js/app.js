@@ -11979,71 +11979,6 @@
 	                                    ,keyCode: keyCode
 	                                    ,Options: Options};
 	};
-	Elm.StartApp = Elm.StartApp || {};
-	Elm.StartApp.make = function (_elm) {
-	   "use strict";
-	   _elm.StartApp = _elm.StartApp || {};
-	   if (_elm.StartApp.values) return _elm.StartApp.values;
-	   var _U = Elm.Native.Utils.make(_elm),
-	   $Basics = Elm.Basics.make(_elm),
-	   $Debug = Elm.Debug.make(_elm),
-	   $Effects = Elm.Effects.make(_elm),
-	   $Html = Elm.Html.make(_elm),
-	   $List = Elm.List.make(_elm),
-	   $Maybe = Elm.Maybe.make(_elm),
-	   $Result = Elm.Result.make(_elm),
-	   $Signal = Elm.Signal.make(_elm),
-	   $Task = Elm.Task.make(_elm);
-	   var _op = {};
-	   var start = function (config) {
-	      var updateStep = F2(function (action,_p0) {
-	         var _p1 = _p0;
-	         var _p2 = A2(config.update,action,_p1._0);
-	         var newModel = _p2._0;
-	         var additionalEffects = _p2._1;
-	         return {ctor: "_Tuple2"
-	                ,_0: newModel
-	                ,_1: $Effects.batch(_U.list([_p1._1,additionalEffects]))};
-	      });
-	      var update = F2(function (actions,_p3) {
-	         var _p4 = _p3;
-	         return A3($List.foldl,
-	         updateStep,
-	         {ctor: "_Tuple2",_0: _p4._0,_1: $Effects.none},
-	         actions);
-	      });
-	      var messages = $Signal.mailbox(_U.list([]));
-	      var singleton = function (action) {
-	         return _U.list([action]);
-	      };
-	      var address = A2($Signal.forwardTo,messages.address,singleton);
-	      var inputs = $Signal.mergeMany(A2($List._op["::"],
-	      messages.signal,
-	      A2($List.map,$Signal.map(singleton),config.inputs)));
-	      var effectsAndModel = A3($Signal.foldp,
-	      update,
-	      config.init,
-	      inputs);
-	      var model = A2($Signal.map,$Basics.fst,effectsAndModel);
-	      return {html: A2($Signal.map,config.view(address),model)
-	             ,model: model
-	             ,tasks: A2($Signal.map,
-	             function (_p5) {
-	                return A2($Effects.toTask,messages.address,$Basics.snd(_p5));
-	             },
-	             effectsAndModel)};
-	   };
-	   var App = F3(function (a,b,c) {
-	      return {html: a,model: b,tasks: c};
-	   });
-	   var Config = F4(function (a,b,c,d) {
-	      return {init: a,update: b,view: c,inputs: d};
-	   });
-	   return _elm.StartApp.values = {_op: _op
-	                                 ,start: start
-	                                 ,Config: Config
-	                                 ,App: App};
-	};
 	Elm.Item = Elm.Item || {};
 	Elm.Item.Model = Elm.Item.Model || {};
 	Elm.Item.Model.make = function (_elm) {
@@ -12227,20 +12162,20 @@
 	      {case "NoOp": return {ctor: "_Tuple2"
 	                           ,_0: model
 	                           ,_1: $Effects.none};
-	         case "Remove": return {ctor: "_Tuple2"
-	                               ,_0: _U.update(model,
-	                               {items: A2($List.filter,
-	                               function (mappedItem) {
-	                                  return !_U.eq(_p0._0,mappedItem.id);
-	                               },
-	                               model.items)})
-	                               ,_1: $Effects.none};
+	         case "Remove": var newModel = _U.update(model,
+	           {items: A2($List.filter,
+	           function (mappedItem) {
+	              return !_U.eq(_p0._0,mappedItem.id);
+	           },
+	           model.items)});
+	           return {ctor: "_Tuple2",_0: newModel,_1: $Effects.none};
 	         case "Add": var newNextId = model.nextId + 1;
 	           var newItem = A3($Item$Model.Item,model.nextId,"","");
 	           var newItems = A2($List._op["::"],model.item,model.items);
+	           var newModel = _U.update(model,
+	           {items: newItems,item: newItem,nextId: newNextId});
 	           return {ctor: "_Tuple2"
-	                  ,_0: _U.update(model,
-	                  {items: newItems,item: newItem,nextId: newNextId})
+	                  ,_0: newModel
 	                  ,_1: sendToCloseModalMailbox};
 	         case "UpdateTitle": var item = model.item;
 	           var updatedItem = _U.update(item,{title: _p0._0});
@@ -12251,11 +12186,6 @@
 	           var newModel = _U.update(model,{item: updatedItem});
 	           return {ctor: "_Tuple2",_0: newModel,_1: $Effects.none};}
 	   });
-	   var closeModal = Elm.Native.Port.make(_elm).outboundSignal("closeModal",
-	   function (v) {
-	      return [];
-	   },
-	   closeModalMailbox.signal);
 	   return _elm.Update.values = {_op: _op
 	                               ,closeModalMailbox: closeModalMailbox
 	                               ,sendToCloseModalMailbox: sendToCloseModalMailbox
@@ -12357,14 +12287,27 @@
 	                      "modal-action modal-close waves-effect waves-red ",
 	                      "btn-flat"))]),
 	                      _U.list([$Html.text("Cancel")]))]))]))]));
+	      var addButton = A2($Html.a,
+	      _U.list([$Html$Attributes.href("#modal1")
+	              ,$Html$Attributes.$class(A2($Basics._op["++"],
+	              "waves-effect waves-light btn modal-trigger right light-blue",
+	              " white-text"))]),
+	      _U.list([$Html.text("Add new resource")]));
+	      var searchField = A2($Html.div,
+	      _U.list([$Html$Attributes.$class("input-field")]),
+	      _U.list([A2($Html.input,
+	              _U.list([$Html$Attributes.id("search")
+	                      ,$Html$Attributes.type$("text")]),
+	              _U.list([]))
+	              ,A2($Html.label,
+	              _U.list([$Html$Attributes.$for("search")]),
+	              _U.list([$Html.text("Search All Resources")]))]));
 	      return A2($Html.div,
 	      _U.list([]),
-	      _U.list([A2($Html.a,
-	              _U.list([$Html$Attributes.href("#modal1")
-	                      ,$Html$Attributes.$class(A2($Basics._op["++"],
-	                      "waves-effect waves-light btn modal-trigger right light-blue",
-	                      " white-text"))]),
-	              _U.list([$Html.text("Add new resource")]))
+	      _U.list([searchField
+	              ,A2($Html.div,
+	              _U.list([$Html$Attributes.$class("row")]),
+	              _U.list([addButton]))
 	              ,A2($Item$View.viewItems,address,model)
 	              ,modal]));
 	   });
@@ -12379,29 +12322,69 @@
 	   _elm.Main = _elm.Main || {};
 	   if (_elm.Main.values) return _elm.Main.values;
 	   var _U = Elm.Native.Utils.make(_elm),
+	   $Actions = Elm.Actions.make(_elm),
 	   $Basics = Elm.Basics.make(_elm),
 	   $Debug = Elm.Debug.make(_elm),
 	   $Effects = Elm.Effects.make(_elm),
+	   $Html = Elm.Html.make(_elm),
 	   $List = Elm.List.make(_elm),
 	   $Maybe = Elm.Maybe.make(_elm),
 	   $Model = Elm.Model.make(_elm),
 	   $Result = Elm.Result.make(_elm),
 	   $Signal = Elm.Signal.make(_elm),
-	   $StartApp = Elm.StartApp.make(_elm),
 	   $Task = Elm.Task.make(_elm),
 	   $Update = Elm.Update.make(_elm),
 	   $View = Elm.View.make(_elm);
 	   var _op = {};
-	   var app = $StartApp.start({init: {ctor: "_Tuple2"
-	                                    ,_0: $Model.initialModel
-	                                    ,_1: $Effects.none}
-	                             ,update: $Update.update
-	                             ,view: $View.view
-	                             ,inputs: _U.list([])});
-	   var main = app.html;
+	   var closeModal = Elm.Native.Port.make(_elm).outboundSignal("closeModal",
+	   function (v) {
+	      return [];
+	   },
+	   $Update.closeModalMailbox.signal);
+	   var actionsMailbox = $Signal.mailbox(_U.list([]));
+	   var oneActionAddress = A2($Signal.forwardTo,
+	   actionsMailbox.address,
+	   function (action) {
+	      return _U.list([action]);
+	   });
+	   var modelAndFxSignal = function () {
+	      var initial = {ctor: "_Tuple2"
+	                    ,_0: $Model.initialModel
+	                    ,_1: $Effects.none};
+	      var modelAndFx = F2(function (action,_p0) {
+	         var _p1 = _p0;
+	         return A2($Update.update,action,_p1._0);
+	      });
+	      var modelAndManyFxs = F2(function (actions,_p2) {
+	         var _p3 = _p2;
+	         return A3($List.foldl,
+	         modelAndFx,
+	         {ctor: "_Tuple2",_0: _p3._0,_1: $Effects.none},
+	         actions);
+	      });
+	      return A3($Signal.foldp,
+	      modelAndManyFxs,
+	      initial,
+	      actionsMailbox.signal);
+	   }();
+	   var modelSignal = A2($Signal.map,$Basics.fst,modelAndFxSignal);
+	   var main = A2($Signal.map,
+	   $View.view(oneActionAddress),
+	   modelSignal);
+	   var fxSignal = A2($Signal.map,$Basics.snd,modelAndFxSignal);
+	   var taskSignal = A2($Signal.map,
+	   $Effects.toTask(actionsMailbox.address),
+	   fxSignal);
 	   var tasks = Elm.Native.Task.make(_elm).performSignal("tasks",
-	   app.tasks);
-	   return _elm.Main.values = {_op: _op,app: app,main: main};
+	   taskSignal);
+	   return _elm.Main.values = {_op: _op
+	                             ,actionsMailbox: actionsMailbox
+	                             ,oneActionAddress: oneActionAddress
+	                             ,modelSignal: modelSignal
+	                             ,modelAndFxSignal: modelAndFxSignal
+	                             ,main: main
+	                             ,fxSignal: fxSignal
+	                             ,taskSignal: taskSignal};
 	};
 
 	module.exports = Elm;

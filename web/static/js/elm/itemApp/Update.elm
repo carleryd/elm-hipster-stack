@@ -6,11 +6,6 @@ import Item.Model exposing (Item)
 import Effects exposing (Effects)
 
 
-port closeModal : Signal ()
-port closeModal =
-  closeModalMailbox.signal
-
-
 closeModalMailbox : Signal.Mailbox ()
 closeModalMailbox =
   Signal.mailbox ()
@@ -27,17 +22,17 @@ update : Action -> Model -> ( Model, Effects Action )
 update action model =
   case action of
     NoOp ->
-      ( model
-      , Effects.none
-      )
+      ( model, Effects.none )
 
     Remove id ->
-      ( { model
-          | items =
-              List.filter (\mappedItem -> id /= mappedItem.id) model.items
-        }
-      , Effects.none
-      )
+      let
+        newModel =
+          { model
+            | items =
+                List.filter (\mappedItem -> id /= mappedItem.id) model.items
+          }
+      in
+        ( newModel, Effects.none )
 
     Add ->
       let
@@ -49,14 +44,15 @@ update action model =
 
         newNextId =
           model.nextId + 1
-      in
-        ( { model
+
+        newModel =
+          { model
             | items = newItems
             , item = newItem
             , nextId = newNextId
           }
-        , sendToCloseModalMailbox
-        )
+      in
+        ( newModel, sendToCloseModalMailbox )
 
     UpdateTitle str ->
       let
@@ -69,9 +65,7 @@ update action model =
         newModel =
           { model | item = updatedItem }
       in
-        ( newModel
-        , Effects.none
-        )
+        ( newModel, Effects.none )
 
     UpdateUrl str ->
       let
@@ -84,6 +78,4 @@ update action model =
         newModel =
           { model | item = updatedItem }
       in
-        ( newModel
-        , Effects.none
-        )
+        ( newModel, Effects.none )

@@ -29,6 +29,28 @@ onSubmitWithOptions options addr msg =
 view : Signal.Address Action -> Model -> Html
 view address model =
   let
+    searchField =
+      div
+        [ class "input-field" ]
+        [ input
+            [ id "search"
+            , type' "text"
+            ]
+            []
+        , label
+            [ for "search" ]
+            [ text "Search All Resources" ]
+        ]
+    addButton =
+      a
+        [ href "#modal1"
+        , class
+          ("waves-effect waves-light btn modal-trigger right light-blue"
+          ++ " white-text"
+          )
+        ]
+        [ text "Add new resource" ]
+
     modal =
       div
         [ id "modal1"
@@ -38,7 +60,9 @@ view address model =
             [ onSubmitWithOptions onSubmitOptions address Add ]
             [ div
                 [ class "modal-content" ]
-                [ h5 [] [ text "Add New Resource" ]
+                [ h5
+                    []
+                    [ text "Add New Resource" ]
                 , div
                     [ class "input-field" ]
                     [ input
@@ -53,7 +77,9 @@ view address model =
                             (\str -> Signal.message address (UpdateTitle str))
                         ]
                         []
-                    , label [ for "newTitle" ] [ text "Title" ]
+                    , label
+                        [ for "newTitle" ]
+                        [ text "Title" ]
                     ]
                 , div
                     [ class "input-field" ]
@@ -95,14 +121,10 @@ view address model =
   in
     div
       []
-      [ a
-          [ href "#modal1"
-          , class
-              ("waves-effect waves-light btn modal-trigger right light-blue"
-                ++ " white-text"
-              )
-          ]
-          [ text "Add new resource" ]
+      [ searchField
+      , div
+          [ class "row" ]
+          [ addButton ]
       , viewItems address model
       , modal
       ]

@@ -27,20 +27,20 @@ Elm.Update.make = function (_elm) {
       {case "NoOp": return {ctor: "_Tuple2"
                            ,_0: model
                            ,_1: $Effects.none};
-         case "Remove": return {ctor: "_Tuple2"
-                               ,_0: _U.update(model,
-                               {items: A2($List.filter,
-                               function (mappedItem) {
-                                  return !_U.eq(_p0._0,mappedItem.id);
-                               },
-                               model.items)})
-                               ,_1: $Effects.none};
+         case "Remove": var newModel = _U.update(model,
+           {items: A2($List.filter,
+           function (mappedItem) {
+              return !_U.eq(_p0._0,mappedItem.id);
+           },
+           model.items)});
+           return {ctor: "_Tuple2",_0: newModel,_1: $Effects.none};
          case "Add": var newNextId = model.nextId + 1;
            var newItem = A3($Item$Model.Item,model.nextId,"","");
            var newItems = A2($List._op["::"],model.item,model.items);
+           var newModel = _U.update(model,
+           {items: newItems,item: newItem,nextId: newNextId});
            return {ctor: "_Tuple2"
-                  ,_0: _U.update(model,
-                  {items: newItems,item: newItem,nextId: newNextId})
+                  ,_0: newModel
                   ,_1: sendToCloseModalMailbox};
          case "UpdateTitle": var item = model.item;
            var updatedItem = _U.update(item,{title: _p0._0});
@@ -51,11 +51,6 @@ Elm.Update.make = function (_elm) {
            var newModel = _U.update(model,{item: updatedItem});
            return {ctor: "_Tuple2",_0: newModel,_1: $Effects.none};}
    });
-   var closeModal = Elm.Native.Port.make(_elm).outboundSignal("closeModal",
-   function (v) {
-      return [];
-   },
-   closeModalMailbox.signal);
    return _elm.Update.values = {_op: _op
                                ,closeModalMailbox: closeModalMailbox
                                ,sendToCloseModalMailbox: sendToCloseModalMailbox
