@@ -1,0 +1,75 @@
+Elm.GraphQL = Elm.GraphQL || {};
+Elm.GraphQL.Ahead = Elm.GraphQL.Ahead || {};
+Elm.GraphQL.Ahead.make = function (_elm) {
+   "use strict";
+   _elm.GraphQL = _elm.GraphQL || {};
+   _elm.GraphQL.Ahead = _elm.GraphQL.Ahead || {};
+   if (_elm.GraphQL.Ahead.values) return _elm.GraphQL.Ahead.values;
+   var _U = Elm.Native.Utils.make(_elm),
+   $Basics = Elm.Basics.make(_elm),
+   $Debug = Elm.Debug.make(_elm),
+   $GraphQL = Elm.GraphQL.make(_elm),
+   $Http = Elm.Http.make(_elm),
+   $Json$Decode = Elm.Json.Decode.make(_elm),
+   $Json$Encode = Elm.Json.Encode.make(_elm),
+   $List = Elm.List.make(_elm),
+   $Maybe = Elm.Maybe.make(_elm),
+   $Result = Elm.Result.make(_elm),
+   $Signal = Elm.Signal.make(_elm),
+   $Task = Elm.Task.make(_elm);
+   var _op = {};
+   var QueryLinksResult = function (a) {    return {store: a};};
+   var queryLinksResult = A2($Json$Decode.map,
+   QueryLinksResult,
+   A2($Json$Decode._op[":="],
+   "store",
+   A2($Json$Decode.map,
+   function (linkConnection) {
+      return {linkConnection: linkConnection};
+   },
+   A2($Json$Decode._op[":="],
+   "linkConnection",
+   A2($Json$Decode.map,
+   function (edges) {
+      return {edges: edges};
+   },
+   A2($Json$Decode._op[":="],
+   "edges",
+   $Json$Decode.list(A2($Json$Decode.map,
+   function (node) {
+      return {node: node};
+   },
+   A2($Json$Decode._op[":="],
+   "node",
+   A2($GraphQL.apply,
+   A2($GraphQL.apply,
+   A2($Json$Decode.map,
+   F3(function (id,title,url) {
+      return {id: id,title: title,url: url};
+   }),
+   $Json$Decode.maybe(A2($Json$Decode._op[":="],
+   "id",
+   $Json$Decode.string))),
+   $Json$Decode.maybe(A2($Json$Decode._op[":="],
+   "title",
+   $Json$Decode.string))),
+   $Json$Decode.maybe(A2($Json$Decode._op[":="],
+   "url",
+   $Json$Decode.string))))))))))));
+   var url = "http://localhost:5000/graphql";
+   var queryLinks = function (queryParam) {
+      var query = "query queryLinks($queryParam: String!) { store { linkConnection(query: $queryParam) { edges { node { id title url } } } } }";
+      var params = $Json$Encode.object(_U.list([{ctor: "_Tuple2"
+                                                ,_0: "queryParam"
+                                                ,_1: $Json$Encode.string(queryParam)}]));
+      return A5($GraphQL.query,
+      url,
+      query,
+      "queryLinks",
+      A2($Json$Encode.encode,0,params),
+      queryLinksResult);
+   };
+   return _elm.GraphQL.Ahead.values = {_op: _op
+                                      ,queryLinks: queryLinks
+                                      ,QueryLinksResult: QueryLinksResult};
+};

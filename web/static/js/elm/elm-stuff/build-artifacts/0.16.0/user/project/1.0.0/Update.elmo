@@ -27,6 +27,12 @@ Elm.Update.make = function (_elm) {
       {case "NoOp": return {ctor: "_Tuple2"
                            ,_0: model
                            ,_1: $Effects.none};
+         case "Ok": var newModel = _U.update(model,
+           {result: $Basics.toString($Maybe.Just(_p0._0))});
+           return {ctor: "_Tuple2",_0: newModel,_1: $Effects.none};
+         case "Err": var newModel = _U.update(model,
+           {result: "no result yet, brah"});
+           return {ctor: "_Tuple2",_0: newModel,_1: $Effects.none};
          case "Remove": var newModel = _U.update(model,
            {items: A2($List.filter,
            function (mappedItem) {

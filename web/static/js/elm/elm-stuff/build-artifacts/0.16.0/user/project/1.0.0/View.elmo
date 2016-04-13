@@ -116,7 +116,8 @@ Elm.View.make = function (_elm) {
               _U.list([$Html$Attributes.$class("row")]),
               _U.list([addButton]))
               ,A2($Item$View.viewItems,address,model)
-              ,modal]));
+              ,modal
+              ,$Html.text(model.result)]));
    });
    return _elm.View.values = {_op: _op
                              ,onSubmitOptions: onSubmitOptions

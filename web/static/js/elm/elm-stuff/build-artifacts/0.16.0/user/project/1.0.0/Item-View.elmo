@@ -35,9 +35,7 @@ Elm.Item.View.make = function (_elm) {
       return " ";
    });
    var urlPrettify = function (url) {    return regex(url);};
-   var viewItem = F2(function (address,_p1) {
-      var _p2 = _p1;
-      var _p3 = _p2.url;
+   var viewItem = F2(function (address,item) {
       return A2($Html.li,
       _U.list([$Html$Attributes.style(_U.list([{ctor: "_Tuple2"
                                                ,_0: "list-style-type"
@@ -48,17 +46,17 @@ Elm.Item.View.make = function (_elm) {
                                                ,_0: "padding"
                                                ,_1: "1em"}]))]),
       _U.list([A2($Html.a,
-              _U.list([$Html$Attributes.href(_p3)
+              _U.list([$Html$Attributes.href(item.url)
                       ,$Html$Attributes.target("_blank")]),
-              _U.list([$Html.text(_p2.title)]))
+              _U.list([$Html.text(item.title)]))
               ,A2($Html.div,
               _U.list([$Html$Attributes.$class("truncate")]),
               _U.list([A2($Html.span,
                       _U.list([dateStyle]),
                       _U.list([$Html.text("DATUM")]))
                       ,A2($Html.a,
-                      _U.list([$Html$Attributes.href(_p3),urlStyle]),
-                      _U.list([$Html.text(urlPrettify(_p3))]))]))]))]));
+                      _U.list([$Html$Attributes.href(item.url),urlStyle]),
+                      _U.list([$Html.text(urlPrettify(item.url))]))]))]))]));
    });
    var viewItemList = F2(function (address,itemList) {
       return A2($Html.div,

@@ -1,3 +1,3 @@
-import elm from './elm/itemApp/Main.elm'
+import elm from './elm/src/Main.elm'
 
 window.Elm = elm;
