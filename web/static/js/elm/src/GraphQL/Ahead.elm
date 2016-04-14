@@ -11,7 +11,7 @@ import GraphQL exposing (apply)
 
 url : String
 url =
-    "http://localhost:5000/graphql"
+    "http://localhost:4000/graphql"
 
 
 type alias QueryLinksResult =

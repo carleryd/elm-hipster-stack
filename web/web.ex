@@ -18,7 +18,7 @@ defmodule App.Web do
 
   def model do
     quote do
-      # Define common model functionality
+      use Ecto.Model
     end
   end
 
@@ -26,8 +26,13 @@ defmodule App.Web do
     quote do
       use Phoenix.Controller
 
+      # Alias the data repository and import query/model functions
+      alias App.Repo
+      import Ecto.Model
+      import Ecto.Query, only: [from: 2]
+
+      # Import URL helpers from the router
       import App.Router.Helpers
-      import App.Gettext
     end
   end
 
@@ -38,12 +43,11 @@ defmodule App.Web do
       # Import convenience functions from controllers
       import Phoenix.Controller, only: [get_csrf_token: 0, get_flash: 2, view_module: 1]
 
+      # Import URL helpers from the router
+      import App.Router.Helpers
+
       # Use all HTML functionality (forms, tags, etc)
       use Phoenix.HTML
-
-      import App.Router.Helpers
-      import App.ErrorHelpers
-      import App.Gettext
     end
   end
 
@@ -56,7 +60,12 @@ defmodule App.Web do
   def channel do
     quote do
       use Phoenix.Channel
-      import App.Gettext
+
+      # Alias the data repository and import query/model functions
+      alias App.Repo
+      import Ecto.Model
+      import Ecto.Query, only: [from: 2]
+
     end
   end
 

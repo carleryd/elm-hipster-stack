@@ -56,7 +56,7 @@ Elm.GraphQL.Ahead.make = function (_elm) {
    $Json$Decode.maybe(A2($Json$Decode._op[":="],
    "url",
    $Json$Decode.string))))))))))));
-   var url = "http://localhost:5000/graphql";
+   var url = "http://localhost:4000/graphql";
    var queryLinks = function (queryParam) {
       var query = "query queryLinks($queryParam: String!) { store { linkConnection(query: $queryParam) { edges { node { id title url } } } } }";
       var params = $Json$Encode.object(_U.list([{ctor: "_Tuple2"

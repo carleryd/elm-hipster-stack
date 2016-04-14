@@ -13,10 +13,15 @@ defmodule App.Router do
     plug :accepts, ["json"]
   end
 
+  scope "/graphql" do
+    pipe_through :api
+    forward "/", GraphQL.Plug, schema: {App.PublicSchema, :schema}
+  end
+
   scope "/", App do
     pipe_through :browser # Use the default browser stack
-
     get "/", PageController, :index
+    get "/reset", PageController, :reset_db
   end
 
   # Other scopes may use custom stacks.
