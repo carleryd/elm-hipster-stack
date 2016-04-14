@@ -16,7 +16,8 @@ Clone the repo and do the following to start the Elm Links app:
   * Create new database by going to `localhost:4000/reset`
   * Elm app now running on `localhost:4000`
 
-Credit the GraphQL integration to note89 at https://github.com/graphql-elixir/phoenix-hipster-stack, this is more or less taken directly from there!
+Credit the GraphQL integration with Phoenix to note89 at https://github.com/graphql-elixir/phoenix-hipster-stack, the GraphQL stuff in this repo is taken directly from there!
+
 
 Explore the database with GraphiQL at `localhost:4000/graphql`
 
