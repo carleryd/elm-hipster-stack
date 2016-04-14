@@ -1,6 +1,11 @@
-# App
+# Elm hipster stack!
+* Elm
+* Phoenix
+* GraphQL
+* RethinkDB
 
-To start your Phoenix app:
+
+Clone the repo and do the following to start the Elm Links app:
 
   * Install Node packages with `npm install`
   * Install dependencies with `mix deps.get`
