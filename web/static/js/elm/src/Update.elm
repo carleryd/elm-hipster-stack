@@ -4,9 +4,7 @@ import Model exposing (..)
 import Actions exposing (..)
 import Item.Model exposing (Item)
 import Effects exposing (Effects)
-
-
--- import GraphQL.Ahead as Ahead exposing (QueryLinksResult)
+import Html exposing (div, ul, li, text)
 
 
 closeModalMailbox : Signal.Mailbox ()
@@ -21,6 +19,41 @@ sendToCloseModalMailbox =
     |> Effects.map (always NoOp)
 
 
+type alias QueryResult a b c d =
+  { d | store : { c | linkConnection : { b | edges : a } } }
+
+
+toList : QueryResult a b c d -> a
+toList queriedObject =
+  queriedObject.store.linkConnection.edges
+
+
+edgeToItem edge =
+  Item
+    (default edge.node.title)
+    (default edge.node.url)
+
+
+default : Maybe String -> String
+default maybeStuff =
+  case maybeStuff of
+    Just text ->
+      text
+    Nothing ->
+      "Missing Value"
+
+
+superListItem edge =
+    ul []
+      [ li [] [ text (default edge.node.id ) ]
+      , li [] [ text (default edge.node.url)]
+      , li [] [ text (default edge.node.title)
+      ]
+      ]
+
+addToModel adder item =
+  default item
+
 update : Action -> Model -> ( Model, Effects Action )
 update action model =
   case action of
@@ -31,48 +64,39 @@ update action model =
 
     NewQuery maybeQuery ->
       let
-        queryString =
+        newItems =
           case maybeQuery of
             Just query ->
-              toString query
+              let
+                list =
+                  toList query
+              in
+                List.map edgeToItem list
+
             Nothing ->
-              "Bad string"
+              []
 
         newModel =
           { model
-            | result = queryString
+            | items = newItems
           }
       in
         ( newModel
         , Effects.none
         )
 
-    Remove id ->
-      let
-        newModel =
-          { model
-            | items =
-                List.filter (\mappedItem -> id /= mappedItem.id) model.items
-          }
-      in
-        ( newModel, Effects.none )
-
-    Add ->
+    Add item ->
       let
         newItems =
-          model.item :: model.items
+          item :: model.items
 
         newItem =
-          Item model.nextId "" ""
-
-        newNextId =
-          model.nextId + 1
+          Item "" ""
 
         newModel =
           { model
             | items = newItems
             , item = newItem
-            , nextId = newNextId
           }
       in
         ( newModel

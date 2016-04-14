@@ -13,8 +13,6 @@ Elm.Item.Model.make = function (_elm) {
    $Result = Elm.Result.make(_elm),
    $Signal = Elm.Signal.make(_elm);
    var _op = {};
-   var Item = F3(function (a,b,c) {
-      return {id: a,title: b,url: c};
-   });
+   var Item = F2(function (a,b) {    return {title: a,url: b};});
    return _elm.Item.Model.values = {_op: _op,Item: Item};
 };

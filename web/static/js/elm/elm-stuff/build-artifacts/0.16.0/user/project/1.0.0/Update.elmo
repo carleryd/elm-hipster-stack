@@ -8,6 +8,7 @@ Elm.Update.make = function (_elm) {
    $Basics = Elm.Basics.make(_elm),
    $Debug = Elm.Debug.make(_elm),
    $Effects = Elm.Effects.make(_elm),
+   $Html = Elm.Html.make(_elm),
    $Item$Model = Elm.Item.Model.make(_elm),
    $List = Elm.List.make(_elm),
    $Maybe = Elm.Maybe.make(_elm),
@@ -15,6 +16,38 @@ Elm.Update.make = function (_elm) {
    $Result = Elm.Result.make(_elm),
    $Signal = Elm.Signal.make(_elm);
    var _op = {};
+   var $default = function (maybeStuff) {
+      var _p0 = maybeStuff;
+      if (_p0.ctor === "Just") {
+            return _p0._0;
+         } else {
+            return "Missing Value";
+         }
+   };
+   var superListItem = function (edge) {
+      return A2($Html.ul,
+      _U.list([]),
+      _U.list([A2($Html.li,
+              _U.list([]),
+              _U.list([$Html.text($default(edge.node.id))]))
+              ,A2($Html.li,
+              _U.list([]),
+              _U.list([$Html.text($default(edge.node.url))]))
+              ,A2($Html.li,
+              _U.list([]),
+              _U.list([$Html.text($default(edge.node.title))]))]));
+   };
+   var addToModel = F2(function (adder,item) {
+      return $default(item);
+   });
+   var edgeToItem = function (edge) {
+      return A2($Item$Model.Item,
+      $default(edge.node.title),
+      $default(edge.node.url));
+   };
+   var toList = function (queriedObject) {
+      return queriedObject.store.linkConnection.edges;
+   };
    var closeModalMailbox = $Signal.mailbox({ctor: "_Tuple0"});
    var sendToCloseModalMailbox = A2($Effects.map,
    $Basics.always($Actions.NoOp),
@@ -22,47 +55,44 @@ Elm.Update.make = function (_elm) {
    closeModalMailbox.address,
    {ctor: "_Tuple0"})));
    var update = F2(function (action,model) {
-      var _p0 = action;
-      switch (_p0.ctor)
+      var _p1 = action;
+      switch (_p1.ctor)
       {case "NoOp": return {ctor: "_Tuple2"
                            ,_0: model
                            ,_1: $Effects.none};
-         case "NewQuery": var queryString = function () {
-              var _p1 = _p0._0;
-              if (_p1.ctor === "Just") {
-                    return $Basics.toString(_p1._0);
+         case "NewQuery": var newItems = function () {
+              var _p2 = _p1._0;
+              if (_p2.ctor === "Just") {
+                    var list = toList(_p2._0);
+                    return A2($List.map,edgeToItem,list);
                  } else {
-                    return "Bad string";
+                    return _U.list([]);
                  }
            }();
-           var newModel = _U.update(model,{result: queryString});
+           var newModel = _U.update(model,{items: newItems});
            return {ctor: "_Tuple2",_0: newModel,_1: $Effects.none};
-         case "Remove": var newModel = _U.update(model,
-           {items: A2($List.filter,
-           function (mappedItem) {
-              return !_U.eq(_p0._0,mappedItem.id);
-           },
-           model.items)});
-           return {ctor: "_Tuple2",_0: newModel,_1: $Effects.none};
-         case "Add": var newNextId = model.nextId + 1;
-           var newItem = A3($Item$Model.Item,model.nextId,"","");
-           var newItems = A2($List._op["::"],model.item,model.items);
-           var newModel = _U.update(model,
-           {items: newItems,item: newItem,nextId: newNextId});
+         case "Add": var newItem = A2($Item$Model.Item,"","");
+           var newItems = A2($List._op["::"],_p1._0,model.items);
+           var newModel = _U.update(model,{items: newItems,item: newItem});
            return {ctor: "_Tuple2"
                   ,_0: newModel
                   ,_1: sendToCloseModalMailbox};
          case "UpdateTitle": var item = model.item;
-           var updatedItem = _U.update(item,{title: _p0._0});
+           var updatedItem = _U.update(item,{title: _p1._0});
            var newModel = _U.update(model,{item: updatedItem});
            return {ctor: "_Tuple2",_0: newModel,_1: $Effects.none};
          default: var item = model.item;
-           var updatedItem = _U.update(item,{url: _p0._0});
+           var updatedItem = _U.update(item,{url: _p1._0});
            var newModel = _U.update(model,{item: updatedItem});
            return {ctor: "_Tuple2",_0: newModel,_1: $Effects.none};}
    });
    return _elm.Update.values = {_op: _op
                                ,closeModalMailbox: closeModalMailbox
                                ,sendToCloseModalMailbox: sendToCloseModalMailbox
+                               ,toList: toList
+                               ,edgeToItem: edgeToItem
+                               ,$default: $default
+                               ,superListItem: superListItem
+                               ,addToModel: addToModel
                                ,update: update};
 };

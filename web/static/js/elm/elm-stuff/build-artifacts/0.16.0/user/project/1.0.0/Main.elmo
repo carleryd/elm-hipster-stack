@@ -41,7 +41,7 @@ Elm.Main.make = function (_elm) {
       return _U.list([action]);
    });
    var modelAndFxSignal = function () {
-      var initial = init("k");
+      var initial = init("");
       var modelAndFx = F2(function (action,_p0) {
          var _p1 = _p0;
          return A2($Update.update,action,_p1._0);
@@ -71,11 +71,11 @@ Elm.Main.make = function (_elm) {
    return _elm.Main.values = {_op: _op
                              ,actionsMailbox: actionsMailbox
                              ,oneActionAddress: oneActionAddress
-                             ,modelSignal: modelSignal
-                             ,init: init
                              ,getQuery: getQuery
+                             ,init: init
+                             ,modelSignal: modelSignal
                              ,modelAndFxSignal: modelAndFxSignal
-                             ,main: main
                              ,fxSignal: fxSignal
-                             ,taskSignal: taskSignal};
+                             ,taskSignal: taskSignal
+                             ,main: main};
 };

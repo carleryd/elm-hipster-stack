@@ -1,6 +1,6 @@
 module Actions (..) where
 
-import Item.Model exposing (ItemId)
+import Item.Model exposing (Item)
 -- import Http
 import GraphQL.Ahead as Ahead exposing (QueryLinksResult)
 -- import Effects exposing (..)
@@ -9,7 +9,6 @@ import GraphQL.Ahead as Ahead exposing (QueryLinksResult)
 type Action
   = NoOp
   | NewQuery (Maybe QueryLinksResult)
-  | Remove ItemId
-  | Add
+  | Add Item
   | UpdateTitle String
   | UpdateUrl String

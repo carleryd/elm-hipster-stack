@@ -37,7 +37,7 @@ Elm.View.make = function (_elm) {
       _U.list([A3(onSubmitWithOptions,
       onSubmitOptions,
       address,
-      $Actions.Add)]),
+      $Actions.Add(model.item))]),
       _U.list([A2($Html.div,
               _U.list([$Html$Attributes.$class("modal-content")]),
               _U.list([A2($Html.h5,
@@ -116,8 +116,7 @@ Elm.View.make = function (_elm) {
               _U.list([$Html$Attributes.$class("row")]),
               _U.list([addButton]))
               ,A2($Item$View.viewItems,address,model)
-              ,modal
-              ,$Html.text(model.result)]));
+              ,modal]));
    });
    return _elm.View.values = {_op: _op
                              ,onSubmitOptions: onSubmitOptions

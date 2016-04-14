@@ -7,11 +7,7 @@ import View exposing (..)
 import Effects
 import Task exposing (..)
 import Html exposing (Html)
-
-
--- import Http
 import GraphQL.Ahead as Ahead exposing (QueryLinksResult)
-
 import Actions exposing (..)
 
 
@@ -25,9 +21,12 @@ oneActionAddress =
   Signal.forwardTo actionsMailbox.address (\action -> [ action ])
 
 
-modelSignal : Signal Model
-modelSignal =
-  Signal.map fst modelAndFxSignal
+getQuery : String -> Effects.Effects Action
+getQuery sortString =
+  Ahead.queryLinks sortString
+    |> Task.toMaybe
+    |> Task.map NewQuery
+    |> Effects.task
 
 
 init : String -> ( Model, Effects.Effects Action )
@@ -37,13 +36,9 @@ init sortString =
   )
 
 
-getQuery : String -> Effects.Effects Action
-getQuery sortString =
-  Ahead.queryLinks sortString
-    |> Task.toMaybe
-    |> Task.map NewQuery
-    -- task (can't fail)
-    |> Effects.task
+modelSignal : Signal Model
+modelSignal =
+  Signal.map fst modelAndFxSignal
 
 
 modelAndFxSignal : Signal.Signal ( Model, Effects.Effects Action )
@@ -56,14 +51,9 @@ modelAndFxSignal =
       List.foldl modelAndFx ( previousModel, Effects.none ) actions
 
     initial =
-      init "k"
+      init ""
   in
     Signal.foldp modelAndManyFxs initial actionsMailbox.signal
-
-
-main : Signal Html
-main =
-  Signal.map (view oneActionAddress) modelSignal
 
 
 fxSignal : Signal.Signal (Effects.Effects Action)
@@ -74,6 +64,11 @@ fxSignal =
 taskSignal : Signal (Task.Task Effects.Never ())
 taskSignal =
   Signal.map (Effects.toTask actionsMailbox.address) fxSignal
+
+
+main : Signal Html
+main =
+  Signal.map (view oneActionAddress) modelSignal
 
 
 port tasks : Signal (Task.Task Effects.Never ())

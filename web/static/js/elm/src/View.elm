@@ -57,7 +57,7 @@ view address model =
         , class "modal modal-fixed-footer"
         ]
         [ Html.form
-            [ onSubmitWithOptions onSubmitOptions address Add ]
+            [ onSubmitWithOptions onSubmitOptions address (Add model.item) ]
             [ div
                 [ class "modal-content" ]
                 [ h5
@@ -127,5 +127,4 @@ view address model =
           [ addButton ]
       , viewItems address model
       , modal
-      , text model.result
       ]
