@@ -14,6 +14,17 @@ erl_crash.dump
 # secrets file as long as you replace its contents by environment
 # variables.
 /config/prod.secret.exs
+
+# Since we are building assets from web/static,
+# # we ignore priv/static. You may want to comment
+# # this depending on your deployment strategy.
+/priv/static/
+
+# Custom added
 node_modules
 elm_stuff/build-artifacts
 elm_stuff/packages
+.DS_Store
+
+#RethinkDB
+rethinkdb_data
