@@ -5,6 +5,8 @@
 * RethinkDB
 
 
+# Running the Elm Links app:
+
 Clone the repo and do the following to start the Elm Links app:
 
   * Install Node packages with `npm install`
