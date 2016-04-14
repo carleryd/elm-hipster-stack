@@ -1,7 +1,8 @@
-# App
+# App (Does not work with GraphQL backend yet!)
 
 To start your Phoenix app:
 
+  * Install Node packages with `npm install`
   * Install dependencies with `mix deps.get`
   * Start Phoenix endpoint with `mix phoenix.server`
 
