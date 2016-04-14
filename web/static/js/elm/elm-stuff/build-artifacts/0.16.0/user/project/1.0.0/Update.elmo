@@ -27,11 +27,15 @@ Elm.Update.make = function (_elm) {
       {case "NoOp": return {ctor: "_Tuple2"
                            ,_0: model
                            ,_1: $Effects.none};
-         case "Ok": var newModel = _U.update(model,
-           {result: $Basics.toString($Maybe.Just(_p0._0))});
-           return {ctor: "_Tuple2",_0: newModel,_1: $Effects.none};
-         case "Err": var newModel = _U.update(model,
-           {result: "no result yet, brah"});
+         case "NewQuery": var queryString = function () {
+              var _p1 = _p0._0;
+              if (_p1.ctor === "Just") {
+                    return $Basics.toString(_p1._0);
+                 } else {
+                    return "Bad string";
+                 }
+           }();
+           var newModel = _U.update(model,{result: queryString});
            return {ctor: "_Tuple2",_0: newModel,_1: $Effects.none};
          case "Remove": var newModel = _U.update(model,
            {items: A2($List.filter,

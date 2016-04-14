@@ -1,14 +1,12 @@
 module Model (..) where
 
 import Item.Model exposing (Item, ItemId)
-import GraphQL.Ahead as Ahead exposing (QueryLinksResult)
 
 
 type alias Model =
   { items : List Item
   , item : Item
   , nextId : ItemId
-  , query : Maybe QueryLinksResult
   , result : String
   }
 
@@ -28,6 +26,5 @@ initialModel =
   { items = dummyItems
   , item = Item dummyLength "" ""
   , nextId = dummyLength
-  , query = Nothing
-  , result = "initial value"
+  , result = "No result yet..."
   }

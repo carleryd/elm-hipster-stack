@@ -6,6 +6,9 @@ import Item.Model exposing (Item)
 import Effects exposing (Effects)
 
 
+-- import GraphQL.Ahead as Ahead exposing (QueryLinksResult)
+
+
 closeModalMailbox : Signal.Mailbox ()
 closeModalMailbox =
   Signal.mailbox ()
@@ -22,25 +25,27 @@ update : Action -> Model -> ( Model, Effects Action )
 update action model =
   case action of
     NoOp ->
-      ( model, Effects.none )
+      ( model
+      , Effects.none
+      )
 
-    GraphQLAction action query ->
+    NewQuery maybeQuery ->
       let
-        newResult =
-          case action of
-            Just res ->
-              toString res
-
+        queryString =
+          case maybeQuery of
+            Just query ->
+              toString query
             Nothing ->
-              "no result yet, braaaah"
+              "Bad string"
 
         newModel =
           { model
-            -- | query = query
-            | result = newResult
+            | result = queryString
           }
       in
-        ( newModel, Effects.none )
+        ( newModel
+        , Effects.none
+        )
 
     Remove id ->
       let
@@ -70,7 +75,9 @@ update action model =
             , nextId = newNextId
           }
       in
-        ( newModel, sendToCloseModalMailbox )
+        ( newModel
+        , sendToCloseModalMailbox
+        )
 
     UpdateTitle str ->
       let
@@ -83,7 +90,9 @@ update action model =
         newModel =
           { model | item = updatedItem }
       in
-        ( newModel, Effects.none )
+        ( newModel
+        , Effects.none
+        )
 
     UpdateUrl str ->
       let
@@ -96,4 +105,6 @@ update action model =
         newModel =
           { model | item = updatedItem }
       in
-        ( newModel, Effects.none )
+        ( newModel
+        , Effects.none
+        )

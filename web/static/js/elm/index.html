@@ -12235,70 +12235,6 @@ Elm.Http.make = function (_elm) {
                              ,BadResponse: BadResponse
                              ,RawTimeout: RawTimeout
                              ,RawNetworkError: RawNetworkError};
-};Elm.StartApp = Elm.StartApp || {};
-Elm.StartApp.make = function (_elm) {
-   "use strict";
-   _elm.StartApp = _elm.StartApp || {};
-   if (_elm.StartApp.values) return _elm.StartApp.values;
-   var _U = Elm.Native.Utils.make(_elm),
-   $Basics = Elm.Basics.make(_elm),
-   $Debug = Elm.Debug.make(_elm),
-   $Effects = Elm.Effects.make(_elm),
-   $Html = Elm.Html.make(_elm),
-   $List = Elm.List.make(_elm),
-   $Maybe = Elm.Maybe.make(_elm),
-   $Result = Elm.Result.make(_elm),
-   $Signal = Elm.Signal.make(_elm),
-   $Task = Elm.Task.make(_elm);
-   var _op = {};
-   var start = function (config) {
-      var updateStep = F2(function (action,_p0) {
-         var _p1 = _p0;
-         var _p2 = A2(config.update,action,_p1._0);
-         var newModel = _p2._0;
-         var additionalEffects = _p2._1;
-         return {ctor: "_Tuple2"
-                ,_0: newModel
-                ,_1: $Effects.batch(_U.list([_p1._1,additionalEffects]))};
-      });
-      var update = F2(function (actions,_p3) {
-         var _p4 = _p3;
-         return A3($List.foldl,
-         updateStep,
-         {ctor: "_Tuple2",_0: _p4._0,_1: $Effects.none},
-         actions);
-      });
-      var messages = $Signal.mailbox(_U.list([]));
-      var singleton = function (action) {
-         return _U.list([action]);
-      };
-      var address = A2($Signal.forwardTo,messages.address,singleton);
-      var inputs = $Signal.mergeMany(A2($List._op["::"],
-      messages.signal,
-      A2($List.map,$Signal.map(singleton),config.inputs)));
-      var effectsAndModel = A3($Signal.foldp,
-      update,
-      config.init,
-      inputs);
-      var model = A2($Signal.map,$Basics.fst,effectsAndModel);
-      return {html: A2($Signal.map,config.view(address),model)
-             ,model: model
-             ,tasks: A2($Signal.map,
-             function (_p5) {
-                return A2($Effects.toTask,messages.address,$Basics.snd(_p5));
-             },
-             effectsAndModel)};
-   };
-   var App = F3(function (a,b,c) {
-      return {html: a,model: b,tasks: c};
-   });
-   var Config = F4(function (a,b,c,d) {
-      return {init: a,update: b,view: c,inputs: d};
-   });
-   return _elm.StartApp.values = {_op: _op
-                                 ,start: start
-                                 ,Config: Config
-                                 ,App: App};
 };Elm.Item = Elm.Item || {};
 Elm.Item.Model = Elm.Item.Model || {};
 Elm.Item.Model.make = function (_elm) {
@@ -12318,40 +12254,6 @@ Elm.Item.Model.make = function (_elm) {
       return {id: a,title: b,url: c};
    });
    return _elm.Item.Model.values = {_op: _op,Item: Item};
-};Elm.Actions = Elm.Actions || {};
-Elm.Actions.make = function (_elm) {
-   "use strict";
-   _elm.Actions = _elm.Actions || {};
-   if (_elm.Actions.values) return _elm.Actions.values;
-   var _U = Elm.Native.Utils.make(_elm),
-   $Basics = Elm.Basics.make(_elm),
-   $Debug = Elm.Debug.make(_elm),
-   $Http = Elm.Http.make(_elm),
-   $Item$Model = Elm.Item.Model.make(_elm),
-   $List = Elm.List.make(_elm),
-   $Maybe = Elm.Maybe.make(_elm),
-   $Result = Elm.Result.make(_elm),
-   $Signal = Elm.Signal.make(_elm);
-   var _op = {};
-   var Err = function (a) {    return {ctor: "Err",_0: a};};
-   var Ok = function (a) {    return {ctor: "Ok",_0: a};};
-   var UpdateUrl = function (a) {
-      return {ctor: "UpdateUrl",_0: a};
-   };
-   var UpdateTitle = function (a) {
-      return {ctor: "UpdateTitle",_0: a};
-   };
-   var Add = {ctor: "Add"};
-   var Remove = function (a) {    return {ctor: "Remove",_0: a};};
-   var NoOp = {ctor: "NoOp"};
-   return _elm.Actions.values = {_op: _op
-                                ,NoOp: NoOp
-                                ,Remove: Remove
-                                ,Add: Add
-                                ,UpdateTitle: UpdateTitle
-                                ,UpdateUrl: UpdateUrl
-                                ,Ok: Ok
-                                ,Err: Err};
 };Elm.GraphQL = Elm.GraphQL || {};
 Elm.GraphQL.make = function (_elm) {
    "use strict";
@@ -12471,6 +12373,40 @@ Elm.GraphQL.Ahead.make = function (_elm) {
    return _elm.GraphQL.Ahead.values = {_op: _op
                                       ,queryLinks: queryLinks
                                       ,QueryLinksResult: QueryLinksResult};
+};Elm.Actions = Elm.Actions || {};
+Elm.Actions.make = function (_elm) {
+   "use strict";
+   _elm.Actions = _elm.Actions || {};
+   if (_elm.Actions.values) return _elm.Actions.values;
+   var _U = Elm.Native.Utils.make(_elm),
+   $Basics = Elm.Basics.make(_elm),
+   $Debug = Elm.Debug.make(_elm),
+   $GraphQL$Ahead = Elm.GraphQL.Ahead.make(_elm),
+   $Item$Model = Elm.Item.Model.make(_elm),
+   $List = Elm.List.make(_elm),
+   $Maybe = Elm.Maybe.make(_elm),
+   $Result = Elm.Result.make(_elm),
+   $Signal = Elm.Signal.make(_elm);
+   var _op = {};
+   var UpdateUrl = function (a) {
+      return {ctor: "UpdateUrl",_0: a};
+   };
+   var UpdateTitle = function (a) {
+      return {ctor: "UpdateTitle",_0: a};
+   };
+   var Add = {ctor: "Add"};
+   var Remove = function (a) {    return {ctor: "Remove",_0: a};};
+   var NewQuery = function (a) {
+      return {ctor: "NewQuery",_0: a};
+   };
+   var NoOp = {ctor: "NoOp"};
+   return _elm.Actions.values = {_op: _op
+                                ,NoOp: NoOp
+                                ,NewQuery: NewQuery
+                                ,Remove: Remove
+                                ,Add: Add
+                                ,UpdateTitle: UpdateTitle
+                                ,UpdateUrl: UpdateUrl};
 };Elm.Model = Elm.Model || {};
 Elm.Model.make = function (_elm) {
    "use strict";
@@ -12479,7 +12415,6 @@ Elm.Model.make = function (_elm) {
    var _U = Elm.Native.Utils.make(_elm),
    $Basics = Elm.Basics.make(_elm),
    $Debug = Elm.Debug.make(_elm),
-   $GraphQL$Ahead = Elm.GraphQL.Ahead.make(_elm),
    $Item$Model = Elm.Item.Model.make(_elm),
    $List = Elm.List.make(_elm),
    $Maybe = Elm.Maybe.make(_elm),
@@ -12494,10 +12429,9 @@ Elm.Model.make = function (_elm) {
    var initialModel = {items: dummyItems
                       ,item: A3($Item$Model.Item,dummyLength,"","")
                       ,nextId: dummyLength
-                      ,query: $Maybe.Nothing
-                      ,result: "initial value"};
-   var Model = F5(function (a,b,c,d,e) {
-      return {items: a,item: b,nextId: c,query: d,result: e};
+                      ,result: "No result yet..."};
+   var Model = F4(function (a,b,c,d) {
+      return {items: a,item: b,nextId: c,result: d};
    });
    return _elm.Model.values = {_op: _op
                               ,Model: Model
@@ -12603,11 +12537,15 @@ Elm.Update.make = function (_elm) {
       {case "NoOp": return {ctor: "_Tuple2"
                            ,_0: model
                            ,_1: $Effects.none};
-         case "Ok": var newModel = _U.update(model,
-           {result: $Basics.toString($Maybe.Just(_p0._0))});
-           return {ctor: "_Tuple2",_0: newModel,_1: $Effects.none};
-         case "Err": var newModel = _U.update(model,
-           {result: "no result yet, brah"});
+         case "NewQuery": var queryString = function () {
+              var _p1 = _p0._0;
+              if (_p1.ctor === "Just") {
+                    return $Basics.toString(_p1._0);
+                 } else {
+                    return "Bad string";
+                 }
+           }();
+           var newModel = _U.update(model,{result: queryString});
            return {ctor: "_Tuple2",_0: newModel,_1: $Effects.none};
          case "Remove": var newModel = _U.update(model,
            {items: A2($List.filter,
@@ -12768,18 +12706,17 @@ Elm.Main.make = function (_elm) {
    _elm.Main = _elm.Main || {};
    if (_elm.Main.values) return _elm.Main.values;
    var _U = Elm.Native.Utils.make(_elm),
+   $Actions = Elm.Actions.make(_elm),
    $Basics = Elm.Basics.make(_elm),
    $Debug = Elm.Debug.make(_elm),
    $Effects = Elm.Effects.make(_elm),
    $GraphQL$Ahead = Elm.GraphQL.Ahead.make(_elm),
    $Html = Elm.Html.make(_elm),
-   $Http = Elm.Http.make(_elm),
    $List = Elm.List.make(_elm),
    $Maybe = Elm.Maybe.make(_elm),
    $Model = Elm.Model.make(_elm),
    $Result = Elm.Result.make(_elm),
    $Signal = Elm.Signal.make(_elm),
-   $StartApp = Elm.StartApp.make(_elm),
    $Task = Elm.Task.make(_elm),
    $Update = Elm.Update.make(_elm),
    $View = Elm.View.make(_elm);
@@ -12789,21 +12726,58 @@ Elm.Main.make = function (_elm) {
       return [];
    },
    $Update.closeModalMailbox.signal);
-   var app = $StartApp.start({init: {ctor: "_Tuple2"
-                                    ,_0: $Model.initialModel
-                                    ,_1: $Effects.none}
-                             ,update: $Update.update
-                             ,view: $View.view
-                             ,inputs: _U.list([])});
-   var main = app.html;
-   var tasks = Elm.Native.Task.make(_elm).performSignal("tasks",
-   app.tasks);
-   var init = function () {
-      var effects = $Effects.task($Task.toResult($GraphQL$Ahead.queryLinks("k")));
-      return {ctor: "_Tuple2",_0: $Maybe.Nothing,_1: effects};
+   var getQuery = function (sortString) {
+      return $Effects.task(A2($Task.map,
+      $Actions.NewQuery,
+      $Task.toMaybe($GraphQL$Ahead.queryLinks(sortString))));
+   };
+   var init = function (sortString) {
+      return {ctor: "_Tuple2"
+             ,_0: $Model.initialModel
+             ,_1: getQuery(sortString)};
+   };
+   var actionsMailbox = $Signal.mailbox(_U.list([]));
+   var oneActionAddress = A2($Signal.forwardTo,
+   actionsMailbox.address,
+   function (action) {
+      return _U.list([action]);
+   });
+   var modelAndFxSignal = function () {
+      var initial = init("k");
+      var modelAndFx = F2(function (action,_p0) {
+         var _p1 = _p0;
+         return A2($Update.update,action,_p1._0);
+      });
+      var modelAndManyFxs = F2(function (actions,_p2) {
+         var _p3 = _p2;
+         return A3($List.foldl,
+         modelAndFx,
+         {ctor: "_Tuple2",_0: _p3._0,_1: $Effects.none},
+         actions);
+      });
+      return A3($Signal.foldp,
+      modelAndManyFxs,
+      initial,
+      actionsMailbox.signal);
    }();
+   var modelSignal = A2($Signal.map,$Basics.fst,modelAndFxSignal);
+   var main = A2($Signal.map,
+   $View.view(oneActionAddress),
+   modelSignal);
+   var fxSignal = A2($Signal.map,$Basics.snd,modelAndFxSignal);
+   var taskSignal = A2($Signal.map,
+   $Effects.toTask(actionsMailbox.address),
+   fxSignal);
+   var tasks = Elm.Native.Task.make(_elm).performSignal("tasks",
+   taskSignal);
    return _elm.Main.values = {_op: _op
+                             ,actionsMailbox: actionsMailbox
+                             ,oneActionAddress: oneActionAddress
+                             ,modelSignal: modelSignal
                              ,init: init
-                             ,app: app
-                             ,main: main};
+                             ,getQuery: getQuery
+                             ,modelAndFxSignal: modelAndFxSignal
+                             ,main: main
+                             ,fxSignal: fxSignal
+                             ,taskSignal: taskSignal};
 };</script></head><body><script type="text/javascript">Elm.fullscreen(Elm.Main)</script></body></html>

@@ -6,7 +6,6 @@ Elm.Model.make = function (_elm) {
    var _U = Elm.Native.Utils.make(_elm),
    $Basics = Elm.Basics.make(_elm),
    $Debug = Elm.Debug.make(_elm),
-   $GraphQL$Ahead = Elm.GraphQL.Ahead.make(_elm),
    $Item$Model = Elm.Item.Model.make(_elm),
    $List = Elm.List.make(_elm),
    $Maybe = Elm.Maybe.make(_elm),
@@ -21,10 +20,9 @@ Elm.Model.make = function (_elm) {
    var initialModel = {items: dummyItems
                       ,item: A3($Item$Model.Item,dummyLength,"","")
                       ,nextId: dummyLength
-                      ,query: $Maybe.Nothing
-                      ,result: "initial value"};
-   var Model = F5(function (a,b,c,d,e) {
-      return {items: a,item: b,nextId: c,query: d,result: e};
+                      ,result: "No result yet..."};
+   var Model = F4(function (a,b,c,d) {
+      return {items: a,item: b,nextId: c,result: d};
    });
    return _elm.Model.values = {_op: _op
                               ,Model: Model

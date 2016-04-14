@@ -1,0 +1,33 @@
+
+-- init : (Model, Effects QueryAction)
+-- init =
+--   let
+--     effects =
+--       Ahead.queryLinks "k"
+--         -- task (can fail)
+--         |>
+--           Task.toResult
+--         -- task (can't fail)
+--         |>
+--           Effects.task
+--
+--     -- effect containing task
+--   in
+--     ( initialModel , effects )
+--
+-- app : StartApp.App Model
+-- app =
+--   start
+--     { init = init
+--     , update = update
+--     , view = view
+--     , inputs = []
+--     }
+
+-- main : Signal Html
+-- main =
+--   app.html
+
+-- port tasks : Signal (Task.Task Effects.Never ())
+-- port tasks =
+--   app.tasks

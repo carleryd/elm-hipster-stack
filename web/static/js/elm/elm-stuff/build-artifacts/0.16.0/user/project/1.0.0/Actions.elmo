@@ -7,16 +7,12 @@ Elm.Actions.make = function (_elm) {
    $Basics = Elm.Basics.make(_elm),
    $Debug = Elm.Debug.make(_elm),
    $GraphQL$Ahead = Elm.GraphQL.Ahead.make(_elm),
-   $Http = Elm.Http.make(_elm),
    $Item$Model = Elm.Item.Model.make(_elm),
    $List = Elm.List.make(_elm),
    $Maybe = Elm.Maybe.make(_elm),
    $Result = Elm.Result.make(_elm),
    $Signal = Elm.Signal.make(_elm);
    var _op = {};
-   var GraphQLAction = F2(function (a,b) {
-      return {ctor: "GraphQLAction",_0: a,_1: b};
-   });
    var UpdateUrl = function (a) {
       return {ctor: "UpdateUrl",_0: a};
    };
@@ -25,12 +21,15 @@ Elm.Actions.make = function (_elm) {
    };
    var Add = {ctor: "Add"};
    var Remove = function (a) {    return {ctor: "Remove",_0: a};};
+   var NewQuery = function (a) {
+      return {ctor: "NewQuery",_0: a};
+   };
    var NoOp = {ctor: "NoOp"};
    return _elm.Actions.values = {_op: _op
                                 ,NoOp: NoOp
+                                ,NewQuery: NewQuery
                                 ,Remove: Remove
                                 ,Add: Add
                                 ,UpdateTitle: UpdateTitle
-                                ,UpdateUrl: UpdateUrl
-                                ,GraphQLAction: GraphQLAction};
+                                ,UpdateUrl: UpdateUrl};
 };
