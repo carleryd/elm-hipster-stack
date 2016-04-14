@@ -1,12 +1,18 @@
-# App (Does not work with GraphQL backend yet!)
+# App
 
 To start your Phoenix app:
 
   * Install Node packages with `npm install`
   * Install dependencies with `mix deps.get`
-  * Start Phoenix endpoint with `mix phoenix.server`
+  * In one terminal, start RethinkDB with `rethinkdb`
+  * In another terminal, start Phoenix endpoint with `mix phoenix.server`
+  * Create new database by going to `localhost:4000/reset`
+  * Elm app now running on `localhost:4000`
 
-Now you can visit [`localhost:4000`](http://localhost:4000) from your browser.
+Credit the GraphQL integration to note89 at https://github.com/graphql-elixir/phoenix-hipster-stack, this is more or less taken directly from there!
+
+Explore the database with GraphiQL at `localhost:4000/graphql`
+
 
 Ready to run in production? Please [check our deployment guides](http://www.phoenixframework.org/docs/deployment).
 
