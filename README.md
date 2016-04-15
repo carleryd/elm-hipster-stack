@@ -16,18 +16,20 @@ Clone the repo and do the following to start the Elm Links app:
   * Create new database by going to `localhost:4000/reset`
   * Elm app now running on `localhost:4000`
 
-Credit the GraphQL integration with Phoenix to note89 at https://github.com/graphql-elixir/phoenix-hipster-stack, the GraphQL stuff in this repo is taken directly from there!
-
 
 Explore the database with GraphiQL at `localhost:4000/graphql`
 
+## Things we stole from
+* [elm-graphql](https://github.com/jahewson/elm-graphql)
+* [phoenix-hipster-stack](https://github.com/graphql-elixir/phoenix-hipster-stack)
 
-Ready to run in production? Please [check our deployment guides](http://www.phoenixframework.org/docs/deployment).
+
+
 
 ## Learn more
-
-  * Official website: http://www.phoenixframework.org/
-  * Guides: http://phoenixframework.org/docs/overview
-  * Docs: http://hexdocs.pm/phoenix
-  * Mailing list: http://groups.google.com/group/phoenix-talk
-  * Source: https://github.com/phoenixframework/phoenix
+* http://elm-lang.org/
+* Official website: http://www.phoenixframework.org/
+* Guides: http://phoenixframework.org/docs/overview
+* Docs: http://hexdocs.pm/phoenix
+* Mailing list: http://groups.google.com/group/phoenix-talk
+* Source: https://github.com/phoenixframework/phoenix
