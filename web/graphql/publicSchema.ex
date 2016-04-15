@@ -45,7 +45,7 @@ defmodule App.PublicSchema do
       query: %ObjectType{
         name: "Query",
         fields: %{
-          # node: node_field,
+          node: node_field,
           store: %{
             type: App.Type.Store.get,
             resolve: fn (doc, _args, _) ->
@@ -68,7 +68,7 @@ defmodule App.PublicSchema do
                 type: App.Type.LinkConnection.get[:edge_type],
                 resolve: fn (obj, _args, _info) ->
                   %{
-                    # node: App.Query.Link.get_from_id(first(obj[:generated_keys])),
+                    node: App.Query.Link.get_from_id(first(obj[:generated_keys])),
                     cursor: first(obj[:generated_keys])
                   }
                 end

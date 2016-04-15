@@ -6,7 +6,6 @@ import GraphQL.Ahead as Ahead exposing (QueryLinksResult)
 
 type Action
   = NoOp
-  -- | RequestQuery String
   | NewQuery (Maybe QueryLinksResult)
   | UpdateSearch String
   | Add Item

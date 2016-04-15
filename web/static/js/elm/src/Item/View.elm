@@ -25,7 +25,7 @@ viewItem address item =
             [ class "truncate" ]
             [ span
                 [ dateStyle ]
-                [ text "DATUM" ]
+                [ text item.createdAt ]
             , a
                 [ href item.url
                 , urlStyle

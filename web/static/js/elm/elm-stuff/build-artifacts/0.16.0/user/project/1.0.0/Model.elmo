@@ -13,12 +13,15 @@ Elm.Model.make = function (_elm) {
    $Signal = Elm.Signal.make(_elm);
    var _op = {};
    var initialModel = {items: _U.list([])
-                      ,item: A2($Item$Model.Item,"","")
+                      ,item: $Item$Model.itemTemplate
+                      ,newItem: $Item$Model.itemTemplate
                       ,searchStr: ""};
-   var Model = F3(function (a,b,c) {
-      return {items: a,item: b,searchStr: c};
+   var Model = F4(function (a,b,c,d) {
+      return {items: a,item: b,newItem: c,searchStr: d};
    });
+   var Edge = function (a) {    return {node: a};};
    return _elm.Model.values = {_op: _op
+                              ,Edge: Edge
                               ,Model: Model
                               ,initialModel: initialModel};
 };

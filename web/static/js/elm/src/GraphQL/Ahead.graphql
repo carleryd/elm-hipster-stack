@@ -5,7 +5,8 @@ query queryLinks($queryParam: String!) {
         node {
           id,
           title,
-          url
+          url,
+          createdAt
         }
       }
     }

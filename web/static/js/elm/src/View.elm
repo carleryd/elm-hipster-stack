@@ -37,7 +37,7 @@ view address model =
             , type' "text"
             , value model.searchStr
             , on
-              "input"
+                "input"
                 targetValue
                 (\str -> Signal.message address (UpdateSearch str))
             ]
@@ -46,13 +46,14 @@ view address model =
             [ for "search" ]
             [ text "Search All Resources" ]
         ]
+
     addButton =
       a
         [ href "#modal1"
         , class
-          ("waves-effect waves-light btn modal-trigger right light-blue"
-          ++ " white-text"
-          )
+            ("waves-effect waves-light btn modal-trigger right light-blue"
+              ++ " white-text"
+            )
         ]
         [ text "Add new resource" ]
 

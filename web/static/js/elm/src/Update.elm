@@ -1,10 +1,9 @@
 module Update (..) where
 
-import Model exposing (..)
-import Actions exposing (..)
+import Model exposing (Model, QueryResult, Edge)
 import Item.Model exposing (Item)
+import Actions exposing (..)
 import Effects exposing (Effects)
-import Html exposing (div, ul, li, text)
 import GraphQL.Ahead as Ahead exposing (QueryLinksResult)
 import Task
 
@@ -21,45 +20,17 @@ sendToCloseModalMailbox =
     |> Effects.map (always NoOp)
 
 
-type alias QueryResult a b c d =
-  { d | store : { c | linkConnection : { b | edges : a } } }
-
-
-toList : QueryResult a b c d -> a
+toList : QueryResult (List Edge) b c d -> List Edge
 toList queriedObject =
   queriedObject.store.linkConnection.edges
 
 
+edgeToItem : Edge -> Item
 edgeToItem edge =
   Item
-    (default edge.node.title)
-    (default edge.node.url)
-
-
-default : Maybe String -> String
-default maybeStuff =
-  case maybeStuff of
-    Just text ->
-      text
-
-    Nothing ->
-      "Missing Value"
-
-
-superListItem edge =
-  ul
-    []
-    [ li [] [ text (default edge.node.id) ]
-    , li [] [ text (default edge.node.url) ]
-    , li
-        []
-        [ text (default edge.node.title)
-        ]
-    ]
-
-
-addToModel adder item =
-  default item
+    (Maybe.withDefault "Missing title" edge.node.title)
+    (Maybe.withDefault "Missing url" edge.node.url)
+    (Maybe.withDefault "Missing createdAt" edge.node.createdAt)
 
 
 getQuery : String -> Effects.Effects Action
@@ -117,13 +88,10 @@ update action model =
         newItems =
           item :: model.items
 
-        newItem =
-          Item "" ""
-
         newModel =
           { model
             | items = newItems
-            , item = newItem
+            , item = model.newItem
           }
       in
         ( newModel

@@ -22,8 +22,7 @@ erl_crash.dump
 
 # Custom added
 node_modules
-**/elm_stuff/build-artifacts
-**/elm_stuff/packages
+elm_stuff
 .DS_Store
 
 #RethinkDB

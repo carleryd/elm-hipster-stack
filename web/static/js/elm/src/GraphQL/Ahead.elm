@@ -22,6 +22,7 @@ type alias QueryLinksResult =
                     { id : Maybe String
                     , title : Maybe String
                     , url : Maybe String
+                    , createdAt : Maybe String
                     }
                 }
             }
@@ -31,7 +32,7 @@ type alias QueryLinksResult =
 
 queryLinks : String -> Task Http.Error QueryLinksResult
 queryLinks queryParam =
-    let query = """query queryLinks($queryParam: String!) { store { linkConnection(query: $queryParam) { edges { node { id title url } } } } }""" in
+    let query = """query queryLinks($queryParam: String!) { store { linkConnection(query: $queryParam) { edges { node { id title url createdAt } } } } }""" in
     let params =
             object
                 [ ("queryParam", Json.Encode.string queryParam)
@@ -46,6 +47,7 @@ queryLinksResult =
         (map (\linkConnection -> { linkConnection = linkConnection }) ("linkConnection" :=
         (map (\edges -> { edges = edges }) ("edges" :=
         (list (map (\node -> { node = node }) ("node" :=
-        (map (\id title url -> { id = id, title = title, url = url }) (maybe ("id" := string))
+        (map (\id title url createdAt -> { id = id, title = title, url = url, createdAt = createdAt }) (maybe ("id" := string))
         `apply` (maybe ("title" := string))
-        `apply` (maybe ("url" := string)))))))))))
+        `apply` (maybe ("url" := string))
+        `apply` (maybe ("createdAt" := string)))))))))))

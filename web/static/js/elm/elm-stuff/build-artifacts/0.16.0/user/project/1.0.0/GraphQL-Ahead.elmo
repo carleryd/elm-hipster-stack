@@ -43,9 +43,10 @@ Elm.GraphQL.Ahead.make = function (_elm) {
    "node",
    A2($GraphQL.apply,
    A2($GraphQL.apply,
+   A2($GraphQL.apply,
    A2($Json$Decode.map,
-   F3(function (id,title,url) {
-      return {id: id,title: title,url: url};
+   F4(function (id,title,url,createdAt) {
+      return {id: id,title: title,url: url,createdAt: createdAt};
    }),
    $Json$Decode.maybe(A2($Json$Decode._op[":="],
    "id",
@@ -55,10 +56,13 @@ Elm.GraphQL.Ahead.make = function (_elm) {
    $Json$Decode.string))),
    $Json$Decode.maybe(A2($Json$Decode._op[":="],
    "url",
+   $Json$Decode.string))),
+   $Json$Decode.maybe(A2($Json$Decode._op[":="],
+   "createdAt",
    $Json$Decode.string))))))))))));
    var url = "http://localhost:4000/graphql";
    var queryLinks = function (queryParam) {
-      var query = "query queryLinks($queryParam: String!) { store { linkConnection(query: $queryParam) { edges { node { id title url } } } } }";
+      var query = "query queryLinks($queryParam: String!) { store { linkConnection(query: $queryParam) { edges { node { id title url createdAt } } } } }";
       var params = $Json$Encode.object(_U.list([{ctor: "_Tuple2"
                                                 ,_0: "queryParam"
                                                 ,_1: $Json$Encode.string(queryParam)}]));

@@ -2,4 +2,4 @@
 make=./elm-graphql/tool/bin/make
 
 # list of.graphql files and their endpoints
-$make src/GraphQL/Ahead.graphql "http://localhost:5000/graphql"
+$make src/GraphQL/Ahead.graphql "http://localhost:4000/graphql"

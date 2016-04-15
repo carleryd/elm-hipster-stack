@@ -13,6 +13,11 @@ Elm.Item.Model.make = function (_elm) {
    $Result = Elm.Result.make(_elm),
    $Signal = Elm.Signal.make(_elm);
    var _op = {};
-   var Item = F2(function (a,b) {    return {title: a,url: b};});
-   return _elm.Item.Model.values = {_op: _op,Item: Item};
+   var Item = F3(function (a,b,c) {
+      return {title: a,url: b,createdAt: c};
+   });
+   var itemTemplate = A3(Item,"","","");
+   return _elm.Item.Model.values = {_op: _op
+                                   ,Item: Item
+                                   ,itemTemplate: itemTemplate};
 };

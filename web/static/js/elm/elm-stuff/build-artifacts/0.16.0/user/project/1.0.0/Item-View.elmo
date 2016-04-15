@@ -53,7 +53,7 @@ Elm.Item.View.make = function (_elm) {
               _U.list([$Html$Attributes.$class("truncate")]),
               _U.list([A2($Html.span,
                       _U.list([dateStyle]),
-                      _U.list([$Html.text("DATUM")]))
+                      _U.list([$Html.text(item.createdAt)]))
                       ,A2($Html.a,
                       _U.list([$Html$Attributes.href(item.url),urlStyle]),
                       _U.list([$Html.text(urlPrettify(item.url))]))]))]))]));
