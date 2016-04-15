@@ -104,7 +104,16 @@ Elm.View.make = function (_elm) {
       _U.list([$Html$Attributes.$class("input-field")]),
       _U.list([A2($Html.input,
               _U.list([$Html$Attributes.id("search")
-                      ,$Html$Attributes.type$("text")]),
+                      ,$Html$Attributes.type$("text")
+                      ,$Html$Attributes.value(model.searchStr)
+                      ,A3($Html$Events.on,
+                      "input",
+                      $Html$Events.targetValue,
+                      function (str) {
+                         return A2($Signal.message,
+                         address,
+                         $Actions.UpdateSearch(str));
+                      })]),
               _U.list([]))
               ,A2($Html.label,
               _U.list([$Html$Attributes.$for("search")]),

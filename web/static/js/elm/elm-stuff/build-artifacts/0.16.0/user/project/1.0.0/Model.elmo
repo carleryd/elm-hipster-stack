@@ -13,8 +13,11 @@ Elm.Model.make = function (_elm) {
    $Signal = Elm.Signal.make(_elm);
    var _op = {};
    var initialModel = {items: _U.list([])
-                      ,item: A2($Item$Model.Item,"","")};
-   var Model = F2(function (a,b) {    return {items: a,item: b};});
+                      ,item: A2($Item$Model.Item,"","")
+                      ,searchStr: ""};
+   var Model = F3(function (a,b,c) {
+      return {items: a,item: b,searchStr: c};
+   });
    return _elm.Model.values = {_op: _op
                               ,Model: Model
                               ,initialModel: initialModel};

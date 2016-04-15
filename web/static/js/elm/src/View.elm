@@ -35,6 +35,11 @@ view address model =
         [ input
             [ id "search"
             , type' "text"
+            , value model.searchStr
+            , on
+              "input"
+                targetValue
+                (\str -> Signal.message address (UpdateSearch str))
             ]
             []
         , label

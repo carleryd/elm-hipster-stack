@@ -5,6 +5,8 @@ import Actions exposing (..)
 import Item.Model exposing (Item)
 import Effects exposing (Effects)
 import Html exposing (div, ul, li, text)
+import GraphQL.Ahead as Ahead exposing (QueryLinksResult)
+import Task
 
 
 closeModalMailbox : Signal.Mailbox ()
@@ -39,20 +41,34 @@ default maybeStuff =
   case maybeStuff of
     Just text ->
       text
+
     Nothing ->
       "Missing Value"
 
 
 superListItem edge =
-    ul []
-      [ li [] [ text (default edge.node.id ) ]
-      , li [] [ text (default edge.node.url)]
-      , li [] [ text (default edge.node.title)
-      ]
-      ]
+  ul
+    []
+    [ li [] [ text (default edge.node.id) ]
+    , li [] [ text (default edge.node.url) ]
+    , li
+        []
+        [ text (default edge.node.title)
+        ]
+    ]
+
 
 addToModel adder item =
   default item
+
+
+getQuery : String -> Effects.Effects Action
+getQuery sortString =
+  Ahead.queryLinks sortString
+    |> Task.toMaybe
+    |> Task.map NewQuery
+    |> Effects.task
+
 
 update : Action -> Model -> ( Model, Effects Action )
 update action model =
@@ -83,6 +99,17 @@ update action model =
       in
         ( newModel
         , Effects.none
+        )
+
+    UpdateSearch str ->
+      let
+        newModel =
+          { model
+            | searchStr = str
+          }
+      in
+        ( newModel
+        , getQuery str
         )
 
     Add item ->

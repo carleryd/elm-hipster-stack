@@ -20,6 +20,9 @@ Elm.Actions.make = function (_elm) {
       return {ctor: "UpdateTitle",_0: a};
    };
    var Add = function (a) {    return {ctor: "Add",_0: a};};
+   var UpdateSearch = function (a) {
+      return {ctor: "UpdateSearch",_0: a};
+   };
    var NewQuery = function (a) {
       return {ctor: "NewQuery",_0: a};
    };
@@ -27,6 +30,7 @@ Elm.Actions.make = function (_elm) {
    return _elm.Actions.values = {_op: _op
                                 ,NoOp: NoOp
                                 ,NewQuery: NewQuery
+                                ,UpdateSearch: UpdateSearch
                                 ,Add: Add
                                 ,UpdateTitle: UpdateTitle
                                 ,UpdateUrl: UpdateUrl};

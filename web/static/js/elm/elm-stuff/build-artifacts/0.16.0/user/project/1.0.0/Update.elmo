@@ -8,14 +8,21 @@ Elm.Update.make = function (_elm) {
    $Basics = Elm.Basics.make(_elm),
    $Debug = Elm.Debug.make(_elm),
    $Effects = Elm.Effects.make(_elm),
+   $GraphQL$Ahead = Elm.GraphQL.Ahead.make(_elm),
    $Html = Elm.Html.make(_elm),
    $Item$Model = Elm.Item.Model.make(_elm),
    $List = Elm.List.make(_elm),
    $Maybe = Elm.Maybe.make(_elm),
    $Model = Elm.Model.make(_elm),
    $Result = Elm.Result.make(_elm),
-   $Signal = Elm.Signal.make(_elm);
+   $Signal = Elm.Signal.make(_elm),
+   $Task = Elm.Task.make(_elm);
    var _op = {};
+   var getQuery = function (sortString) {
+      return $Effects.task(A2($Task.map,
+      $Actions.NewQuery,
+      $Task.toMaybe($GraphQL$Ahead.queryLinks(sortString))));
+   };
    var $default = function (maybeStuff) {
       var _p0 = maybeStuff;
       if (_p0.ctor === "Just") {
@@ -71,6 +78,9 @@ Elm.Update.make = function (_elm) {
            }();
            var newModel = _U.update(model,{items: newItems});
            return {ctor: "_Tuple2",_0: newModel,_1: $Effects.none};
+         case "UpdateSearch": var _p3 = _p1._0;
+           var newModel = _U.update(model,{searchStr: _p3});
+           return {ctor: "_Tuple2",_0: newModel,_1: getQuery(_p3)};
          case "Add": var newItem = A2($Item$Model.Item,"","");
            var newItems = A2($List._op["::"],_p1._0,model.items);
            var newModel = _U.update(model,{items: newItems,item: newItem});
@@ -94,5 +104,6 @@ Elm.Update.make = function (_elm) {
                                ,$default: $default
                                ,superListItem: superListItem
                                ,addToModel: addToModel
+                               ,getQuery: getQuery
                                ,update: update};
 };

@@ -8,7 +8,6 @@ Elm.Main.make = function (_elm) {
    $Basics = Elm.Basics.make(_elm),
    $Debug = Elm.Debug.make(_elm),
    $Effects = Elm.Effects.make(_elm),
-   $GraphQL$Ahead = Elm.GraphQL.Ahead.make(_elm),
    $Html = Elm.Html.make(_elm),
    $List = Elm.List.make(_elm),
    $Maybe = Elm.Maybe.make(_elm),
@@ -24,15 +23,10 @@ Elm.Main.make = function (_elm) {
       return [];
    },
    $Update.closeModalMailbox.signal);
-   var getQuery = function (sortString) {
-      return $Effects.task(A2($Task.map,
-      $Actions.NewQuery,
-      $Task.toMaybe($GraphQL$Ahead.queryLinks(sortString))));
-   };
    var init = function (sortString) {
       return {ctor: "_Tuple2"
              ,_0: $Model.initialModel
-             ,_1: getQuery(sortString)};
+             ,_1: $Update.getQuery(sortString)};
    };
    var actionsMailbox = $Signal.mailbox(_U.list([]));
    var oneActionAddress = A2($Signal.forwardTo,
@@ -71,7 +65,6 @@ Elm.Main.make = function (_elm) {
    return _elm.Main.values = {_op: _op
                              ,actionsMailbox: actionsMailbox
                              ,oneActionAddress: oneActionAddress
-                             ,getQuery: getQuery
                              ,init: init
                              ,modelSignal: modelSignal
                              ,modelAndFxSignal: modelAndFxSignal

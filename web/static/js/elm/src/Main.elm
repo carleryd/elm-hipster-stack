@@ -2,12 +2,11 @@ module Main (..) where
 
 import Signal exposing (..)
 import Model exposing (Model, initialModel)
-import Update exposing (..)
+import Update exposing (update, getQuery, closeModalMailbox)
 import View exposing (..)
 import Effects
-import Task exposing (..)
+import Task
 import Html exposing (Html)
-import GraphQL.Ahead as Ahead exposing (QueryLinksResult)
 import Actions exposing (..)
 
 
@@ -19,14 +18,6 @@ actionsMailbox =
 oneActionAddress : Signal.Address Action
 oneActionAddress =
   Signal.forwardTo actionsMailbox.address (\action -> [ action ])
-
-
-getQuery : String -> Effects.Effects Action
-getQuery sortString =
-  Ahead.queryLinks sortString
-    |> Task.toMaybe
-    |> Task.map NewQuery
-    |> Effects.task
 
 
 init : String -> ( Model, Effects.Effects Action )
