@@ -4,6 +4,11 @@
 * GraphQL
 * RethinkDB
 
+# About
+This is a simple application where links can be created and are presented in a list.
+
+# Work in progress!
+At the moment GraphQL mutations are not supported and because of this creation of links are not presistent with the database.
 
 # Running the Elm Links app:
 
