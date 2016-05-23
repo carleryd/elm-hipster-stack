@@ -6,7 +6,6 @@ import Html.Events exposing (on, targetValue, onClick, onInput, onSubmit, onWith
 import Types exposing (Model, Msg(..))
 import Item.View exposing (viewItems)
 import Json.Decode
-import Debug exposing (log)
 
 
 onSubmitOptions : { preventDefault : Bool, stopPropagation : Bool }
@@ -18,29 +17,26 @@ onSubmitOptions =
 
 onSubmitForm : Html.Events.Options -> Msg -> Attribute Msg
 onSubmitForm options msg =
-    let
-        logcat =
-            log "onSubmitForm" 5
-    in
-        onWithOptions "submit"
-            options
-            (Json.Decode.map Add targetValue)
+    onWithOptions "submit"
+        options
+        (Json.Decode.succeed Add)
 
 
 view : Model -> Html Msg
 view model =
     let
-        -- searchField =
-        --     div [ class "input-field" ]
-        --         [ input
-        --             [ type' "text"
-        --             , id "search"
-        --             , onInput UpdateSearch
-        --             ]
-        --             []
-        --         , label [ for "search" ]
-        --             [ text "Search All Resources" ]
-        --         ]
+        searchField =
+            div [ class "input-field" ]
+                [ input
+                    [ type' "text"
+                    , id "search"
+                    , onInput UpdateSearch
+                    ]
+                    []
+                , label [ for "search" ]
+                    [ text "Search All Resources" ]
+                ]
+
         addButton =
             a
                 [ href "#modal1"
@@ -56,7 +52,7 @@ view model =
                 [ id "modal1"
                 , class "modal modal-fixed-footer"
                 ]
-                [ Html.form [ onSubmitForm onSubmitOptions (Add "hej") ]
+                [ Html.form [ onSubmitForm onSubmitOptions Add ]
                     [ div [ class "modal-content" ]
                         [ h5 []
                             [ text "Add New Resource" ]
@@ -72,7 +68,7 @@ view model =
                             ]
                         , div [ class "input-field" ]
                             [ input
-                                [ type' "text"
+                                [ type' "url"
                                 , id "newUrl"
                                 , onInput UpdateUrl
                                 ]
@@ -101,8 +97,8 @@ view model =
                 ]
     in
         div []
-            [ -- searchField
-              div [ class "row" ]
+            [ searchField
+            , div [ class "row" ]
                 [ addButton ]
             , viewItems model.items
             , modal

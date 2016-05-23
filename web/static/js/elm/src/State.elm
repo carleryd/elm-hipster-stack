@@ -6,7 +6,6 @@ import Item.Types
 import GraphQL.Ahead as Ahead exposing (QueryLinksResult)
 import Ports exposing (closeModal)
 import Task
-import Debug exposing (log)
 
 
 initialModel : Model
@@ -32,6 +31,10 @@ getQuery sortString =
     Ahead.queryLinks { queryParam = sortString }
         |> Task.toMaybe
         |> Task.perform (\_ -> NoOp) NewQuery
+
+
+createQuery linkInput =
+    Ahead.createLinkMutation { input_0 = { url = "http://test.com", title = "Test1234", clientMutationId = "0" } }
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )
@@ -76,11 +79,8 @@ update msg model =
                 , getQuery str
                 )
 
-        Add targetValue ->
+        Add ->
             let
-                logger =
-                    log "COMEONE ADD" targetValue
-
                 newItems =
                     model.item :: model.items
 
@@ -91,8 +91,7 @@ update msg model =
                     }
             in
                 ( newModel
-                , Cmd.none
-                  -- , closeModal ()
+                , closeModal ()
                 )
 
         UpdateTitle str ->

@@ -11,4 +11,19 @@ query queryLinks($queryParam: String!) {
       }
     }
   }
+},
+
+mutation CreateLinkMutation($mutateParam: CreateLinkInput!) {
+	createLink(input: $mutateParam) {
+    clientMutationId,
+    linkEdge {
+      cursor
+      node {
+        createdAt
+        id
+        title
+        url
+      }
+    }
+  }
 }

@@ -16,7 +16,7 @@ type Msg
     = NoOp
     | NewQuery (Maybe QueryLinksResult)
     | UpdateSearch String
-    | Add String
+    | Add
     | UpdateTitle String
     | UpdateUrl String
 
