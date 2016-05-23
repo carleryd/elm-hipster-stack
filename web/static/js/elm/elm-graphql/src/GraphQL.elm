@@ -1,4 +1,4 @@
-module GraphQL (..) where
+module GraphQL exposing (..)
 {-| Todo: Write documentation for this module.
 
 # Todo: Exports
@@ -10,6 +10,9 @@ import Task exposing (Task)
 import Json.Decode exposing (..)
 import Http
 
+{-| Todo: document this
+-}
+type alias ID = String
 
 {-| Todo: document this function.
 -}

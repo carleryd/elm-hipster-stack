@@ -10,6 +10,7 @@
 import {
   OperationDefinition,
   FragmentDefinition,
+  FragmentSpread,
   SelectionSet,
   Field,
   Document,
@@ -42,11 +43,12 @@ import {
 } from 'graphql/utilities';
 
 export function decoderForQuery(def: OperationDefinition, info: TypeInfo,
-                                schema: GraphQLSchema, seenEnums: Array<GraphQLEnumType>): ElmExpr {
+                                schema: GraphQLSchema, seenEnums: { [name: string]: GraphQLEnumType },
+                                fragmentDefinitionMap: { [name: string]: FragmentDefinition }): ElmExpr {
 
   function walkOperationDefinition(def: OperationDefinition, info: TypeInfo): ElmExpr {
     info.enter(def);
-    if (def.operation == 'query') {
+    if (def.operation == 'query' || def.operation == 'mutation') {
       let decls: Array<ElmDecl> = [];
       // Name
       let name: string;
@@ -71,15 +73,7 @@ export function decoderForQuery(def: OperationDefinition, info: TypeInfo,
       info.leave(def);
       //return decls;
       return { expr: 'map ' + resultType + ' ' + expr.expr };
-    } else if (def.operation == 'mutation') {
-      // todo: mutation
     }
-  }
-
-  function walkFragmentDefinition(def: FragmentDefinition, info: TypeInfo) {
-    console.log('todo: walkFragmentDefinition', def);
-    // todo: FragmentDefinition
-    return null;
   }
 
   function walkSelectionSet(selSet: SelectionSet, info: TypeInfo): ElmExpr {
@@ -90,11 +84,13 @@ export function decoderForQuery(def: OperationDefinition, info: TypeInfo,
         let field = <Field>sel;
         fields.push(walkField(field, info));
       } else if (sel.kind == 'FragmentSpread') {
-        // todo: FragmentSpread
-        throw new Error('not implemented');
+        // expand out all fragment spreads
+        let spreadName = (<FragmentSpread>sel).name.value;
+        let def = fragmentDefinitionMap[spreadName];
+        fields.push(walkSelectionSet(def.selectionSet, info));
       } else if (sel.kind == 'InlineFragment') {
         // todo: InlineFragment
-        throw new Error('not implemented');
+        throw new Error('not implemented: InlineFragment');
       }
     }
     info.leave(selSet);
@@ -107,13 +103,19 @@ export function decoderForQuery(def: OperationDefinition, info: TypeInfo,
     for (let sel of selSet.selections) {
       if (sel.kind == 'Field') {
         let field = <Field>sel;
-        fields.push(field.name.value);
+        let name = field.name.value;
+        if (field.alias) {
+          name = field.alias.value;
+        }
+        fields.push(name);
       } else if (sel.kind == 'FragmentSpread') {
-        // todo: FragmentSpread
-        throw new Error('not implemented');
+        // expand out all fragment spreads
+        let spreadName = (<FragmentSpread>sel).name.value;
+        let def = fragmentDefinitionMap[spreadName];
+        fields = [...fields, ...getSelectionSetFields(def.selectionSet, info)];
       } else if (sel.kind == 'InlineFragment') {
         // todo: InlineFragment
-        throw new Error('not implemented');
+        throw new Error('not implemented: InlineFragment');
       }
     }
     info.leave(selSet);
@@ -122,9 +124,12 @@ export function decoderForQuery(def: OperationDefinition, info: TypeInfo,
 
   function walkField(field: Field, info: TypeInfo): ElmExpr {
     info.enter(field);
-    // todo: Alias
     // Name
     let name = field.name.value;
+    // Alias
+    if (field.alias) {
+      name = field.alias.value;
+    }
     // Arguments (opt)
     let args = field.arguments; // e.g. id: "1000"
     // todo: Directives
@@ -162,7 +167,6 @@ export function decoderForQuery(def: OperationDefinition, info: TypeInfo,
     }
   }
 
-  // fixme: return an AST instead
   function leafTypeToString(type: GraphQLType): string {
     let prefix = '';
 
@@ -182,7 +186,11 @@ export function decoderForQuery(def: OperationDefinition, info: TypeInfo,
 
     // leaf types only
     if (type instanceof GraphQLScalarType) {
-      return prefix + type.name.toLowerCase(); // todo: ID type
+      if (type.name == 'ID') {
+        return prefix + 'string';
+      } else {
+        return prefix + type.name.toLowerCase();
+      }
     } else if (type instanceof GraphQLEnumType) {
       return prefix + type.name.toLowerCase();
     } else {
@@ -191,7 +199,6 @@ export function decoderForQuery(def: OperationDefinition, info: TypeInfo,
   }
 
   // input types are defined in the query, not the schema
-  // fixme: return an AST instead
   function inputTypeToString(type: GraphQLType): string {
     let prefix = '';
 

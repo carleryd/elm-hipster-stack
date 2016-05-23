@@ -1,136 +1,109 @@
-module View (..) where
+module View exposing (..)
 
 import Html exposing (..)
 import Html.Attributes exposing (..)
-import Html.Events exposing (on, targetValue, onClick, onSubmit, onWithOptions)
-import Signal
-import Actions exposing (..)
-import Model exposing (Model)
+import Html.Events exposing (on, targetValue, onClick, onInput, onSubmit, onWithOptions)
+import Types exposing (Model, Msg(..))
 import Item.View exposing (viewItems)
 import Json.Decode
+import Debug exposing (log)
 
 
 onSubmitOptions : { preventDefault : Bool, stopPropagation : Bool }
 onSubmitOptions =
-  { stopPropagation = True
-  , preventDefault = True
-  }
+    { stopPropagation = True
+    , preventDefault = True
+    }
 
 
-onSubmitWithOptions : Html.Events.Options -> Signal.Address a -> a -> Attribute
-onSubmitWithOptions options addr msg =
-  onWithOptions
-    "submit"
-    options
-    Json.Decode.value
-    (\_ -> Signal.message addr msg)
+onSubmitForm : Html.Events.Options -> Msg -> Attribute Msg
+onSubmitForm options msg =
+    let
+        logcat =
+            log "onSubmitForm" 5
+    in
+        onWithOptions "submit"
+            options
+            (Json.Decode.map Add targetValue)
 
 
-view : Signal.Address Action -> Model -> Html
-view address model =
-  let
-    searchField =
-      div
-        [ class "input-field" ]
-        [ input
-            [ id "search"
-            , type' "text"
-            , value model.searchStr
-            , on
-                "input"
-                targetValue
-                (\str -> Signal.message address (UpdateSearch str))
-            ]
-            []
-        , label
-            [ for "search" ]
-            [ text "Search All Resources" ]
-        ]
+view : Model -> Html Msg
+view model =
+    let
+        -- searchField =
+        --     div [ class "input-field" ]
+        --         [ input
+        --             [ type' "text"
+        --             , id "search"
+        --             , onInput UpdateSearch
+        --             ]
+        --             []
+        --         , label [ for "search" ]
+        --             [ text "Search All Resources" ]
+        --         ]
+        addButton =
+            a
+                [ href "#modal1"
+                , class
+                    ("waves-effect waves-light btn modal-trigger right light-blue"
+                        ++ " white-text"
+                    )
+                ]
+                [ text "Add new resource" ]
 
-    addButton =
-      a
-        [ href "#modal1"
-        , class
-            ("waves-effect waves-light btn modal-trigger right light-blue"
-              ++ " white-text"
-            )
-        ]
-        [ text "Add new resource" ]
-
-    modal =
-      div
-        [ id "modal1"
-        , class "modal modal-fixed-footer"
-        ]
-        [ Html.form
-            [ onSubmitWithOptions onSubmitOptions address (Add model.item) ]
-            [ div
-                [ class "modal-content" ]
-                [ h5
-                    []
-                    [ text "Add New Resource" ]
-                , div
-                    [ class "input-field" ]
-                    [ input
-                        [ class "validate"
-                        , id "newTitle"
-                        , required True
-                        , type' "text"
-                        , value model.item.title
-                        , on
-                            "input"
-                            targetValue
-                            (\str -> Signal.message address (UpdateTitle str))
+        modal =
+            div
+                [ id "modal1"
+                , class "modal modal-fixed-footer"
+                ]
+                [ Html.form [ onSubmitForm onSubmitOptions (Add "hej") ]
+                    [ div [ class "modal-content" ]
+                        [ h5 []
+                            [ text "Add New Resource" ]
+                        , div [ class "input-field" ]
+                            [ input
+                                [ type' "text"
+                                , id "newTitle"
+                                , onInput UpdateTitle
+                                ]
+                                []
+                            , label [ for "newTitle" ]
+                                [ text "Title" ]
+                            ]
+                        , div [ class "input-field" ]
+                            [ input
+                                [ type' "text"
+                                , id "newUrl"
+                                , onInput UpdateUrl
+                                ]
+                                []
+                            , label [ for "newUrl" ] [ text "Url" ]
+                            ]
                         ]
-                        []
-                    , label
-                        [ for "newTitle" ]
-                        [ text "Title" ]
-                    ]
-                , div
-                    [ class "input-field" ]
-                    [ input
-                        [ class "validate"
-                        , id "newUrl"
-                        , required True
-                        , type' "url"
-                        , value model.item.url
-                        , on
-                            "input"
-                            targetValue
-                            (\str -> Signal.message address (UpdateUrl str))
+                    , div [ class "modal-footer" ]
+                        [ button
+                            [ class
+                                ("waves-effect waves-green btn-flat green darken-3 "
+                                    ++ "white-text"
+                                )
+                            , type' "submit"
+                            ]
+                            [ strong [] [ text "Add" ] ]
+                        , a
+                            [ class
+                                ("modal-action modal-close waves-effect waves-red "
+                                    ++ "btn-flat"
+                                )
+                            ]
+                            [ text "Cancel" ]
                         ]
-                        []
-                    , label [ for "newUrl" ] [ text "Url" ]
                     ]
                 ]
-            , div
-                [ class "modal-footer" ]
-                [ button
-                    [ class
-                        ("waves-effect waves-green btn-flat green darken-3 "
-                          ++ "white-text"
-                        )
-                    , type' "submit"
-                    ]
-                    [ strong [] [ text "Add" ] ]
-                , a
-                    [ class
-                        ("modal-action modal-close waves-effect waves-red "
-                          ++ "btn-flat"
-                        )
-                    ]
-                    [ text "Cancel" ]
-                ]
+    in
+        div []
+            [ -- searchField
+              div [ class "row" ]
+                [ addButton ]
+            , viewItems model.items
+            , modal
             ]
-        ]
-  in
-    div
-      []
-      [ searchField
-      , div
-          [ class "row" ]
-          [ addButton ]
-      , viewItems address model
-      , modal
-      ]

@@ -1,14 +1,13 @@
-module Item.View exposing (viewItems)
+module Link.View exposing (viewLinks)
 
 import Html exposing (..)
 import Html.Attributes exposing (class, style, href, target)
-import Item.Types exposing (Model)
-import Types exposing (Msg(..))
+import Types exposing (Model, Msg(..))
+import Link.Model
 import Regex
 
 
-viewItem : Model -> Html Msg
-viewItem item =
+viewLink item =
     li
         -- Should not need this. It is defined in Materialize CSS
         [ style [ ( "list-style-type", "none" ) ] ]
@@ -42,7 +41,7 @@ urlPrettify url =
         |> regex
 
 
-urlStyle : Attribute Msg
+urlStyle : Attribute
 urlStyle =
     style
         [ ( "color", "#062" )
@@ -50,7 +49,7 @@ urlStyle =
         ]
 
 
-dateStyle : Attribute Msg
+dateStyle : Attribute
 dateStyle =
     style
         [ ( "color", "#888" )
@@ -59,18 +58,17 @@ dateStyle =
         ]
 
 
-viewItemList : List Model -> Html Msg
-viewItemList itemList =
+viewLinkList itemList =
     itemList
-        |> List.map viewItem
+        |> List.map viewLink
         |> div []
 
 
-viewItems : List Model -> Html Msg
-viewItems itemList =
+viewLinks : Address Msg -> Model -> Html
+viewLinks model =
     let
         itemsHtml =
-            viewItemList itemList
+            viewLinkList model.items
     in
         div []
             [ itemsHtml ]

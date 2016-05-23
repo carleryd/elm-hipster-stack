@@ -16,6 +16,7 @@ import * as request from 'request';
 import {
   OperationDefinition,
   FragmentDefinition,
+  FragmentSpread,
   SelectionSet,
   Field,
   Document,
@@ -80,9 +81,9 @@ request(url, function (err, res, body) {
     let elm = moduleToElm(moduleName, expose, [
       'Task exposing (Task)',
       'Json.Decode exposing (..)',
-      'Json.Encode exposing (encode, object)',
+      'Json.Encode exposing (encode)',
       'Http',
-      'GraphQL exposing (apply)'
+      'GraphQL exposing (apply, ID)'
     ], decls);
     fs.writeFileSync(outPath, elm);
   } else {
@@ -91,22 +92,25 @@ request(url, function (err, res, body) {
 });
 
 function translateQuery(uri: string, doc: Document, schema: GraphQLSchema): [Array<ElmDecl>, Array<string>] {
-  let seenEnums: Array<GraphQLEnumType> = [];
+  let seenEnums: { [name: string]: GraphQLEnumType } = {};
   let expose: Array<string> = [];
+  let fragmentDefinitionMap: { [name: string]: FragmentDefinition } = {};
+  let seenFragments: { [name: string]: FragmentDefinition } = {};
 
   function walkQueryDocument(doc: Document, info: TypeInfo): [Array<ElmDecl>, Array<string>] {
     let decls: Array<ElmDecl> = [];
-    decls.push({ name: 'url', parameters: [], returnType: 'String', body: { expr: `"${uri}"` } });
+    decls.push({ name: 'endpointUrl', parameters: [], returnType: 'String', body: { expr: `"${uri}"` } });
 
     for (let def of doc.definitions) {
       if (def.kind == 'OperationDefinition') {
         decls.push(...walkOperationDefinition(<OperationDefinition>def, info));
       } else if (def.kind == 'FragmentDefinition') {
-        decls.push(walkFragmentDefinition(<FragmentDefinition>def, info));
+        decls.push(...walkFragmentDefinition(<FragmentDefinition>def, info));
       }
     }
 
-    for (let seenEnum of seenEnums) {
+    for (let name in seenEnums) {
+      let seenEnum = seenEnums[name];
       decls.unshift(walkEnum(seenEnum));
       decls.push(decoderForEnum(seenEnum));
       expose.push(seenEnum.name);
@@ -133,7 +137,11 @@ function translateQuery(uri: string, doc: Document, schema: GraphQLSchema): [Arr
 
   function walkOperationDefinition(def: OperationDefinition, info: TypeInfo): Array<ElmDecl> {
     info.enter(def);
-    if (def.operation == 'query') {
+    if (!info.getType()) {
+      throw new Error(`GraphQL schema does not define ${def.operation} '${def.name.value}'`);
+    }
+    seenFragments = {};
+    if (def.operation == 'query' || def.operation == 'mutation') {
       let decls: Array<ElmDecl> = [];
       // Name
       let name: string;
@@ -148,43 +156,62 @@ function translateQuery(uri: string, doc: Document, schema: GraphQLSchema): [Arr
       let fields = walkSelectionSet(def.selectionSet, info);
       decls.push({ name: resultType, fields });
       // VariableDefinition
-      let parameters: Array<{name:string, type:string, schemaType:GraphQLType}> = [];
+      let parameters: Array<{name:string, type:string, schemaType:GraphQLType, hasDefault:boolean}> = [];
       for (let varDef of def.variableDefinitions) {
         let name = varDef.variable.name.value;
         let schemaType = typeFromAST(schema, varDef.type);
         let type = inputTypeToString(schemaType);
-        // todo: default value
-        parameters.push({ name, type, schemaType });
+        parameters.push({ name, type, schemaType, hasDefault: varDef.defaultValue != null });
       }
       let funcName = name[0].toLowerCase() + name.substr(1);
-      let query = print(def);
+      // include all fragment dependencies in the query
+      let query = '';
+      for (let name in seenFragments) {
+        query += print(seenFragments[name]) + ' ';
+      }
+      query += print(def);
       let decodeFuncName = resultType[0].toLowerCase() + resultType.substr(1);
       expose.push(funcName);
       expose.push(resultType);
+
+      let parametersRecord = {
+        name: 'params',
+        type: '{ ' + parameters.map(p => p.name + ': ' +  inputTypeToString(p.schemaType)).join(', ') + ' }'
+      };
+
       decls.push({
-         name: funcName, parameters,
+         name: funcName, parameters: [parametersRecord],
          returnType: `Task Http.Error ${resultType}`,
          body: {
-           expr: `let query = """${query.replace(/\s+/g, ' ')}""" in\n` +
-             `    let params =\n` +
-             `            object\n` +
+           // we use awkward variable names to avoid naming collisions with query parameters
+           expr: `let graphQLQuery = """${query.replace(/\s+/g, ' ')}""" in\n` +
+             `    let graphQLParams =\n` +
+             `            Json.Encode.object\n` +
              `                [ ` +
-             parameters.map(p => `("${p.name}", ${encoderForType(p.schemaType)} ${p.name})`)
-                                  .join(`\n                , `) + '\n' +
+             parameters.map(p => {
+               let encoder: string;
+               if (p.hasDefault) {
+                 encoder =`case params.${p.name} of` +
+                     `\n                            Just val -> ${encoderForType(p.schemaType)} val` +
+                     `\n                            Nothing -> Json.Encode.null`
+               } else {
+                 encoder = encoderForType(p.schemaType) + ' params.' + p.name;
+               }
+                return `("${p.name}", ${encoder})`;
+             })
+             .join(`\n                , `) + '\n' +
              `                ]\n` +
              `    in\n` +
-             `    GraphQL.query url query "${name}" (encode 0 params) ${decodeFuncName}`
+             `    GraphQL.query endpointUrl graphQLQuery "${name}" (encode 0 graphQLParams) ${decodeFuncName}`
          }
        });
       decls.push({
          name: decodeFuncName, parameters: [],
          returnType: 'Decoder ' + resultType,
-         body: decoderForQuery(def, info, schema, seenEnums) });
+         body: decoderForQuery(def, info, schema, seenEnums, fragmentDefinitionMap) });
 
       info.leave(def);
       return decls;
-    } else if (def.operation == 'mutation') {
-      // todo: mutation
     }
   }
 
@@ -208,37 +235,63 @@ function translateQuery(uri: string, doc: Document, schema: GraphQLSchema): [Arr
     }
   }
 
-  function walkFragmentDefinition(def: FragmentDefinition, info: TypeInfo) {
-    console.log('todo: walkFragmentDefinition', def);
-    // todo: FragmentDefinition
-    return null;
+  function walkFragmentDefinition(def: FragmentDefinition, info: TypeInfo): Array<ElmDecl> {
+    info.enter(def);
+
+    let name = def.name.value;
+    fragmentDefinitionMap[name] = def;
+
+    let decls: Array<ElmDecl> = [];
+    let resultType = name[0].toUpperCase() + name.substr(1) + 'Result';
+
+    // todo: Directives
+
+    // SelectionSet
+    let fields = walkSelectionSet(def.selectionSet, info);
+    decls.push({ name: resultType, fields });
+
+    info.leave(def);
+    return decls;
   }
 
   function walkSelectionSet(selSet: SelectionSet, info: TypeInfo): Array<ElmField> {
     info.enter(selSet);
     let fields = [];
+    let spreads = [];
+
     for (let sel of selSet.selections) {
       if (sel.kind == 'Field') {
         let field = <Field>sel;
         fields.push(walkField(field, info));
       } else if (sel.kind == 'FragmentSpread') {
-        // todo: FragmentSpread
-        throw new Error('not implemented');
+        spreads.push((<FragmentSpread>sel).name.value);
       } else if (sel.kind == 'InlineFragment') {
         // todo: InlineFragment
-        throw new Error('not implemented');
+        throw new Error('not implemented: InlineFragment');
       }
     }
+
+    // expand out all fragment spreads
+    for (let spreadName of spreads) {
+      let def = fragmentDefinitionMap[spreadName];
+      seenFragments[spreadName] = def;
+      let spreadFields = walkSelectionSet(def.selectionSet, info);
+      fields = [...fields, ...spreadFields];
+    }
+
     info.leave(selSet);
     return fields;
   }
 
   function walkField(field: Field, info: TypeInfo): ElmField {
     info.enter(field);
-    // todo: Alias
     // Name
     let name = field.name.value;
-    // Arguments (opt)
+    // Alias
+    if (field.alias) {
+      name = field.alias.value;
+    }
+    // todo: Arguments, such as `id: $someId`, where $someId is a variable
     let args = field.arguments; // e.g. id: "1000"
     // todo: Directives
     // SelectionSet
@@ -248,13 +301,15 @@ function translateQuery(uri: string, doc: Document, schema: GraphQLSchema): [Arr
       info.leave(field);
       return { name, fields, list: isList };
     } else {
+      if (!info.getType()) {
+        throw new Error('Unknown GraphQL field: ' + field.name.value);
+      }
       let type = leafTypeToString(info.getType());
       info.leave(field);
       return { name, type };
     }
   }
-
-  // fixme: return an AST instead
+  
   function leafTypeToString(type: GraphQLType): string {
     let prefix = '';
 
@@ -274,9 +329,9 @@ function translateQuery(uri: string, doc: Document, schema: GraphQLSchema): [Arr
 
     // leaf types only
     if (type instanceof GraphQLScalarType) {
-      return prefix + type.name; // todo: ID type
+      return prefix + type.name;
     } else if (type instanceof GraphQLEnumType) {
-      seenEnums.push(type);
+      seenEnums[type.name] = type;
       return prefix + type.name;
     } else {
       throw new Error('not a leaf type: ' + (<any>type).name);
@@ -284,7 +339,6 @@ function translateQuery(uri: string, doc: Document, schema: GraphQLSchema): [Arr
   }
 
   // input types are defined in the query, not the schema
-  // fixme: return an AST instead
   function inputTypeToString(type: GraphQLType): string {
     let prefix = '';
 
@@ -300,7 +354,7 @@ function translateQuery(uri: string, doc: Document, schema: GraphQLSchema): [Arr
     }
 
     if (type instanceof GraphQLEnumType) {
-      seenEnums.push(type);
+      seenEnums[type.name] = type;
       return prefix + type.name;
     } else if (type instanceof GraphQLScalarType) {
       return prefix + type.name;

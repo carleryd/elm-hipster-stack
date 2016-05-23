@@ -5,10 +5,10 @@
 "use strict";
 var type_1 = require('graphql/type');
 var utilities_1 = require('graphql/utilities');
-function decoderForQuery(def, info, schema, seenEnums) {
+function decoderForQuery(def, info, schema, seenEnums, fragmentDefinitionMap) {
     function walkOperationDefinition(def, info) {
         info.enter(def);
-        if (def.operation == 'query') {
+        if (def.operation == 'query' || def.operation == 'mutation') {
             var decls = [];
             // Name
             var name_1;
@@ -36,13 +36,6 @@ function decoderForQuery(def, info, schema, seenEnums) {
             //return decls;
             return { expr: 'map ' + resultType + ' ' + expr.expr };
         }
-        else if (def.operation == 'mutation') {
-        }
-    }
-    function walkFragmentDefinition(def, info) {
-        console.log('todo: walkFragmentDefinition', def);
-        // todo: FragmentDefinition
-        return null;
     }
     function walkSelectionSet(selSet, info) {
         info.enter(selSet);
@@ -54,12 +47,14 @@ function decoderForQuery(def, info, schema, seenEnums) {
                 fields.push(walkField(field, info));
             }
             else if (sel.kind == 'FragmentSpread') {
-                // todo: FragmentSpread
-                throw new Error('not implemented');
+                // expand out all fragment spreads
+                var spreadName = sel.name.value;
+                var def_1 = fragmentDefinitionMap[spreadName];
+                fields.push(walkSelectionSet(def_1.selectionSet, info));
             }
             else if (sel.kind == 'InlineFragment') {
                 // todo: InlineFragment
-                throw new Error('not implemented');
+                throw new Error('not implemented: InlineFragment');
             }
         }
         info.leave(selSet);
@@ -72,15 +67,21 @@ function decoderForQuery(def, info, schema, seenEnums) {
             var sel = _a[_i];
             if (sel.kind == 'Field') {
                 var field = sel;
-                fields.push(field.name.value);
+                var name_3 = field.name.value;
+                if (field.alias) {
+                    name_3 = field.alias.value;
+                }
+                fields.push(name_3);
             }
             else if (sel.kind == 'FragmentSpread') {
-                // todo: FragmentSpread
-                throw new Error('not implemented');
+                // expand out all fragment spreads
+                var spreadName = sel.name.value;
+                var def_2 = fragmentDefinitionMap[spreadName];
+                fields = fields.concat(getSelectionSetFields(def_2.selectionSet, info));
             }
             else if (sel.kind == 'InlineFragment') {
                 // todo: InlineFragment
-                throw new Error('not implemented');
+                throw new Error('not implemented: InlineFragment');
             }
         }
         info.leave(selSet);
@@ -88,9 +89,12 @@ function decoderForQuery(def, info, schema, seenEnums) {
     }
     function walkField(field, info) {
         info.enter(field);
-        // todo: Alias
         // Name
         var name = field.name.value;
+        // Alias
+        if (field.alias) {
+            name = field.alias.value;
+        }
         // Arguments (opt)
         var args = field.arguments; // e.g. id: "1000"
         // todo: Directives
@@ -128,7 +132,6 @@ function decoderForQuery(def, info, schema, seenEnums) {
             return expr;
         }
     }
-    // fixme: return an AST instead
     function leafTypeToString(type) {
         var prefix = '';
         // lists or non-null of leaf types only
@@ -148,7 +151,12 @@ function decoderForQuery(def, info, schema, seenEnums) {
         type = t;
         // leaf types only
         if (type instanceof type_1.GraphQLScalarType) {
-            return prefix + type.name.toLowerCase(); // todo: ID type
+            if (type.name == 'ID') {
+                return prefix + 'string';
+            }
+            else {
+                return prefix + type.name.toLowerCase();
+            }
         }
         else if (type instanceof type_1.GraphQLEnumType) {
             return prefix + type.name.toLowerCase();
@@ -158,7 +166,6 @@ function decoderForQuery(def, info, schema, seenEnums) {
         }
     }
     // input types are defined in the query, not the schema
-    // fixme: return an AST instead
     function inputTypeToString(type) {
         var prefix = '';
         // lists or non-null of leaf types only
