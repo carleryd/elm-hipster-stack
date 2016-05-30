@@ -84,8 +84,8 @@ defmodule App.PublicSchema do
               Query.table("links")
                 |> Query.insert(
                   %{
-                    title: input["title"],
-                    url: input["url"],
+                    title: input[:title],
+                    url: input[:url],
                     timestamp: TimeHelper.currentTime
                     })
                 |> DB.run
