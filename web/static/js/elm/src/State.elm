@@ -91,9 +91,12 @@ update msg model =
                     }
             in
                 ( newModel
-                , Cmd.none
-                  -- , closeModal ()
+                ,  Cmd.batch
+                    [ getQuery "hahahah! you aint see no item"
+                    , closeModal ()
+                    ]
                 )
+
 
         UpdateTitle str ->
             let
