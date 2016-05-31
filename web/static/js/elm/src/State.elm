@@ -78,8 +78,8 @@ update msg model =
 
         Add targetValue ->
             let
-                logger =
-                    log "COMEONE ADD" targetValue
+                -- logger =
+                --     log "COMEONE ADD" targetValue
 
                 newItems =
                     model.item :: model.items
