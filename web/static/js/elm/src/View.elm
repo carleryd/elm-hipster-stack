@@ -65,6 +65,7 @@ view model =
                                 [ type' "text"
                                 , id "newTitle"
                                 , onInput UpdateTitle
+                                , autofocus True
                                 ]
                                 []
                             , label [ for "newTitle" ]
