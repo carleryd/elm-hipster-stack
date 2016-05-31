@@ -8,7 +8,6 @@ window.App = Elm.Main.embed(node);
 
 
 App.ports.closeModal.subscribe(function() {
-  console.log("close modal");
   $('#modal1').closeModal();
 });
 
