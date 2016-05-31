@@ -12,17 +12,17 @@ import Debug exposing (log)
 view : Model -> Html Msg
 view model =
     let
-        -- searchField =
-        --     div [ class "input-field" ]
-        --         [ input
-        --             [ type' "text"
-        --             , id "search"
-        --             , onInput UpdateSearch
-        --             ]
-        --             []
-        --         , label [ for "search" ]
-        --             [ text "Search All Resources" ]
-        --         ]
+        searchField =
+            div [ class "input-field" ]
+                [ input
+                    [ type' "text"
+                    , id "search"
+                    , onInput UpdateSearch
+                    ]
+                    []
+                , label [ for "search" ]
+                    [ text "Search All Resources" ]
+                ]
         addButton =
             a
                 [ href "#modal1"
@@ -85,8 +85,8 @@ view model =
                 ]
     in
         div []
-            [ -- searchField
-              div [ class "row" ]
+            [ searchField
+            , div [ class "row" ]
                 [ addButton ]
             , viewItems model.items
             , modal
