@@ -96,8 +96,8 @@ defmodule App.PublicSchema do
                 |> DB.handle_graphql_resp
             end
           })
-        }
-      }
-    }
+        } # fields
+      } # mutation
+    } # Schema
   end
 end
