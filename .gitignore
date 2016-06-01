@@ -20,9 +20,11 @@ erl_crash.dump
 # # this depending on your deployment strategy.
 /priv/static/
 
+#ELM
+/web/static/js/elm/elm-stuff
+
 # Custom added
-node_modules
-elm_stuff
+/node_modules
 .DS_Store
 
 #RethinkDB

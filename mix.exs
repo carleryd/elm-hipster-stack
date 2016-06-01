@@ -38,7 +38,7 @@ defmodule App.Mixfile do
      {:cowboy, "~> 1.0"},
      {:graphql_relay, "~> 0.0.15"},
      {:plug_graphql, "~> 0.2"},
-     {:rethinkdb,"~> 0.3.2"},
+     {:rethinkdb,"~> 0.4.0"},
      {:cors_plug, "~> 1.1"},
      {:json, "~> 0.3.0"}
      ]

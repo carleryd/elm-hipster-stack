@@ -1,5 +1,6 @@
 defmodule App.PublicSchema do
 
+  require Logger
   import List , only: [first: 1]
   alias GraphQL.Schema
   alias GraphQL.Type.ObjectType
@@ -81,19 +82,22 @@ defmodule App.PublicSchema do
               }
             },
             mutate_and_get_payload: fn(input, _info) ->
+              # input
+              # |> inspect
+              # |> Logger.debug
               Query.table("links")
                 |> Query.insert(
                   %{
-                    title: input["title"],
-                    url: input["url"],
+                    title: input[:title],
+                    url: input[:url],
                     timestamp: TimeHelper.currentTime
                     })
                 |> DB.run
                 |> DB.handle_graphql_resp
             end
           })
-        }
-      }
-    }
+        } # fields
+      } # mutation
+    } # Schema
   end
 end

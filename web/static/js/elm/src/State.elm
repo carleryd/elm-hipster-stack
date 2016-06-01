@@ -78,8 +78,8 @@ update msg model =
 
         Add targetValue ->
             let
-                logger =
-                    log "COMEONE ADD" targetValue
+                -- logger =
+                --     log "COMEONE ADD" targetValue
 
                 newItems =
                     model.item :: model.items
@@ -91,9 +91,14 @@ update msg model =
                     }
             in
                 ( newModel
-                , Cmd.none
-                  -- , closeModal ()
+                ,  Cmd.batch
+                    [ getQuery "hahahah! you aint see no item"
+                    -- try some mutation through http or something
+                    -- , Task.perform FetchFail FetchSucceed (Http.get "http://localhost:4000/graphql/mutt.txt")
+                    , closeModal ()
+                    ]
                 )
+
 
         UpdateTitle str ->
             let

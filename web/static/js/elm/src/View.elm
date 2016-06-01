@@ -9,38 +9,20 @@ import Json.Decode
 import Debug exposing (log)
 
 
-onSubmitOptions : { preventDefault : Bool, stopPropagation : Bool }
-onSubmitOptions =
-    { stopPropagation = True
-    , preventDefault = True
-    }
-
-
-onSubmitForm : Html.Events.Options -> Msg -> Attribute Msg
-onSubmitForm options msg =
-    let
-        logcat =
-            log "onSubmitForm" 5
-    in
-        onWithOptions "submit"
-            options
-            (Json.Decode.map Add targetValue)
-
-
 view : Model -> Html Msg
 view model =
     let
-        -- searchField =
-        --     div [ class "input-field" ]
-        --         [ input
-        --             [ type' "text"
-        --             , id "search"
-        --             , onInput UpdateSearch
-        --             ]
-        --             []
-        --         , label [ for "search" ]
-        --             [ text "Search All Resources" ]
-        --         ]
+        searchField =
+            div [ class "input-field" ]
+                [ input
+                    [ type' "text"
+                    , id "search"
+                    , onInput UpdateSearch
+                    ]
+                    []
+                , label [ for "search" ]
+                    [ text "Search All Resources" ]
+                ]
         addButton =
             a
                 [ href "#modal1"
@@ -56,7 +38,7 @@ view model =
                 [ id "modal1"
                 , class "modal modal-fixed-footer"
                 ]
-                [ Html.form [ onSubmitForm onSubmitOptions (Add "hej") ]
+                   [ Html.form []
                     [ div [ class "modal-content" ]
                         [ h5 []
                             [ text "Add New Resource" ]
@@ -65,6 +47,7 @@ view model =
                                 [ type' "text"
                                 , id "newTitle"
                                 , onInput UpdateTitle
+                                , autofocus True
                                 ]
                                 []
                             , label [ for "newTitle" ]
@@ -86,7 +69,8 @@ view model =
                                 ("waves-effect waves-green btn-flat green darken-3 "
                                     ++ "white-text"
                                 )
-                            , type' "submit"
+                            , type' "button"
+                            , onClick (Add "hej")
                             ]
                             [ strong [] [ text "Add" ] ]
                         , a
@@ -101,8 +85,8 @@ view model =
                 ]
     in
         div []
-            [ -- searchField
-              div [ class "row" ]
+            [ searchField
+            , div [ class "row" ]
                 [ addButton ]
             , viewItems model.items
             , modal
