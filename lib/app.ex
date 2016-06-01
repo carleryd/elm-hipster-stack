@@ -13,7 +13,7 @@ defmodule App do
       # worker(App.Repo, []),
       # Here you could define other workers and supervisors as children
       # worker(App.Worker, [arg1, arg2, arg3]),
-      worker(DB, [[port: 32772]])
+      worker(DB, [])
     ]
 
     # See http://elixir-lang.org/docs/stable/elixir/Supervisor.html
