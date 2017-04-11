@@ -1,10 +1,10 @@
-defmodule App.ConnCase do
+defmodule MyApp.ConnCase do
   @moduledoc """
   This module defines the test case to be used by
   tests that require setting up a connection.
 
   Such tests rely on `Phoenix.ConnTest` and also
-  imports other functionality to make it easier
+  import other functionality to make it easier
   to build and query models.
 
   Finally, if the test case interacts with the database,
@@ -20,15 +20,25 @@ defmodule App.ConnCase do
       # Import conveniences for testing with connections
       use Phoenix.ConnTest
 
-      import App.Router.Helpers
+      alias MyApp.Repo
+      import Ecto
+      import Ecto.Changeset
+      import Ecto.Query
+
+      import MyApp.Router.Helpers
 
       # The default endpoint for testing
-      @endpoint App.Endpoint
+      @endpoint MyApp.Endpoint
     end
   end
 
   setup tags do
+    :ok = Ecto.Adapters.SQL.Sandbox.checkout(MyApp.Repo)
 
-    {:ok, conn: Phoenix.ConnTest.conn()}
+    unless tags[:async] do
+      Ecto.Adapters.SQL.Sandbox.mode(MyApp.Repo, {:shared, self()})
+    end
+
+    {:ok, conn: Phoenix.ConnTest.build_conn()}
   end
 end

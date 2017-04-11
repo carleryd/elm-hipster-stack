@@ -1,3 +1,3 @@
-defmodule App.PageView do
-  use App.Web, :view
+defmodule MyApp.PageView do
+  use MyApp.Web, :view
 end

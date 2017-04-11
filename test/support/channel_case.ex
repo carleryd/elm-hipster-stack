@@ -1,10 +1,10 @@
-defmodule App.ChannelCase do
+defmodule MyApp.ChannelCase do
   @moduledoc """
   This module defines the test case to be used by
   channel tests.
 
   Such tests rely on `Phoenix.ChannelTest` and also
-  imports other functionality to make it easier
+  import other functionality to make it easier
   to build and query models.
 
   Finally, if the test case interacts with the database,
@@ -20,13 +20,23 @@ defmodule App.ChannelCase do
       # Import conveniences for testing with channels
       use Phoenix.ChannelTest
 
+      alias MyApp.Repo
+      import Ecto
+      import Ecto.Changeset
+      import Ecto.Query
+
 
       # The default endpoint for testing
-      @endpoint App.Endpoint
+      @endpoint MyApp.Endpoint
     end
   end
 
   setup tags do
+    :ok = Ecto.Adapters.SQL.Sandbox.checkout(MyApp.Repo)
+
+    unless tags[:async] do
+      Ecto.Adapters.SQL.Sandbox.mode(MyApp.Repo, {:shared, self()})
+    end
 
     :ok
   end

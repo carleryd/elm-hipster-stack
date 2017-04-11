@@ -1,18 +1,5 @@
-import Elm from './elm/src/Main.elm';
+import "phoenix_html"
+import { Socket } from "phoenix"
 
-window.Elm = Elm;
-
-var node = document.getElementById("elm-land");
-
-window.App = Elm.Main.embed(node);
-
-
-App.ports.closeModal.subscribe(function() {
-  $('#modal1').closeModal();
-});
-
-window.lol = $('.modal-trigger');
-window.asdf = $('#modal1');
-
-// Ugly hack, someone please improve :)
-setTimeout(() => { $('.modal-trigger').leanModal(); }, 100);
+const Elm = require("../elm/Main");
+Elm.Main.embed(document.getElementById("elm-main"));

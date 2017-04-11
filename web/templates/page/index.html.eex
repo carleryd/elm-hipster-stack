@@ -1,18 +1,38 @@
-<div id="main" class="container">
+<div id="elm-main"></div>
 
-  <h4>
-    <strong>E</strong>lm, <strong>P</strong>hoenix, <strong>R</strong>ethinkDB and <strong>G</strong>raphQL
-  </h4>
-  <ul>
-    <li>This is a reimplementation of the <a target="_blank" href="http://rgrjs.com/">rgrjs.com</a> site.</li>
-    <li>Find that project here on <a target="_blank" href="https://github.com/RGRjs/rgrjs.com">Github</a></li>
-    <li>Learn how to build it from scratch using nodejs with <a target="_blank" href="https://www.pluralsight.com/courses/react-apps-with-relay-graphql-flux">this Pluralsight course</a></li>
-  </ul>
-  <a href="https://github.com/graphql-elixir/phoenix-hipster-stack" class="hide-on-small-only"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://camo.githubusercontent.com/38ef81f8aca64bb9a64448d0d70f1308ef5341ab/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f6461726b626c75655f3132313632312e706e67" alt="Fork me on GitHub" data-canonical-src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png"></a>
-
-  <div id="elm-land">
-  </div>
-  
+<div class="jumbotron">
+  <h2><%= gettext "Welcome to %{name}", name: "Phoenix!" %></h2>
+  <p class="lead">A productive web framework that<br />does not compromise speed and maintainability.</p>
 </div>
 
-<script src="<%= static_path(@conn, "/js/app.js") %>"></script>
+<div class="row marketing">
+  <div class="col-lg-6">
+    <h4>Resources</h4>
+    <ul>
+      <li>
+        <a href="http://phoenixframework.org/docs/overview">Guides</a>
+      </li>
+      <li>
+        <a href="https://hexdocs.pm/phoenix">Docs</a>
+      </li>
+      <li>
+        <a href="https://github.com/phoenixframework/phoenix">Source</a>
+      </li>
+    </ul>
+  </div>
+
+  <div class="col-lg-6">
+    <h4>Help</h4>
+    <ul>
+      <li>
+        <a href="http://groups.google.com/group/phoenix-talk">Mailing list</a>
+      </li>
+      <li>
+        <a href="http://webchat.freenode.net/?channels=elixir-lang">#elixir-lang on freenode IRC</a>
+      </li>
+      <li>
+        <a href="https://twitter.com/elixirphoenix">@elixirphoenix</a>
+      </li>
+    </ul>
+  </div>
+</div>

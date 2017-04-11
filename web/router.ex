@@ -1,5 +1,5 @@
-defmodule App.Router do
-  use App.Web, :router
+defmodule MyApp.Router do
+  use MyApp.Web, :router
 
   pipeline :browser do
     plug :accepts, ["html"]
@@ -13,19 +13,20 @@ defmodule App.Router do
     plug :accepts, ["json"]
   end
 
-  scope "/graphql" do
-    pipe_through :api
-    forward "/", GraphQL.Plug, schema: {App.PublicSchema, :schema}
+  scope "/", MyApp do
+    pipe_through :browser # Use the default browser stack
+
+    get "/", PageController, :index
   end
 
-  scope "/", App do
-    pipe_through :browser # Use the default browser stack
-    get "/", PageController, :index
-    get "/reset", PageController, :reset_db
-  end
+  forward "/api", Absinthe.Plug,
+    schema: MyApp.Schema
+
+  forward "/graphiql", Absinthe.Plug.GraphiQL,
+    schema: MyApp.Schema
 
   # Other scopes may use custom stacks.
-  # scope "/api", App do
+  # scope "/api", MyApp do
   #   pipe_through :api
   # end
 end

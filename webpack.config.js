@@ -1,31 +1,56 @@
-const elmSource = __dirname + '/web/static/js/elm';
+const ExtractTextPlugin = require("extract-text-webpack-plugin");
+const elmSource = __dirname + "/web/static/elm";
 
 module.exports = {
-  entry: {
-    app: [
-      "./web/static/js/app.js"
-    ]
-  },
-  output: {
-    path: "./priv/static/js",
-    filename: "app.js"
-  },
-  module: {
-    loaders: [
-      {
-        test: /\.elm$/,
-        exclude: /(node_modules|elm-stuff)/,
-        loader: `elm-webpack?cwd=${elmSource}`
-      },
-      {
-        test: /\.js$/,
-        exclude: /(node_modules|bower_components)/,
-        loader: 'babel',
-        query: {
-          presets: ['es2015']
-        }
-      },
+    entry: [
+        __dirname + "/web/static/js/app.js",
+        __dirname + "/web/static/css/app.scss",
+        __dirname + "/web/static/elm/Main.elm",
     ],
-    noParse: [/.elm$/],
-  }
+    output: {
+        path: __dirname + "/priv/static",
+        filename: "js/app.js",
+    },
+    module: {
+        loaders: [
+            {
+                test: /\.js$/,
+                exclude: /node_modules/,
+                loader: "babel-loader",
+                query: {
+                    presets: ["es2015"],
+                },
+            },
+            {
+                test: /\.css$/,
+                loader: ExtractTextPlugin.extract({
+                    fallback: 'style-loader',
+                    use: 'css-loader'
+                }),
+            },
+            {
+                test: /\.scss$/,
+                loader: ExtractTextPlugin.extract({
+                    fallback: 'style-loader',
+                    use: "css-loader!sass-loader",
+                }),
+            },
+            {
+                test: /\.elm$/,
+                exclude: [/elm-stuff/, /node_modules/],
+                loader: "elm-webpack-loader?cwd=" + elmSource,
+            },
+        ],
+        noParse: [/\.elm$/],
+    },
+    plugins: [
+        new ExtractTextPlugin("css/app.css"),
+    ],
+    resolve: {
+        modules: [
+            "node_modules",
+            __dirname + "/web/static/js",
+        ],
+        extensions: [".js", ".elm", ".scss", ".css"],
+    },
 };

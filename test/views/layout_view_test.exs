@@ -1,3 +1,3 @@
-defmodule App.LayoutViewTest do
-  use App.ConnCase, async: true
+defmodule MyApp.LayoutViewTest do
+  use MyApp.ConnCase, async: true
 end
