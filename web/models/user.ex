@@ -1,10 +1,10 @@
-defmodule MyApp.User do
-  use MyApp.Web, :model
+defmodule App.User do
+  use App.Web, :model
 
   schema "users" do
     field :name, :string
     field :email, :string
-    has_many :posts, MyApp.Post
+    has_many :posts, App.Post
 
     timestamps()
   end

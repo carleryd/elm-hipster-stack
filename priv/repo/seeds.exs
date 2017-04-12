@@ -5,15 +5,15 @@
 # Inside the script, you can read and write to any of your
 # repositories directly:
 #
-#     MyApp.Repo.insert!(%MyApp.SomeModel{})
+#     App.Repo.insert!(%MyApp.SomeModel{})
 #
 # We recommend using the bang functions (`insert!`, `update!`
 # and so on) as they will fail if something goes wrong.
 
 
-alias MyApp.User
-alias MyApp.Post
-alias MyApp.Repo
+alias App.User
+alias App.Post
+alias App.Repo
  
 Repo.insert!(%User{name: "Ryan Swapp", email: "ryan@ryan.com"})
 Repo.insert!(%User{name: "Rosie", email: "rosie@mydog.com"})

@@ -1,6 +1,6 @@
-defmodule MyApp.UserResolver do
-  alias MyApp.Repo
-  alias MyApp.User
+defmodule App.UserResolver do
+  alias App.Repo
+  alias App.User
  
   def all(_args, _info) do
     {:ok, Repo.all(User)}

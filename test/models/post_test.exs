@@ -1,7 +1,7 @@
-defmodule MyApp.PostTest do
-  use MyApp.ModelCase
+defmodule App.PostTest do
+  use App.ModelCase
 
-  alias MyApp.Post
+  alias App.Post
 
   @valid_attrs %{body: "some content", title: "some content"}
   @invalid_attrs %{}

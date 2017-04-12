@@ -1,24 +1,24 @@
-defmodule MyApp.Schema do
+defmodule App.Schema do
   use Absinthe.Schema
-  import_types MyApp.Schema.Types
+  import_types App.Schema.Types
 
   query do
     field :posts, list_of(:post) do
-      resolve &MyApp.PostResolver.all/2
+      resolve &App.PostResolver.all/2
     end
 
     field :post, type: :post do
       arg :id, non_null(:id)
-      resolve &MyApp.PostResolver.find/2
+      resolve &App.PostResolver.find/2
     end
 
     field :users, list_of(:user) do
-      resolve &MyApp.UserResolver.all/2
+      resolve &App.UserResolver.all/2
     end
 
     field :user, type: :user do
       arg :id, non_null(:id)
-      resolve &MyApp.UserResolver.find/2
+      resolve &App.UserResolver.find/2
     end
   end
 
@@ -34,20 +34,20 @@ defmodule MyApp.Schema do
       arg :body, non_null(:string)
       arg :user_id, non_null(:integer)
 
-      resolve &MyApp.PostResolver.create/2
+      resolve &App.PostResolver.create/2
     end
 
     field :update_post, type: :post do
       arg :id, non_null(:integer)
       arg :post, :update_post_params
 
-      resolve &MyApp.PostResolver.update/2
+      resolve &App.PostResolver.update/2
     end
 
     field :delete_post, type: :post do
       arg :id, non_null(:integer)
 
-      resolve &MyApp.PostResolver.delete/2
+      resolve &App.PostResolver.delete/2
     end
   end
 

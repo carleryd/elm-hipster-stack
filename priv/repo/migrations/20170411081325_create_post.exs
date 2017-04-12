@@ -1,4 +1,4 @@
-defmodule MyApp.Repo.Migrations.CreatePost do
+defmodule App.Repo.Migrations.CreatePost do
   use Ecto.Migration
 
   def change do
