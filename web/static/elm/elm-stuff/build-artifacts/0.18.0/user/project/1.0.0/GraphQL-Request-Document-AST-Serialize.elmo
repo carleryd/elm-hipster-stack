@@ -1,0 +1,395 @@
+var _user$project$GraphQL_Request_Document_AST_Serialize$serializeTypeCondition = function (_p0) {
+	var _p1 = _p0;
+	return A2(_elm_lang$core$Basics_ops['++'], 'on ', _p1._0);
+};
+var _user$project$GraphQL_Request_Document_AST_Serialize$serializeFragmentSpreadName = function (name) {
+	return A2(_elm_lang$core$Basics_ops['++'], '...', name);
+};
+var _user$project$GraphQL_Request_Document_AST_Serialize$serializeFieldAlias = function (alias) {
+	return A2(_elm_lang$core$Basics_ops['++'], alias, ':');
+};
+var _user$project$GraphQL_Request_Document_AST_Serialize$indent = F2(
+	function (level, string) {
+		return (_elm_lang$core$Native_Utils.cmp(level, 0) < 1) ? string : A2(
+			_elm_lang$core$Basics_ops['++'],
+			'  ',
+			A2(_user$project$GraphQL_Request_Document_AST_Serialize$indent, level - 1, string));
+	});
+var _user$project$GraphQL_Request_Document_AST_Serialize$serializeDirectiveName = function (name) {
+	return A2(_elm_lang$core$Basics_ops['++'], '@', name);
+};
+var _user$project$GraphQL_Request_Document_AST_Serialize$serializeValue = function (value) {
+	var _p2 = value;
+	switch (_p2.ctor) {
+		case 'VariableValue':
+			return A2(_elm_lang$core$Basics_ops['++'], '$', _p2._1);
+		case 'IntValue':
+			return _elm_lang$core$Basics$toString(_p2._0);
+		case 'FloatValue':
+			return _elm_lang$core$Basics$toString(_p2._0);
+		case 'StringValue':
+			return _elm_lang$core$Basics$toString(_p2._0);
+		case 'BooleanValue':
+			if (_p2._0 === true) {
+				return 'true';
+			} else {
+				return 'false';
+			}
+		case 'NullValue':
+			return 'null';
+		case 'EnumValue':
+			return _p2._0;
+		case 'ListValue':
+			return _elm_lang$core$Basics$toString(
+				A2(_elm_lang$core$List$map, _user$project$GraphQL_Request_Document_AST_Serialize$serializeValue, _p2._0));
+		default:
+			return A2(
+				_elm_lang$core$Basics_ops['++'],
+				'{',
+				A2(
+					_elm_lang$core$Basics_ops['++'],
+					A2(
+						_elm_lang$core$String$join,
+						', ',
+						A2(_elm_lang$core$List$map, _user$project$GraphQL_Request_Document_AST_Serialize$serializeKeyValuePair, _p2._0)),
+					'}'));
+	}
+};
+var _user$project$GraphQL_Request_Document_AST_Serialize$serializeKeyValuePair = function (_p3) {
+	var _p4 = _p3;
+	return A2(
+		_elm_lang$core$Basics_ops['++'],
+		_p4._0,
+		A2(
+			_elm_lang$core$Basics_ops['++'],
+			': ',
+			_user$project$GraphQL_Request_Document_AST_Serialize$serializeValue(_p4._1)));
+};
+var _user$project$GraphQL_Request_Document_AST_Serialize$serializeArgList = function (args) {
+	return _elm_lang$core$List$isEmpty(args) ? {ctor: '[]'} : {
+		ctor: '::',
+		_0: A2(
+			_elm_lang$core$Basics_ops['++'],
+			'(',
+			A2(
+				_elm_lang$core$Basics_ops['++'],
+				A2(
+					_elm_lang$core$String$join,
+					', ',
+					A2(_elm_lang$core$List$map, _user$project$GraphQL_Request_Document_AST_Serialize$serializeKeyValuePair, args)),
+				')')),
+		_1: {ctor: '[]'}
+	};
+};
+var _user$project$GraphQL_Request_Document_AST_Serialize$serializeDirective = function (_p5) {
+	var _p6 = _p5;
+	return A2(
+		_elm_lang$core$String$join,
+		'',
+		{
+			ctor: '::',
+			_0: _user$project$GraphQL_Request_Document_AST_Serialize$serializeDirectiveName(_p6._0.name),
+			_1: _user$project$GraphQL_Request_Document_AST_Serialize$serializeArgList(_p6._0.$arguments)
+		});
+};
+var _user$project$GraphQL_Request_Document_AST_Serialize$serializeFragmentSpread = F2(
+	function (indentLevel, _p7) {
+		var _p8 = _p7;
+		return A2(
+			_user$project$GraphQL_Request_Document_AST_Serialize$indent,
+			indentLevel,
+			A2(
+				_elm_lang$core$String$join,
+				' ',
+				{
+					ctor: '::',
+					_0: _user$project$GraphQL_Request_Document_AST_Serialize$serializeFragmentSpreadName(_p8.name),
+					_1: A2(_elm_lang$core$List$map, _user$project$GraphQL_Request_Document_AST_Serialize$serializeDirective, _p8.directives)
+				}));
+	});
+var _user$project$GraphQL_Request_Document_AST_Serialize$serializeNullability = function (nullability) {
+	var _p9 = nullability;
+	if (_p9.ctor === 'Nullable') {
+		return '';
+	} else {
+		return '!';
+	}
+};
+var _user$project$GraphQL_Request_Document_AST_Serialize$serializeDefaultValue = function (value) {
+	return A2(
+		_elm_lang$core$Basics_ops['++'],
+		'= ',
+		_user$project$GraphQL_Request_Document_AST_Serialize$serializeValue(value));
+};
+var _user$project$GraphQL_Request_Document_AST_Serialize$serializeTypeRef = function (_p10) {
+	var _p11 = _p10;
+	return A2(
+		_elm_lang$core$Basics_ops['++'],
+		_user$project$GraphQL_Request_Document_AST_Serialize$serializeCoreTypeRef(_p11._1),
+		_user$project$GraphQL_Request_Document_AST_Serialize$serializeNullability(_p11._0));
+};
+var _user$project$GraphQL_Request_Document_AST_Serialize$serializeCoreTypeRef = function (coreTypeRef) {
+	var _p12 = coreTypeRef;
+	if (_p12.ctor === 'NamedTypeRef') {
+		return _p12._0;
+	} else {
+		return _user$project$GraphQL_Request_Document_AST_Serialize$serializeTypeRef(_p12._0);
+	}
+};
+var _user$project$GraphQL_Request_Document_AST_Serialize$serializeVariableName = function (name) {
+	return A2(_elm_lang$core$Basics_ops['++'], '$', name);
+};
+var _user$project$GraphQL_Request_Document_AST_Serialize$serializeOperationType = function (opType) {
+	var _p13 = opType;
+	if (_p13.ctor === 'Query') {
+		return 'query';
+	} else {
+		return 'mutation';
+	}
+};
+var _user$project$GraphQL_Request_Document_AST_Serialize$listFromMaybe = function (m) {
+	var _p14 = m;
+	if (_p14.ctor === 'Nothing') {
+		return {ctor: '[]'};
+	} else {
+		return {
+			ctor: '::',
+			_0: _p14._0,
+			_1: {ctor: '[]'}
+		};
+	}
+};
+var _user$project$GraphQL_Request_Document_AST_Serialize$serializeVariableDefinition = function (_p15) {
+	var _p16 = _p15;
+	var _p17 = _p16._0;
+	return A2(
+		_elm_lang$core$String$join,
+		' ',
+		_elm_lang$core$List$concat(
+			{
+				ctor: '::',
+				_0: {
+					ctor: '::',
+					_0: A2(
+						_elm_lang$core$Basics_ops['++'],
+						_user$project$GraphQL_Request_Document_AST_Serialize$serializeVariableName(_p17.name),
+						':'),
+					_1: {
+						ctor: '::',
+						_0: _user$project$GraphQL_Request_Document_AST_Serialize$serializeTypeRef(_p17.variableType),
+						_1: {ctor: '[]'}
+					}
+				},
+				_1: {
+					ctor: '::',
+					_0: _user$project$GraphQL_Request_Document_AST_Serialize$listFromMaybe(
+						A2(_elm_lang$core$Maybe$map, _user$project$GraphQL_Request_Document_AST_Serialize$serializeDefaultValue, _p17.defaultValue)),
+					_1: {ctor: '[]'}
+				}
+			}));
+};
+var _user$project$GraphQL_Request_Document_AST_Serialize$serializeVariableDefinitions = function (defs) {
+	return _elm_lang$core$List$isEmpty(defs) ? {ctor: '[]'} : {
+		ctor: '::',
+		_0: A2(
+			_elm_lang$core$Basics_ops['++'],
+			'(',
+			A2(
+				_elm_lang$core$Basics_ops['++'],
+				A2(
+					_elm_lang$core$String$join,
+					', ',
+					A2(_elm_lang$core$List$map, _user$project$GraphQL_Request_Document_AST_Serialize$serializeVariableDefinition, defs)),
+				')')),
+		_1: {ctor: '[]'}
+	};
+};
+var _user$project$GraphQL_Request_Document_AST_Serialize$serializeInlineFragment = F2(
+	function (indentLevel, _p18) {
+		var _p19 = _p18;
+		return A2(
+			_user$project$GraphQL_Request_Document_AST_Serialize$indent,
+			indentLevel,
+			A2(
+				_elm_lang$core$String$join,
+				' ',
+				_elm_lang$core$List$concat(
+					{
+						ctor: '::',
+						_0: {
+							ctor: '::',
+							_0: '...',
+							_1: _user$project$GraphQL_Request_Document_AST_Serialize$listFromMaybe(
+								A2(_elm_lang$core$Maybe$map, _user$project$GraphQL_Request_Document_AST_Serialize$serializeTypeCondition, _p19.typeCondition))
+						},
+						_1: {
+							ctor: '::',
+							_0: A2(_elm_lang$core$List$map, _user$project$GraphQL_Request_Document_AST_Serialize$serializeDirective, _p19.directives),
+							_1: {
+								ctor: '::',
+								_0: A2(_user$project$GraphQL_Request_Document_AST_Serialize$serializeSelectionSet, indentLevel, _p19.selectionSet),
+								_1: {ctor: '[]'}
+							}
+						}
+					})));
+	});
+var _user$project$GraphQL_Request_Document_AST_Serialize$serializeSelectionSet = F2(
+	function (indentLevel, _p20) {
+		var _p21 = _p20;
+		var _p22 = _p21._0;
+		return _elm_lang$core$List$isEmpty(_p22) ? {ctor: '[]'} : {
+			ctor: '::',
+			_0: A2(
+				_elm_lang$core$Basics_ops['++'],
+				'{\n',
+				A2(
+					_elm_lang$core$Basics_ops['++'],
+					A2(
+						_elm_lang$core$String$join,
+						'\n',
+						A2(
+							_elm_lang$core$List$map,
+							_user$project$GraphQL_Request_Document_AST_Serialize$serializeSelection(indentLevel + 1),
+							_p22)),
+					A2(
+						_elm_lang$core$Basics_ops['++'],
+						'\n',
+						A2(_user$project$GraphQL_Request_Document_AST_Serialize$indent, indentLevel, '}')))),
+			_1: {ctor: '[]'}
+		};
+	});
+var _user$project$GraphQL_Request_Document_AST_Serialize$serializeSelection = F2(
+	function (indentLevel, selection) {
+		var _p23 = selection;
+		switch (_p23.ctor) {
+			case 'Field':
+				return A2(_user$project$GraphQL_Request_Document_AST_Serialize$serializeField, indentLevel, _p23._0);
+			case 'FragmentSpread':
+				return A2(_user$project$GraphQL_Request_Document_AST_Serialize$serializeFragmentSpread, indentLevel, _p23._0);
+			default:
+				return A2(_user$project$GraphQL_Request_Document_AST_Serialize$serializeInlineFragment, indentLevel, _p23._0);
+		}
+	});
+var _user$project$GraphQL_Request_Document_AST_Serialize$serializeField = F2(
+	function (indentLevel, field) {
+		return A2(
+			_user$project$GraphQL_Request_Document_AST_Serialize$indent,
+			indentLevel,
+			A2(
+				_elm_lang$core$String$join,
+				' ',
+				_elm_lang$core$List$concat(
+					{
+						ctor: '::',
+						_0: _user$project$GraphQL_Request_Document_AST_Serialize$listFromMaybe(
+							A2(_elm_lang$core$Maybe$map, _user$project$GraphQL_Request_Document_AST_Serialize$serializeFieldAlias, field.alias)),
+						_1: {
+							ctor: '::',
+							_0: {
+								ctor: '::',
+								_0: A2(
+									_elm_lang$core$String$join,
+									'',
+									{
+										ctor: '::',
+										_0: field.name,
+										_1: _user$project$GraphQL_Request_Document_AST_Serialize$serializeArgList(field.$arguments)
+									}),
+								_1: {ctor: '[]'}
+							},
+							_1: {
+								ctor: '::',
+								_0: A2(_elm_lang$core$List$map, _user$project$GraphQL_Request_Document_AST_Serialize$serializeDirective, field.directives),
+								_1: {
+									ctor: '::',
+									_0: A2(_user$project$GraphQL_Request_Document_AST_Serialize$serializeSelectionSet, indentLevel, field.selectionSet),
+									_1: {ctor: '[]'}
+								}
+							}
+						}
+					})));
+	});
+var _user$project$GraphQL_Request_Document_AST_Serialize$serializeOperation = function (info) {
+	return A2(
+		_elm_lang$core$String$join,
+		' ',
+		_elm_lang$core$List$concat(
+			{
+				ctor: '::',
+				_0: {
+					ctor: '::',
+					_0: _user$project$GraphQL_Request_Document_AST_Serialize$serializeOperationType(info.operationType),
+					_1: {ctor: '[]'}
+				},
+				_1: {
+					ctor: '::',
+					_0: _user$project$GraphQL_Request_Document_AST_Serialize$listFromMaybe(info.name),
+					_1: {
+						ctor: '::',
+						_0: _user$project$GraphQL_Request_Document_AST_Serialize$serializeVariableDefinitions(info.variableDefinitions),
+						_1: {
+							ctor: '::',
+							_0: A2(_elm_lang$core$List$map, _user$project$GraphQL_Request_Document_AST_Serialize$serializeDirective, info.directives),
+							_1: {
+								ctor: '::',
+								_0: A2(_user$project$GraphQL_Request_Document_AST_Serialize$serializeSelectionSet, 0, info.selectionSet),
+								_1: {ctor: '[]'}
+							}
+						}
+					}
+				}
+			}));
+};
+var _user$project$GraphQL_Request_Document_AST_Serialize$serializeFragmentDefinition = function (_p24) {
+	var _p25 = _p24;
+	return A2(
+		_elm_lang$core$String$join,
+		' ',
+		_elm_lang$core$List$concat(
+			{
+				ctor: '::',
+				_0: {
+					ctor: '::',
+					_0: 'fragment',
+					_1: {
+						ctor: '::',
+						_0: _p25.name,
+						_1: {
+							ctor: '::',
+							_0: _user$project$GraphQL_Request_Document_AST_Serialize$serializeTypeCondition(_p25.typeCondition),
+							_1: {ctor: '[]'}
+						}
+					}
+				},
+				_1: {
+					ctor: '::',
+					_0: A2(_elm_lang$core$List$map, _user$project$GraphQL_Request_Document_AST_Serialize$serializeDirective, _p25.directives),
+					_1: {
+						ctor: '::',
+						_0: A2(_user$project$GraphQL_Request_Document_AST_Serialize$serializeSelectionSet, 0, _p25.selectionSet),
+						_1: {ctor: '[]'}
+					}
+				}
+			}));
+};
+var _user$project$GraphQL_Request_Document_AST_Serialize$serializeDefinition = function (definition) {
+	var _p26 = definition;
+	switch (_p26.ctor) {
+		case 'OperationDefinition':
+			return _user$project$GraphQL_Request_Document_AST_Serialize$serializeOperation(_p26._0);
+		case 'QueryShorthand':
+			return A2(
+				_elm_lang$core$String$join,
+				'',
+				A2(_user$project$GraphQL_Request_Document_AST_Serialize$serializeSelectionSet, 0, _p26._0));
+		default:
+			return _user$project$GraphQL_Request_Document_AST_Serialize$serializeFragmentDefinition(_p26._0);
+	}
+};
+var _user$project$GraphQL_Request_Document_AST_Serialize$serializeDocument = function (_p27) {
+	var _p28 = _p27;
+	return A2(
+		_elm_lang$core$String$join,
+		'\n\n',
+		A2(_elm_lang$core$List$map, _user$project$GraphQL_Request_Document_AST_Serialize$serializeDefinition, _p28._0));
+};

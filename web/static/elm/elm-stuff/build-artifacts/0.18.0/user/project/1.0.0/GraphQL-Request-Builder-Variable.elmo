@@ -1,0 +1,163 @@
+var _user$project$GraphQL_Request_Builder_Variable$toDefinitionAST = function ($var) {
+	var _p0 = $var;
+	if (_p0.ctor === 'RequiredVariable') {
+		return _user$project$GraphQL_Request_Document_AST$VariableDefinition(
+			{name: _p0._0, variableType: _p0._1, defaultValue: _elm_lang$core$Maybe$Nothing});
+	} else {
+		return _user$project$GraphQL_Request_Document_AST$VariableDefinition(
+			{
+				name: _p0._0,
+				variableType: _p0._1,
+				defaultValue: _elm_lang$core$Maybe$Just(_p0._3)
+			});
+	}
+};
+var _user$project$GraphQL_Request_Builder_Variable$name = function ($var) {
+	var _p1 = $var;
+	if (_p1.ctor === 'RequiredVariable') {
+		return _p1._0;
+	} else {
+		return _p1._0;
+	}
+};
+var _user$project$GraphQL_Request_Builder_Variable$valueFromSource = F2(
+	function (source, $var) {
+		var _p2 = $var;
+		if (_p2.ctor === 'RequiredVariable') {
+			return _elm_lang$core$Maybe$Just(
+				{
+					ctor: '_Tuple2',
+					_0: _user$project$GraphQL_Request_Builder_Variable$name($var),
+					_1: _p2._2(source)
+				});
+		} else {
+			var _p3 = _p2._2(source);
+			if (_p3.ctor === 'Nothing') {
+				return _elm_lang$core$Maybe$Nothing;
+			} else {
+				return _elm_lang$core$Maybe$Just(
+					{
+						ctor: '_Tuple2',
+						_0: _user$project$GraphQL_Request_Builder_Variable$name($var),
+						_1: _p3._0
+					});
+			}
+		}
+	});
+var _user$project$GraphQL_Request_Builder_Variable$extractValuesFrom = F2(
+	function (source, vars) {
+		return A2(
+			_elm_lang$core$List$filterMap,
+			_user$project$GraphQL_Request_Builder_Variable$valueFromSource(source),
+			vars);
+	});
+var _user$project$GraphQL_Request_Builder_Variable$fieldTuple = F2(
+	function (source, _p4) {
+		var _p5 = _p4;
+		return {
+			ctor: '_Tuple2',
+			_0: _p5._0,
+			_1: _p5._2(source)
+		};
+	});
+var _user$project$GraphQL_Request_Builder_Variable$VariableSpec = F3(
+	function (a, b, c) {
+		return {ctor: 'VariableSpec', _0: a, _1: b, _2: c};
+	});
+var _user$project$GraphQL_Request_Builder_Variable$Nullable = {ctor: 'Nullable'};
+var _user$project$GraphQL_Request_Builder_Variable$nullable = function (_p6) {
+	var _p7 = _p6;
+	return A3(
+		_user$project$GraphQL_Request_Builder_Variable$VariableSpec,
+		_user$project$GraphQL_Request_Builder_Variable$Nullable,
+		_user$project$GraphQL_Request_Builder_TypeRef$nullable(_p7._1),
+		function (_p8) {
+			return A2(
+				_elm_lang$core$Maybe$withDefault,
+				_user$project$GraphQL_Request_Document_AST$NullValue,
+				A2(_elm_lang$core$Maybe$map, _p7._2, _p8));
+		});
+};
+var _user$project$GraphQL_Request_Builder_Variable$NonNull = {ctor: 'NonNull'};
+var _user$project$GraphQL_Request_Builder_Variable$int = A3(_user$project$GraphQL_Request_Builder_Variable$VariableSpec, _user$project$GraphQL_Request_Builder_Variable$NonNull, _user$project$GraphQL_Request_Builder_TypeRef$int, _user$project$GraphQL_Request_Document_AST$IntValue);
+var _user$project$GraphQL_Request_Builder_Variable$float = A3(_user$project$GraphQL_Request_Builder_Variable$VariableSpec, _user$project$GraphQL_Request_Builder_Variable$NonNull, _user$project$GraphQL_Request_Builder_TypeRef$float, _user$project$GraphQL_Request_Document_AST$FloatValue);
+var _user$project$GraphQL_Request_Builder_Variable$string = A3(_user$project$GraphQL_Request_Builder_Variable$VariableSpec, _user$project$GraphQL_Request_Builder_Variable$NonNull, _user$project$GraphQL_Request_Builder_TypeRef$string, _user$project$GraphQL_Request_Document_AST$StringValue);
+var _user$project$GraphQL_Request_Builder_Variable$bool = A3(_user$project$GraphQL_Request_Builder_Variable$VariableSpec, _user$project$GraphQL_Request_Builder_Variable$NonNull, _user$project$GraphQL_Request_Builder_TypeRef$boolean, _user$project$GraphQL_Request_Document_AST$BooleanValue);
+var _user$project$GraphQL_Request_Builder_Variable$id = A3(_user$project$GraphQL_Request_Builder_Variable$VariableSpec, _user$project$GraphQL_Request_Builder_Variable$NonNull, _user$project$GraphQL_Request_Builder_TypeRef$id, _user$project$GraphQL_Request_Document_AST$StringValue);
+var _user$project$GraphQL_Request_Builder_Variable$list = function (_p9) {
+	var _p10 = _p9;
+	return A3(
+		_user$project$GraphQL_Request_Builder_Variable$VariableSpec,
+		_user$project$GraphQL_Request_Builder_Variable$NonNull,
+		_user$project$GraphQL_Request_Builder_TypeRef$list(_p10._1),
+		function (_p11) {
+			return _user$project$GraphQL_Request_Document_AST$ListValue(
+				A2(_elm_lang$core$List$map, _p10._2, _p11));
+		});
+};
+var _user$project$GraphQL_Request_Builder_Variable$object = F2(
+	function (typeName, fields) {
+		return A3(
+			_user$project$GraphQL_Request_Builder_Variable$VariableSpec,
+			_user$project$GraphQL_Request_Builder_Variable$NonNull,
+			_user$project$GraphQL_Request_Builder_TypeRef$namedType(typeName),
+			function (source) {
+				return _user$project$GraphQL_Request_Document_AST$ObjectValue(
+					A2(
+						_elm_lang$core$List$map,
+						_user$project$GraphQL_Request_Builder_Variable$fieldTuple(source),
+						fields));
+			});
+	});
+var _user$project$GraphQL_Request_Builder_Variable$OptionalVariable = F4(
+	function (a, b, c, d) {
+		return {ctor: 'OptionalVariable', _0: a, _1: b, _2: c, _3: d};
+	});
+var _user$project$GraphQL_Request_Builder_Variable$optional = F4(
+	function (name, extractMaybe, _p12, defaultValue) {
+		var _p13 = _p12;
+		var _p15 = _p13._2;
+		return A4(
+			_user$project$GraphQL_Request_Builder_Variable$OptionalVariable,
+			name,
+			_user$project$GraphQL_Request_Builder_TypeRef$nullable(_p13._1),
+			function (_p14) {
+				return A2(
+					_elm_lang$core$Maybe$map,
+					_p15,
+					extractMaybe(_p14));
+			},
+			_p15(defaultValue));
+	});
+var _user$project$GraphQL_Request_Builder_Variable$RequiredVariable = F3(
+	function (a, b, c) {
+		return {ctor: 'RequiredVariable', _0: a, _1: b, _2: c};
+	});
+var _user$project$GraphQL_Request_Builder_Variable$required = F3(
+	function (name, extract, _p16) {
+		var _p17 = _p16;
+		return A3(
+			_user$project$GraphQL_Request_Builder_Variable$RequiredVariable,
+			name,
+			_p17._1,
+			function (_p18) {
+				return _p17._2(
+					extract(_p18));
+			});
+	});
+var _user$project$GraphQL_Request_Builder_Variable$Field = F3(
+	function (a, b, c) {
+		return {ctor: 'Field', _0: a, _1: b, _2: c};
+	});
+var _user$project$GraphQL_Request_Builder_Variable$field = F3(
+	function (name, extract, _p19) {
+		var _p20 = _p19;
+		return A3(
+			_user$project$GraphQL_Request_Builder_Variable$Field,
+			name,
+			_p20._1,
+			function (_p21) {
+				return _p20._2(
+					extract(_p21));
+			});
+	});

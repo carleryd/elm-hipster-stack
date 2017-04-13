@@ -1,0 +1,101 @@
+var _user$project$GraphQL_Request_Document_AST$OperationDefinitionInfo = F5(
+	function (a, b, c, d, e) {
+		return {operationType: a, name: b, variableDefinitions: c, directives: d, selectionSet: e};
+	});
+var _user$project$GraphQL_Request_Document_AST$FieldInfo = F5(
+	function (a, b, c, d, e) {
+		return {alias: a, name: b, $arguments: c, directives: d, selectionSet: e};
+	});
+var _user$project$GraphQL_Request_Document_AST$FragmentSpreadInfo = F2(
+	function (a, b) {
+		return {name: a, directives: b};
+	});
+var _user$project$GraphQL_Request_Document_AST$InlineFragmentInfo = F3(
+	function (a, b, c) {
+		return {typeCondition: a, directives: b, selectionSet: c};
+	});
+var _user$project$GraphQL_Request_Document_AST$FragmentDefinitionInfo = F4(
+	function (a, b, c, d) {
+		return {name: a, typeCondition: b, directives: c, selectionSet: d};
+	});
+var _user$project$GraphQL_Request_Document_AST$VariableDefinitionInfo = F3(
+	function (a, b, c) {
+		return {name: a, variableType: b, defaultValue: c};
+	});
+var _user$project$GraphQL_Request_Document_AST$DirectiveInfo = F2(
+	function (a, b) {
+		return {name: a, $arguments: b};
+	});
+var _user$project$GraphQL_Request_Document_AST$Document = function (a) {
+	return {ctor: 'Document', _0: a};
+};
+var _user$project$GraphQL_Request_Document_AST$FragmentDefinition = function (a) {
+	return {ctor: 'FragmentDefinition', _0: a};
+};
+var _user$project$GraphQL_Request_Document_AST$QueryShorthand = function (a) {
+	return {ctor: 'QueryShorthand', _0: a};
+};
+var _user$project$GraphQL_Request_Document_AST$OperationDefinition = function (a) {
+	return {ctor: 'OperationDefinition', _0: a};
+};
+var _user$project$GraphQL_Request_Document_AST$Mutation = {ctor: 'Mutation'};
+var _user$project$GraphQL_Request_Document_AST$Query = {ctor: 'Query'};
+var _user$project$GraphQL_Request_Document_AST$SelectionSet = function (a) {
+	return {ctor: 'SelectionSet', _0: a};
+};
+var _user$project$GraphQL_Request_Document_AST$InlineFragment = function (a) {
+	return {ctor: 'InlineFragment', _0: a};
+};
+var _user$project$GraphQL_Request_Document_AST$FragmentSpread = function (a) {
+	return {ctor: 'FragmentSpread', _0: a};
+};
+var _user$project$GraphQL_Request_Document_AST$Field = function (a) {
+	return {ctor: 'Field', _0: a};
+};
+var _user$project$GraphQL_Request_Document_AST$TypeCondition = function (a) {
+	return {ctor: 'TypeCondition', _0: a};
+};
+var _user$project$GraphQL_Request_Document_AST$ObjectValue = function (a) {
+	return {ctor: 'ObjectValue', _0: a};
+};
+var _user$project$GraphQL_Request_Document_AST$ListValue = function (a) {
+	return {ctor: 'ListValue', _0: a};
+};
+var _user$project$GraphQL_Request_Document_AST$EnumValue = function (a) {
+	return {ctor: 'EnumValue', _0: a};
+};
+var _user$project$GraphQL_Request_Document_AST$NullValue = {ctor: 'NullValue'};
+var _user$project$GraphQL_Request_Document_AST$BooleanValue = function (a) {
+	return {ctor: 'BooleanValue', _0: a};
+};
+var _user$project$GraphQL_Request_Document_AST$StringValue = function (a) {
+	return {ctor: 'StringValue', _0: a};
+};
+var _user$project$GraphQL_Request_Document_AST$FloatValue = function (a) {
+	return {ctor: 'FloatValue', _0: a};
+};
+var _user$project$GraphQL_Request_Document_AST$IntValue = function (a) {
+	return {ctor: 'IntValue', _0: a};
+};
+var _user$project$GraphQL_Request_Document_AST$VariableValue = F2(
+	function (a, b) {
+		return {ctor: 'VariableValue', _0: a, _1: b};
+	});
+var _user$project$GraphQL_Request_Document_AST$VariableDefinition = function (a) {
+	return {ctor: 'VariableDefinition', _0: a};
+};
+var _user$project$GraphQL_Request_Document_AST$TypeRef = F2(
+	function (a, b) {
+		return {ctor: 'TypeRef', _0: a, _1: b};
+	});
+var _user$project$GraphQL_Request_Document_AST$NonNull = {ctor: 'NonNull'};
+var _user$project$GraphQL_Request_Document_AST$Nullable = {ctor: 'Nullable'};
+var _user$project$GraphQL_Request_Document_AST$ListTypeRef = function (a) {
+	return {ctor: 'ListTypeRef', _0: a};
+};
+var _user$project$GraphQL_Request_Document_AST$NamedTypeRef = function (a) {
+	return {ctor: 'NamedTypeRef', _0: a};
+};
+var _user$project$GraphQL_Request_Document_AST$Directive = function (a) {
+	return {ctor: 'Directive', _0: a};
+};

@@ -1,0 +1,8 @@
+var _user$project$GraphQL_Request_Document_AST_Util$responseKey = function (fieldInfo) {
+	var _p0 = fieldInfo.alias;
+	if (_p0.ctor === 'Nothing') {
+		return fieldInfo.name;
+	} else {
+		return _p0._0;
+	}
+};

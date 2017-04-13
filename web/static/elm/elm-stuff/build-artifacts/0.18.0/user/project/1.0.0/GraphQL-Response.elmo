@@ -1,0 +1,32 @@
+var _user$project$GraphQL_Response$RequestError = F2(
+	function (a, b) {
+		return {message: a, locations: b};
+	});
+var _user$project$GraphQL_Response$DocumentLocation = F2(
+	function (a, b) {
+		return {line: a, column: b};
+	});
+var _user$project$GraphQL_Response$documentLocationDecoder = A3(
+	_elm_lang$core$Json_Decode$map2,
+	_user$project$GraphQL_Response$DocumentLocation,
+	A2(_elm_lang$core$Json_Decode$field, 'line', _elm_lang$core$Json_Decode$int),
+	A2(_elm_lang$core$Json_Decode$field, 'column', _elm_lang$core$Json_Decode$int));
+var _user$project$GraphQL_Response$errorsDecoder = _elm_lang$core$Json_Decode$list(
+	A3(
+		_elm_lang$core$Json_Decode$map2,
+		_user$project$GraphQL_Response$RequestError,
+		A2(_elm_lang$core$Json_Decode$field, 'message', _elm_lang$core$Json_Decode$string),
+		_elm_lang$core$Json_Decode$oneOf(
+			{
+				ctor: '::',
+				_0: A2(
+					_elm_lang$core$Json_Decode$field,
+					'locations',
+					_elm_lang$core$Json_Decode$list(_user$project$GraphQL_Response$documentLocationDecoder)),
+				_1: {
+					ctor: '::',
+					_0: _elm_lang$core$Json_Decode$succeed(
+						{ctor: '[]'}),
+					_1: {ctor: '[]'}
+				}
+			})));

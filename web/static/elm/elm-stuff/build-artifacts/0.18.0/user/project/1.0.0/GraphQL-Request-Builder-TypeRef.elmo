@@ -1,0 +1,21 @@
+var _user$project$GraphQL_Request_Builder_TypeRef$nullable = function (_p0) {
+	var _p1 = _p0;
+	return A2(_user$project$GraphQL_Request_Document_AST$TypeRef, _user$project$GraphQL_Request_Document_AST$Nullable, _p1._1);
+};
+var _user$project$GraphQL_Request_Builder_TypeRef$list = function (_p2) {
+	return A2(
+		_user$project$GraphQL_Request_Document_AST$TypeRef,
+		_user$project$GraphQL_Request_Document_AST$NonNull,
+		_user$project$GraphQL_Request_Document_AST$ListTypeRef(_p2));
+};
+var _user$project$GraphQL_Request_Builder_TypeRef$namedType = function (_p3) {
+	return A2(
+		_user$project$GraphQL_Request_Document_AST$TypeRef,
+		_user$project$GraphQL_Request_Document_AST$NonNull,
+		_user$project$GraphQL_Request_Document_AST$NamedTypeRef(_p3));
+};
+var _user$project$GraphQL_Request_Builder_TypeRef$int = _user$project$GraphQL_Request_Builder_TypeRef$namedType('Int');
+var _user$project$GraphQL_Request_Builder_TypeRef$float = _user$project$GraphQL_Request_Builder_TypeRef$namedType('Float');
+var _user$project$GraphQL_Request_Builder_TypeRef$string = _user$project$GraphQL_Request_Builder_TypeRef$namedType('String');
+var _user$project$GraphQL_Request_Builder_TypeRef$boolean = _user$project$GraphQL_Request_Builder_TypeRef$namedType('Boolean');
+var _user$project$GraphQL_Request_Builder_TypeRef$id = _user$project$GraphQL_Request_Builder_TypeRef$namedType('ID');

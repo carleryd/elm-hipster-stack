@@ -1,0 +1,93 @@
+var _user$project$GraphQL_Request_Builder_Arg$getVariables = function (_p0) {
+	var _p1 = _p0;
+	return _p1._1;
+};
+var _user$project$GraphQL_Request_Builder_Arg$getAST = function (_p2) {
+	var _p3 = _p2;
+	return _p3._0;
+};
+var _user$project$GraphQL_Request_Builder_Arg$Value = F2(
+	function (a, b) {
+		return {ctor: 'Value', _0: a, _1: b};
+	});
+var _user$project$GraphQL_Request_Builder_Arg$variable = function ($var) {
+	return A2(
+		_user$project$GraphQL_Request_Builder_Arg$Value,
+		A2(
+			_user$project$GraphQL_Request_Document_AST$VariableValue,
+			{ctor: '_Tuple0'},
+			_user$project$GraphQL_Request_Builder_Variable$name($var)),
+		{
+			ctor: '::',
+			_0: $var,
+			_1: {ctor: '[]'}
+		});
+};
+var _user$project$GraphQL_Request_Builder_Arg$int = function (x) {
+	return A2(
+		_user$project$GraphQL_Request_Builder_Arg$Value,
+		_user$project$GraphQL_Request_Document_AST$IntValue(x),
+		{ctor: '[]'});
+};
+var _user$project$GraphQL_Request_Builder_Arg$float = function (x) {
+	return A2(
+		_user$project$GraphQL_Request_Builder_Arg$Value,
+		_user$project$GraphQL_Request_Document_AST$FloatValue(x),
+		{ctor: '[]'});
+};
+var _user$project$GraphQL_Request_Builder_Arg$string = function (x) {
+	return A2(
+		_user$project$GraphQL_Request_Builder_Arg$Value,
+		_user$project$GraphQL_Request_Document_AST$StringValue(x),
+		{ctor: '[]'});
+};
+var _user$project$GraphQL_Request_Builder_Arg$bool = function (x) {
+	return A2(
+		_user$project$GraphQL_Request_Builder_Arg$Value,
+		_user$project$GraphQL_Request_Document_AST$BooleanValue(x),
+		{ctor: '[]'});
+};
+var _user$project$GraphQL_Request_Builder_Arg$true = _user$project$GraphQL_Request_Builder_Arg$bool(true);
+var _user$project$GraphQL_Request_Builder_Arg$false = _user$project$GraphQL_Request_Builder_Arg$bool(false);
+var _user$project$GraphQL_Request_Builder_Arg$null = A2(
+	_user$project$GraphQL_Request_Builder_Arg$Value,
+	_user$project$GraphQL_Request_Document_AST$NullValue,
+	{ctor: '[]'});
+var _user$project$GraphQL_Request_Builder_Arg$object = function (pairs) {
+	return A2(
+		_user$project$GraphQL_Request_Builder_Arg$Value,
+		_user$project$GraphQL_Request_Document_AST$ObjectValue(
+			A2(
+				_elm_lang$core$List$map,
+				function (_p4) {
+					var _p5 = _p4;
+					return {ctor: '_Tuple2', _0: _p5._0, _1: _p5._1._0};
+				},
+				pairs)),
+		A2(
+			_elm_lang$core$List$concatMap,
+			function (_p6) {
+				var _p7 = _p6;
+				return _p7._1._1;
+			},
+			pairs));
+};
+var _user$project$GraphQL_Request_Builder_Arg$list = function (values) {
+	return A2(
+		_user$project$GraphQL_Request_Builder_Arg$Value,
+		_user$project$GraphQL_Request_Document_AST$ListValue(
+			A2(
+				_elm_lang$core$List$map,
+				function (_p8) {
+					var _p9 = _p8;
+					return _p9._0;
+				},
+				values)),
+		A2(
+			_elm_lang$core$List$concatMap,
+			function (_p10) {
+				var _p11 = _p10;
+				return _p11._1;
+			},
+			values));
+};
