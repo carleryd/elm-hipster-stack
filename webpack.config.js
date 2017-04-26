@@ -5,7 +5,6 @@ module.exports = {
     entry: [
         __dirname + "/web/static/js/app.js",
         __dirname + "/web/static/css/app.scss",
-        __dirname + "/web/static/elm/Main.elm",
     ],
     output: {
         path: __dirname + "/priv/static",
@@ -38,7 +37,7 @@ module.exports = {
             {
                 test: /\.elm$/,
                 exclude: [/elm-stuff/, /node_modules/],
-                loader: "elm-webpack-loader?cwd=" + elmSource,
+                loader: "elm-webpack-loader?forceWatch=true&cwd=" + elmSource,
             },
         ],
         noParse: [/\.elm$/],

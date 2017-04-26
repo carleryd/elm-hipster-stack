@@ -6,11 +6,6 @@ import GraphQL.Client.Http as GraphQLClient
 import Task exposing (Task)
 
 
-subscriptions : Model -> Sub Msg
-subscriptions model =
-    Sub.none
-
-
 sendQueryRequest : Request Query a -> Task GraphQLClient.Error a
 sendQueryRequest request =
     GraphQLClient.sendQuery "/api" request
@@ -40,11 +35,60 @@ sendPostsQuery =
         |> Task.attempt ReceiveQueryResponse
 
 
+initialModel : Model
+initialModel =
+    { response = Nothing
+    , items = []
+    , openedItem = Nothing
+    }
+
+
 init : ( Model, Cmd Msg )
 init =
-    ( Nothing, sendPostsQuery )
+    ( initialModel, sendPostsQuery )
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )
-update (ReceiveQueryResponse response) model =
-    ( Just response, Cmd.none )
+update msg model =
+    case msg of
+        ReceiveQueryResponse response ->
+            let
+                items =
+                    case response of
+                        Ok result ->
+                            result
+
+                        Err err ->
+                            []
+            in
+                ( { model | items = items }
+                , Cmd.none
+                )
+
+        OpenItem maybeId ->
+            let
+                idCheck id =
+                    (\i -> (Maybe.withDefault "LOL" i.id) == id)
+
+                openedItem =
+                    case maybeId of
+                        Just id ->
+                            List.head
+                                (List.filter (idCheck id) model.items)
+
+                        Nothing ->
+                            Nothing
+            in
+                ( { model | openedItem = openedItem }
+                , Cmd.none
+                )
+
+        CloseItem ->
+            ( { model | openedItem = Nothing }
+            , Cmd.none
+            )
+
+
+subscriptions : Model -> Sub Msg
+subscriptions model =
+    Sub.none
