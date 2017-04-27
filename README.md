@@ -12,9 +12,10 @@ This is a simple application where posts with a title and a body can be created 
 Apart from cloning the repository, you will have to install any missing tools such as npm, mix, PostgreSQL, etc.
 
 To start the app run the following:
-  * Install Node packages with `npm install`
   * Install Mix dependencies with `mix deps.get`
+  * Install Node packages with `npm install`
   * Install Elm packages. Go to web/static/elm and run `elm package install`, then go back to project root.
+  * Run PostgreSQL in the terminal with `psql` and run `CREATE USER postgres SUPERUSER;`
   * Create PostgreSQL database `app-dev` with Phoenix Ecto, run `mix ecto.create`
   * Create required tables `mix ecto.migrate`
   * Optionally populate tables with `mix run priv/repo/seeds.exs`
