@@ -1,6 +1,6 @@
 module App.View exposing (..)
 
-import App.Types exposing (Model, PostSummary, Msg(..))
+import App.Types exposing (Model, Post, NewPost, DialogConfig, Msg(..))
 import App.Utils exposing (bootstrap)
 import Html exposing (..)
 import Html.Attributes exposing (..)
@@ -40,77 +40,116 @@ header =
         ]
 
 
-itemView : PostSummary -> Html Msg
-itemView item =
-    div
-        [ style
-            [ ( "margin", "10px" )
-            , ( "cursor", "pointer" )
-            ]
-        , onClick (OpenItem item.id)
-        ]
-        [ text (Maybe.withDefault "no title" item.title) ]
-
-
-a openedItem =
-    let
-        header =
-            Just (h3 [] [ text (Maybe.withDefault "no title" openedItem.title) ])
-
-        body =
-            Just (p [] [ text (Maybe.withDefault "no body" openedItem.body) ])
-
-        footer =
-            Just
-                (button
-                    [ class "btn btn-success"
-                    , onClick CloseItem
-                    ]
-                    [ text "OK" ]
-                )
-    in
-        Just
-            { closeMessage = Just CloseItem
-            , containerClass = Nothing
-            , header = header
-            , body = body
-            , footer = footer
-            }
-
-
-dialog : Maybe PostSummary -> Html Msg
-dialog maybeOpenedItem =
-    case maybeOpenedItem of
-        Just openedItem ->
-            Dialog.view (a openedItem)
-
-        Nothing ->
-            Dialog.view Nothing
-
-
-asdf : PostSummary -> Html Msg
-asdf item =
-    let
-        str =
-            case item.title of
-                Just title ->
-                    title
-
-                Nothing ->
-                    "(no title)"
-    in
-        itemView item
-
-
-list : List PostSummary -> Html Msg
-list items =
+list : List Post -> Html Msg
+list posts =
     div
         [ style
             [ ( "display", "flex" )
             , ( "flex-direction", "column" )
             ]
         ]
-        (List.map asdf items)
+        (List.map postView posts)
+
+
+postView : Post -> Html Msg
+postView post =
+    div
+        [ style
+            [ ( "display", "flex" )
+            , ( "justify-content", "space-between" )
+            ]
+        ]
+        [ div
+            [ style
+                [ ( "margin", "10px" )
+                , ( "cursor", "pointer" )
+                ]
+            , onClick (OpenPost post.id)
+            ]
+            [ text post.title ]
+        , button [ onClick (DeletePost post.id) ] [ text "X" ]
+        ]
+
+
+newPostButton : Html Msg
+newPostButton =
+    button
+        [ class "btn btn-success"
+        , onClick OpenCreateView
+        ]
+        [ text "New Post" ]
+
+
+openDialog : Maybe Post -> Html Msg
+openDialog maybeOpenedPost =
+    case maybeOpenedPost of
+        Just openedPost ->
+            Dialog.view (Just (openDialogConfig openedPost))
+
+        Nothing ->
+            Dialog.view Nothing
+
+
+openDialogConfig : Post -> Dialog.Config Msg
+openDialogConfig openedPost =
+    let
+        header =
+            Just (h3 [] [ text openedPost.title ])
+
+        body =
+            Just (p [] [ text openedPost.body ])
+
+        footer =
+            Just
+                (button
+                    [ class "btn btn-success"
+                    , onClick ClosePost
+                    ]
+                    [ text "OK" ]
+                )
+    in
+        { closeMessage = Just ClosePost
+        , containerClass = Nothing
+        , header = header
+        , body = body
+        , footer = footer
+        }
+
+
+createDialog : Maybe NewPost -> Html Msg
+createDialog maybeNewPost =
+    case maybeNewPost of
+        Just newPost ->
+            Dialog.view (Just (createDialogConfig newPost))
+
+        Nothing ->
+            Dialog.view Nothing
+
+
+createDialogConfig : NewPost -> Dialog.Config Msg
+createDialogConfig newPost =
+    let
+        header =
+            Just (h3 [] [ text newPost.title ])
+
+        body =
+            Just (p [] [ text newPost.body ])
+
+        footer =
+            Just
+                (button
+                    [ class "btn btn-success"
+                    , onClick (CreatePost newPost)
+                    ]
+                    [ text "CREATE" ]
+                )
+    in
+        { closeMessage = Just ClosePost
+        , containerClass = Nothing
+        , header = header
+        , body = body
+        , footer = footer
+        }
 
 
 container : Model -> Html Msg
@@ -125,8 +164,10 @@ container model =
         ]
         [ bootstrap
         , header
-        , list model.items
-        , dialog model.openedItem
+        , list model.posts
+        , newPostButton
+        , openDialog model.openedPost
+        , createDialog model.newPost
         ]
 
 

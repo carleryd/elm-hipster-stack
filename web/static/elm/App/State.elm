@@ -1,7 +1,9 @@
 module App.State exposing (..)
 
-import App.Types exposing (Model, Msg(..), PostSummary)
+import App.Types exposing (Model, Msg(..), Post, NewPost, PostId)
 import GraphQL.Request.Builder exposing (..)
+import GraphQL.Request.Builder.Arg as Arg
+import GraphQL.Request.Builder.Variable as Var
 import GraphQL.Client.Http as GraphQLClient
 import Task exposing (Task)
 
@@ -11,16 +13,21 @@ sendQueryRequest request =
     GraphQLClient.sendQuery "/api" request
 
 
-postsRequest : Request Query (List PostSummary)
+sendMutationRequest : Request Mutation a -> Task GraphQLClient.Error a
+sendMutationRequest request =
+    GraphQLClient.sendMutation "/api" request
+
+
+postsRequest : Request Query (List Post)
 postsRequest =
     extract
         (field "posts"
             []
             (list
-                (object PostSummary
-                    |> with (field "id" [] (nullable string))
-                    |> with (field "title" [] (nullable string))
-                    |> with (field "body" [] (nullable string))
+                (object Post
+                    |> with (field "id" [] string)
+                    |> with (field "title" [] string)
+                    |> with (field "body" [] string)
                 )
             )
         )
@@ -35,11 +42,71 @@ sendPostsQuery =
         |> Task.attempt ReceiveQueryResponse
 
 
+createPostRequest : NewPost -> Request Mutation Post
+createPostRequest newPost =
+    let
+        idVar =
+            Var.required "id" .id Var.int
+
+        titleVar =
+            Var.required "title" .title Var.string
+
+        bodyVar =
+            Var.required "body" .body Var.string
+    in
+        extract
+            (field "createPost"
+                [ ( "userId", Arg.variable idVar )
+                , ( "title", Arg.variable titleVar )
+                , ( "body", Arg.variable bodyVar )
+                ]
+                (object Post
+                    |> with (field "id" [] string)
+                    |> with (field "title" [] string)
+                    |> with (field "body" [] string)
+                )
+            )
+            |> mutationDocument
+            |> request
+                { id = 1
+                , title = newPost.title
+                , body = newPost.body
+                }
+
+
+sendCreatePostMutation : NewPost -> Cmd Msg
+sendCreatePostMutation post =
+    sendMutationRequest (createPostRequest post)
+        |> Task.attempt ReceiveCreateMutationResponse
+
+
+deletePostRequest : PostId -> Request Mutation PostId
+deletePostRequest postId =
+    let
+        idVar =
+            Var.required "id" .id Var.int
+    in
+        extract
+            (field "deletePost"
+                [ ( "id", Arg.variable idVar ) ]
+                (extract (field "id" [] string))
+            )
+            |> mutationDocument
+            |> request
+                { id = Result.withDefault 0 (String.toInt postId) }
+
+
+sendDeletePostMutation : PostId -> Cmd Msg
+sendDeletePostMutation postId =
+    sendMutationRequest (deletePostRequest postId)
+        |> Task.attempt ReceieveDeleteMutationResponse
+
+
 initialModel : Model
 initialModel =
-    { response = Nothing
-    , items = []
-    , openedItem = Nothing
+    { posts = []
+    , openedPost = Nothing
+    , newPost = Nothing
     }
 
 
@@ -53,7 +120,7 @@ update msg model =
     case msg of
         ReceiveQueryResponse response ->
             let
-                items =
+                posts =
                     case response of
                         Ok result ->
                             result
@@ -61,30 +128,62 @@ update msg model =
                         Err err ->
                             []
             in
-                ( { model | items = items }
+                ( { model | posts = posts }
                 , Cmd.none
                 )
 
-        OpenItem maybeId ->
+        ReceiveCreateMutationResponse postResponse ->
+            let
+                posts1 =
+                    case postResponse of
+                        Ok post ->
+                            model.posts ++ [ post ]
+
+                        Err _ ->
+                            model.posts
+            in
+                ( { model | newPost = Nothing, posts = posts1 }
+                , Cmd.none
+                )
+
+        ReceieveDeleteMutationResponse deleteResponse ->
+            let
+                posts1 =
+                    case deleteResponse of
+                        Ok postId ->
+                            List.filter (\p -> p.id /= postId) model.posts
+
+                        Err err ->
+                            Debug.log "Delete mutation failed!" model.posts
+            in
+                ( { model | posts = posts1 }, Cmd.none )
+
+        OpenCreateView ->
+            ( { model | newPost = Just (NewPost "new title" "new body") }
+            , Cmd.none
+            )
+
+        CreatePost newPost ->
+            ( model, sendCreatePostMutation newPost )
+
+        DeletePost postId ->
+            ( model, sendDeletePostMutation postId )
+
+        OpenPost id ->
             let
                 idCheck id =
-                    (\i -> (Maybe.withDefault "LOL" i.id) == id)
+                    (\i -> i.id == id)
 
-                openedItem =
-                    case maybeId of
-                        Just id ->
-                            List.head
-                                (List.filter (idCheck id) model.items)
-
-                        Nothing ->
-                            Nothing
+                openedPost =
+                    List.head
+                        (List.filter (idCheck id) model.posts)
             in
-                ( { model | openedItem = openedItem }
+                ( { model | openedPost = openedPost }
                 , Cmd.none
                 )
 
-        CloseItem ->
-            ( { model | openedItem = Nothing }
+        ClosePost ->
+            ( { model | openedPost = Nothing, newPost = Nothing }
             , Cmd.none
             )
 
