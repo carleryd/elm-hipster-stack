@@ -159,12 +159,25 @@ update msg model =
                 ( { model | posts = posts1 }, Cmd.none )
 
         OpenCreateView ->
-            ( { model | newPost = Just (NewPost "new title" "new body") }
+            ( { model | newPost = Just (NewPost "" "") }
             , Cmd.none
             )
 
         CreatePost newPost ->
-            ( model, sendCreatePostMutation newPost )
+            let
+                cmd =
+                    if
+                        ((String.length newPost.title)
+                            > 0
+                            && (String.length newPost.body)
+                            > 0
+                        )
+                    then
+                        sendCreatePostMutation newPost
+                    else
+                        Cmd.none
+            in
+                ( model, cmd )
 
         NewTitleChange str ->
             let

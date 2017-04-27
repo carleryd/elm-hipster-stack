@@ -4,10 +4,12 @@ import App.Types exposing (Model, Post, NewPost, DialogConfig, Msg(..))
 import App.Utils exposing (bootstrap)
 import Html exposing (..)
 import Html.Attributes exposing (..)
-import Html.Events exposing (onClick, onInput)
+import Html.Events exposing (..)
+import Html.Keyed
 import String exposing (slice, length)
 import Dialog
 import List
+import InlineHover exposing (hover)
 
 
 styledWord : String -> Html Msg
@@ -24,19 +26,25 @@ styledWord str =
 
 header : Html Msg
 header =
-    h4
-        [ style
-            [ ( "display", "flex" )
-            , ( "white-space", "pre" )
+    div [ style [ ( "text-align", "center" ) ] ]
+        [ h1 [] [ text "Elm Hipster Stack!" ]
+        , h4
+            [ style
+                [ ( "display", "flex" )
+                , ( "white-space", "pre" )
+                , ( "margin-bottom", "30px" )
+                ]
             ]
-        ]
-        [ styledWord "Elm"
-        , text ", "
-        , styledWord "Phoenix"
-        , text ", "
-        , styledWord "PostgresQL"
-        , text ", "
-        , styledWord "GraphQL"
+            [ text "Written in "
+            , styledWord "Elm"
+            , text ", "
+            , styledWord "Phoenix"
+            , text ", "
+            , styledWord "PostgresQL"
+            , text " and "
+            , styledWord "GraphQL"
+            ]
+        , hr [] []
         ]
 
 
@@ -46,29 +54,57 @@ list posts =
         [ style
             [ ( "display", "flex" )
             , ( "flex-direction", "column" )
+            , ( "width", "80%" )
             ]
         ]
-        (List.map postView posts)
-
-
-postView : Post -> Html Msg
-postView post =
-    div
-        [ style
-            [ ( "display", "flex" )
-            , ( "justify-content", "space-between" )
-            ]
+        [ h3
+            [ style [ ( "text-align", "center" ) ] ]
+            [ text "List of posts" ]
+        , ul [ style [ ( "list-style", "none" ) ] ] (List.map postRow posts)
         ]
-        [ div
-            [ style
-                [ ( "margin", "10px" )
-                , ( "cursor", "pointer" )
+
+
+{-| We need to use Html.Keyed.node here because otherwise the select
+    event when pressing remove on items will bug.
+-}
+postRow : Post -> Html Msg
+postRow post =
+    let
+        rowText =
+            div
+                [ style
+                    [ ( "margin", "5px" )
+                    ]
                 ]
-            , onClick (OpenPost post.id)
-            ]
-            [ text post.title ]
-        , button [ onClick (DeletePost post.id) ] [ text "X" ]
-        ]
+                [ text post.title ]
+
+        rowRemoveButton =
+            button
+                [ style
+                    [ ( "align-self", "center" )
+                    , ( "outline-style", "none" )
+                    ]
+                , onClick (DeletePost post.id)
+                ]
+                [ text "X" ]
+
+        rowContainer =
+            Html.Keyed.node "li"
+                [ onClick (OpenPost post.id)
+                , class "list-group-item"
+                , style
+                    [ ( "padding", "3px 10px" )
+                    , ( "cursor", "pointer" )
+                    , ( "display", "flex" )
+                    , ( "justify-content", "space-between" )
+                    , ( "flex-direction", "row" )
+                    ]
+                ]
+                [ ( post.id, rowText )
+                , ( post.id, rowRemoveButton )
+                ]
+    in
+        rowContainer
 
 
 newPostButton : Html Msg
@@ -94,7 +130,11 @@ openDialogConfig : Post -> Dialog.Config Msg
 openDialogConfig openedPost =
     let
         header =
-            Just (h3 [] [ text openedPost.title ])
+            Just
+                (h3
+                    [ style [ ( "text-align", "center" ) ] ]
+                    [ text openedPost.title ]
+                )
 
         body =
             Just (p [] [ text openedPost.body ])

@@ -5,6 +5,7 @@
     "elm-lang/virtual-dom": "2.0.4",
     "elm-lang/html": "2.0.0",
     "elm-lang/http": "1.0.0",
+    "jinjor/elm-inline-hover": "1.0.2",
     "elm-lang/trampoline": "1.0.1",
     "elm-lang/core": "5.1.1"
 }
