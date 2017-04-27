@@ -1,35 +1,33 @@
 # Elm hipster stack!
-* Elm
+* Elm(version 0.18)
 * Phoenix
 * GraphQL
-* RethinkDB
+* PostgreSQL
 
 # About
-This is a simple application where links can be created and are presented in a list.
+This is a simple application where posts with a title and a body can be created and removed.
 
-# Work in progress!
-At the moment GraphQL mutations are not supported and because of this creation of links are not presistent with the database.
+# Running the app:
 
-# Running the Elm Links app:
+Apart from cloning the repository, you will have to install any missing tools such as npm, mix, PostgreSQL, etc.
 
-Clone the repo and do the following to start the Elm Links app:
-
+To start the app run the following:
   * Install Node packages with `npm install`
-  * Install dependencies with `mix deps.get`
-  * In one terminal, start RethinkDB with `rethinkdb`
-  * In another terminal, start Phoenix endpoint with `mix phoenix.server`
-  * Create new database by going to `localhost:4000/reset`
-  * Elm app now running on `localhost:4000`
+  * Install Mix dependencies with `mix deps.get`
+  * Install Elm packages. Go to web/static/elm and run `elm package install`, then go back to project root.
+  * Create PostgreSQL database `app-dev` with Phoenix Ecto, run `mix ecto.create`
+  * Create required tables `mix ecto.migrate`
+  * Optionally populate tables with `mix run priv/repo/seeds.exs`
+  * Start Phoenix endpoint with `mix phoenix.server`
 
+App is now running on `localhost:4000`
+Explore the GraphQL database using its graphical interface at `localhost:4000/graphiql`
 
-Explore the database with GraphiQL at `localhost:4000/graphql`
-
-## Things we stole from
-* [elm-graphql](https://github.com/jahewson/elm-graphql)
-* [phoenix-hipster-stack](https://github.com/graphql-elixir/phoenix-hipster-stack)
-
-
-
+## Some of the used frameworks
+* [elm-graphql](https://github.com/jamesmacaulay/elm-graphql)
+* [elm-dialog](https://github.com/krisajenkins/elm-dialog)
+* [phoenix-ecto](https://github.com/phoenixframework/phoenix_ecto)
+* [absinthe-graphql](http://absinthe-graphql.org/guides/plug-phoenix/)
 
 ## Learn more
 * http://elm-lang.org/
