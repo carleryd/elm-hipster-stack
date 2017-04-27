@@ -56,8 +56,7 @@ createPostRequest newPost =
     in
         extract
             (field "createPost"
-                [ ( "userId", Arg.variable idVar )
-                , ( "title", Arg.variable titleVar )
+                [ ( "title", Arg.variable titleVar )
                 , ( "body", Arg.variable bodyVar )
                 ]
                 (object Post
@@ -68,8 +67,7 @@ createPostRequest newPost =
             )
             |> mutationDocument
             |> request
-                { id = 1
-                , title = newPost.title
+                { title = newPost.title
                 , body = newPost.body
                 }
 

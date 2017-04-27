@@ -4,7 +4,6 @@ defmodule App.Post do
   schema "posts" do
     field :title, :string
     field :body, :string
-    belongs_to :user, App.User
 
     timestamps()
   end
@@ -14,7 +13,7 @@ defmodule App.Post do
   """
   def changeset(struct, params \\ %{}) do
     struct
-    |> cast(params, [:title, :body, :user_id])
-    |> validate_required([:title, :body, :user_id])
+    |> cast(params, [:title, :body])
+    |> validate_required([:title, :body])
   end
 end

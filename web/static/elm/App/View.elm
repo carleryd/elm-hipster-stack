@@ -9,7 +9,6 @@ import Html.Keyed
 import String exposing (slice, length)
 import Dialog
 import List
-import InlineHover exposing (hover)
 import Json.Decode
 
 

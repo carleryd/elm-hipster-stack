@@ -2,10 +2,10 @@
     "etaque/elm-response": "3.0.0",
     "krisajenkins/elm-dialog": "4.0.3",
     "krisajenkins/elm-exts": "27.4.0",
+    "jamesmacaulay/elm-graphql": "1.3.2",
     "elm-lang/virtual-dom": "2.0.4",
     "elm-lang/html": "2.0.0",
     "elm-lang/http": "1.0.0",
-    "jinjor/elm-inline-hover": "1.0.2",
     "elm-lang/trampoline": "1.0.1",
     "elm-lang/core": "5.1.1"
 }
