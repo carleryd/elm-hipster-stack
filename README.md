@@ -24,8 +24,8 @@ App is now running on `localhost:4000`
 Explore the GraphQL database using its graphical interface at `localhost:4000/graphiql`
 
 ## Some of the used frameworks
-* [elm-graphql](https://github.com/jamesmacaulay/elm-graphql)
-* [elm-dialog](https://github.com/krisajenkins/elm-dialog)
+* [jamesmacaulay/elm-graphql](https://github.com/jamesmacaulay/elm-graphql)
+* [krisajenkins/elm-dialog](https://github.com/krisajenkins/elm-dialog)
 * [phoenix-ecto](https://github.com/phoenixframework/phoenix_ecto)
 * [absinthe-graphql](http://absinthe-graphql.org/guides/plug-phoenix/)
 
