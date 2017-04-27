@@ -4,7 +4,7 @@ import App.Types exposing (Model, Post, NewPost, DialogConfig, Msg(..))
 import App.Utils exposing (bootstrap)
 import Html exposing (..)
 import Html.Attributes exposing (..)
-import Html.Events exposing (onClick)
+import Html.Events exposing (onClick, onInput)
 import String exposing (slice, length)
 import Dialog
 import List
@@ -130,10 +130,18 @@ createDialogConfig : NewPost -> Dialog.Config Msg
 createDialogConfig newPost =
     let
         header =
-            Just (h3 [] [ text newPost.title ])
+            Just
+                (h3 [ style [ ( "text-align", "center" ) ] ]
+                    [ text "Create Post" ]
+                )
 
         body =
-            Just (p [] [ text newPost.body ])
+            Just
+                (div []
+                    [ input [ placeholder "Title", onInput NewTitleChange ] []
+                    , input [ placeholder "Body", onInput NewBodyChange ] []
+                    ]
+                )
 
         footer =
             Just

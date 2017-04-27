@@ -166,6 +166,34 @@ update msg model =
         CreatePost newPost ->
             ( model, sendCreatePostMutation newPost )
 
+        NewTitleChange str ->
+            let
+                newPost =
+                    case model.newPost of
+                        Just post ->
+                            Just { post | title = str }
+
+                        Nothing ->
+                            Debug.log
+                                "Problem with updating new post title!"
+                                model.newPost
+            in
+                ( { model | newPost = newPost }, Cmd.none )
+
+        NewBodyChange str ->
+            let
+                newPost =
+                    case model.newPost of
+                        Just post ->
+                            Just { post | body = str }
+
+                        Nothing ->
+                            Debug.log
+                                "Problem with updating new post body!"
+                                model.newPost
+            in
+                ( { model | newPost = newPost }, Cmd.none )
+
         DeletePost postId ->
             ( model, sendDeletePostMutation postId )
 

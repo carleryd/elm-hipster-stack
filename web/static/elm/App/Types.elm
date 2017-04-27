@@ -10,6 +10,8 @@ type Msg
     | ReceieveDeleteMutationResponse DeletePostResponse
     | OpenCreateView
     | CreatePost NewPost
+    | NewTitleChange String
+    | NewBodyChange String
     | DeletePost PostId
     | OpenPost PostId
     | ClosePost
