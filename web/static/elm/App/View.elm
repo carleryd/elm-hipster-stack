@@ -41,7 +41,7 @@ header =
             , text ", "
             , styledWord "Phoenix"
             , text ", "
-            , styledWord "PostgresQL"
+            , styledWord "PostgreSQL"
             , text " and "
             , styledWord "GraphQL"
             ]
