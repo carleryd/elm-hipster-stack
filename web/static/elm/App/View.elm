@@ -10,6 +10,7 @@ import String exposing (slice, length)
 import Dialog
 import List
 import InlineHover exposing (hover)
+import Json.Decode
 
 
 styledWord : String -> Html Msg
@@ -54,13 +55,13 @@ list posts =
         [ style
             [ ( "display", "flex" )
             , ( "flex-direction", "column" )
-            , ( "width", "80%" )
+            , ( "width", "500px" )
             ]
         ]
         [ h3
             [ style [ ( "text-align", "center" ) ] ]
             [ text "List of posts" ]
-        , ul [ style [ ( "list-style", "none" ) ] ] (List.map postRow posts)
+        , div [ style [ ( "list-style", "none" ) ] ] (List.map postRow posts)
         ]
 
 
@@ -84,7 +85,12 @@ postRow post =
                     [ ( "align-self", "center" )
                     , ( "outline-style", "none" )
                     ]
-                , onClick (DeletePost post.id)
+                , onWithOptions
+                    "click"
+                    { stopPropagation = True
+                    , preventDefault = False
+                    }
+                    (Json.Decode.succeed (DeletePost post.id))
                 ]
                 [ text "X" ]
 
@@ -111,6 +117,7 @@ newPostButton : Html Msg
 newPostButton =
     button
         [ class "btn btn-success"
+        , style [ ( "margin", "10px" ) ]
         , onClick OpenCreateView
         ]
         [ text "New Post" ]
@@ -177,9 +184,32 @@ createDialogConfig newPost =
 
         body =
             Just
-                (div []
-                    [ input [ placeholder "Title", onInput NewTitleChange ] []
-                    , input [ placeholder "Body", onInput NewBodyChange ] []
+                (div
+                    [ style
+                        [ ( "display", "flex" )
+                        , ( "flex-direction", "column" )
+                        , ( "justify-content", "center" )
+                        ]
+                    ]
+                    [ input
+                        [ placeholder "Title"
+                        , onInput NewTitleChange
+                        , class "form-control"
+                        , style
+                            [ ( "margin-bottom", "15px" )
+                            , ( "padding", "5px" )
+                            ]
+                        ]
+                        []
+                    , textarea
+                        [ placeholder "Body"
+                        , onInput NewBodyChange
+                        , rows 5
+                        , class "form-control"
+                        , style
+                            [ ( "padding", "5px" ) ]
+                        ]
+                        []
                     ]
                 )
 
@@ -189,7 +219,7 @@ createDialogConfig newPost =
                     [ class "btn btn-success"
                     , onClick (CreatePost newPost)
                     ]
-                    [ text "CREATE" ]
+                    [ text "Create" ]
                 )
     in
         { closeMessage = Just ClosePost
@@ -200,8 +230,8 @@ createDialogConfig newPost =
         }
 
 
-container : Model -> Html Msg
-container model =
+root : Model -> Html Msg
+root model =
     div
         [ style
             [ ( "display", "flex" )
@@ -217,14 +247,3 @@ container model =
         , openDialog model.openedPost
         , createDialog model.newPost
         ]
-
-
-root : Model -> Html Msg
-root model =
-    div
-        [ style
-            [ ( "display", "flex" )
-            , ( "justify-content", "center" )
-            ]
-        ]
-        [ container model ]
