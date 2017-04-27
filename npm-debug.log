@@ -1,0 +1,82 @@
+0 info it worked if it ends with ok
+1 verbose cli [ '/Users/christoferarleryd/.nvm/versions/node/v6.3.0/bin/node',
+1 verbose cli   '/Users/christoferarleryd/.nvm/versions/node/v6.3.0/bin/npm',
+1 verbose cli   'i' ]
+2 info using npm@3.10.6
+3 info using node@v6.3.0
+4 silly loadCurrentTree Starting
+5 silly install loadCurrentTree
+6 silly install readLocalPackageData
+7 silly install normalizeTree
+8 silly loadCurrentTree Finishing
+9 silly loadIdealTree Starting
+10 silly install loadIdealTree
+11 silly cloneCurrentTree Starting
+12 silly install cloneCurrentTreeToIdealTree
+13 silly cloneCurrentTree Finishing
+14 silly loadShrinkwrap Starting
+15 silly install loadShrinkwrap
+16 silly loadShrinkwrap Finishing
+17 silly loadAllDepsIntoIdealTree Starting
+18 silly install loadAllDepsIntoIdealTree
+19 silly fetchOtherPackageData phoenix@file:deps/phoenix
+20 silly cache add args [ 'phoenix@file:deps/phoenix', null ]
+21 verbose cache add spec phoenix@file:deps/phoenix
+22 silly fetchOtherPackageData phoenix_html@file:deps/phoenix_html
+23 silly cache add args [ 'phoenix_html@file:deps/phoenix_html', null ]
+24 verbose cache add spec phoenix_html@file:deps/phoenix_html
+25 silly cache add parsed spec Result {
+25 silly cache add   raw: 'phoenix@file:deps/phoenix',
+25 silly cache add   scope: null,
+25 silly cache add   escapedName: 'phoenix',
+25 silly cache add   name: 'phoenix',
+25 silly cache add   rawSpec: 'file:deps/phoenix',
+25 silly cache add   spec: '/Users/christoferarleryd/Programming/temp2/elm-hipster-stack/deps/phoenix',
+25 silly cache add   type: 'local' }
+26 silly cache add parsed spec Result {
+26 silly cache add   raw: 'phoenix_html@file:deps/phoenix_html',
+26 silly cache add   scope: null,
+26 silly cache add   escapedName: 'phoenix_html',
+26 silly cache add   name: 'phoenix_html',
+26 silly cache add   rawSpec: 'file:deps/phoenix_html',
+26 silly cache add   spec: '/Users/christoferarleryd/Programming/temp2/elm-hipster-stack/deps/phoenix_html',
+26 silly cache add   type: 'local' }
+27 error addLocal Could not install /Users/christoferarleryd/Programming/temp2/elm-hipster-stack/deps/phoenix
+28 silly fetchPackageMetaData Error: ENOENT: no such file or directory, open '/Users/christoferarleryd/Programming/temp2/elm-hipster-stack/deps/phoenix'
+28 silly fetchPackageMetaData     at Error (native)
+28 silly fetchPackageMetaData  error for phoenix@file:deps/phoenix { Error: ENOENT: no such file or directory, open '/Users/christoferarleryd/Programming/temp2/elm-hipster-stack/deps/phoenix'
+28 silly fetchPackageMetaData     at Error (native)
+28 silly fetchPackageMetaData   errno: -2,
+28 silly fetchPackageMetaData   code: 'ENOENT',
+28 silly fetchPackageMetaData   syscall: 'open',
+28 silly fetchPackageMetaData   path: '/Users/christoferarleryd/Programming/temp2/elm-hipster-stack/deps/phoenix' }
+29 error addLocal Could not install /Users/christoferarleryd/Programming/temp2/elm-hipster-stack/deps/phoenix_html
+30 silly fetchPackageMetaData Error: ENOENT: no such file or directory, open '/Users/christoferarleryd/Programming/temp2/elm-hipster-stack/deps/phoenix_html'
+30 silly fetchPackageMetaData     at Error (native)
+30 silly fetchPackageMetaData  error for phoenix_html@file:deps/phoenix_html { Error: ENOENT: no such file or directory, open '/Users/christoferarleryd/Programming/temp2/elm-hipster-stack/deps/phoenix_html'
+30 silly fetchPackageMetaData     at Error (native)
+30 silly fetchPackageMetaData   errno: -2,
+30 silly fetchPackageMetaData   code: 'ENOENT',
+30 silly fetchPackageMetaData   syscall: 'open',
+30 silly fetchPackageMetaData   path: '/Users/christoferarleryd/Programming/temp2/elm-hipster-stack/deps/phoenix_html' }
+31 silly rollbackFailedOptional Starting
+32 silly rollbackFailedOptional Finishing
+33 silly runTopLevelLifecycles Starting
+34 silly runTopLevelLifecycles Finishing
+35 silly install printInstalled
+36 verbose stack Error: ENOENT: no such file or directory, open '/Users/christoferarleryd/Programming/temp2/elm-hipster-stack/deps/phoenix'
+36 verbose stack     at Error (native)
+37 verbose cwd /Users/christoferarleryd/Programming/temp2/elm-hipster-stack
+38 error Darwin 15.6.0
+39 error argv "/Users/christoferarleryd/.nvm/versions/node/v6.3.0/bin/node" "/Users/christoferarleryd/.nvm/versions/node/v6.3.0/bin/npm" "i"
+40 error node v6.3.0
+41 error npm  v3.10.6
+42 error path /Users/christoferarleryd/Programming/temp2/elm-hipster-stack/deps/phoenix
+43 error code ENOENT
+44 error errno -2
+45 error syscall open
+46 error enoent ENOENT: no such file or directory, open '/Users/christoferarleryd/Programming/temp2/elm-hipster-stack/deps/phoenix'
+47 error enoent ENOENT: no such file or directory, open '/Users/christoferarleryd/Programming/temp2/elm-hipster-stack/deps/phoenix'
+47 error enoent This is most likely not a problem with npm itself
+47 error enoent and is related to npm not being able to find a file.
+48 verbose exit [ -2, true ]
