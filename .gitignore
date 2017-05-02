@@ -21,11 +21,12 @@ erl_crash.dump
 /priv/static/
 
 #ELM
-/web/static/js/elm/elm-stuff
+elm-stuff
 
 # Custom added
 /node_modules
 *.DS_Store
+npm-debug.log
 
 #RethinkDB
 rethinkdb_data
