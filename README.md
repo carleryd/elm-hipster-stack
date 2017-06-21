@@ -16,7 +16,7 @@ To start the app run the following:
   * Install Node packages with `npm install`
   * Install Elm packages. Go to web/static/elm and run `elm package install`, then go back to project root.
   * Run PostgreSQL in the terminal with `psql` and run `CREATE USER postgres SUPERUSER;`
-  * Create PostgreSQL database `app-dev` with Phoenix Ecto, run `mix ecto.create`
+  * Create PostgreSQL database `app_dev` with Phoenix Ecto, run `mix ecto.create`
   * Create required tables `mix ecto.migrate`
   * Optionally populate tables with `mix run priv/repo/seeds.exs`
   * Start Phoenix endpoint with `mix phoenix.server`
