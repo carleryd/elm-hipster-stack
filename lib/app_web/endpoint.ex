@@ -1,7 +1,7 @@
-defmodule App.Endpoint do
+defmodule AppWeb.Endpoint do
   use Phoenix.Endpoint, otp_app: :app
 
-  socket "/socket", App.UserSocket
+  socket "/socket", AppWeb.UserSocket
 
   # Serve at "/" the static files from "priv/static" directory.
   #
@@ -38,5 +38,5 @@ defmodule App.Endpoint do
     key: "_app_key",
     signing_salt: "NSSIozsy"
 
-  plug App.Router
+  plug AppWeb.Router
 end

@@ -1,7 +1,7 @@
-defmodule App.PostResolver do
+defmodule AppWeb.PostResolver do
   alias App.Repo
-  alias App.Post
- 
+  alias AppWeb.Post
+
   def all(_args, _info) do
     {:ok, Repo.all(Post)}
   end

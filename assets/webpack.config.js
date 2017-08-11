@@ -1,10 +1,10 @@
 const ExtractTextPlugin = require("extract-text-webpack-plugin");
-const elmSource = __dirname + "/web/static/elm";
+const elmSource = __dirname + "/static/elm";
 
 module.exports = {
     entry: [
-        __dirname + "/web/static/js/app.js",
-        __dirname + "/web/static/css/app.scss",
+        __dirname + "/static/js/app.js",
+        __dirname + "/static/css/app.scss",
     ],
     output: {
         path: __dirname + "/priv/static",
@@ -48,7 +48,7 @@ module.exports = {
     resolve: {
         modules: [
             "node_modules",
-            __dirname + "/web/static/js",
+            __dirname + "/static/js",
         ],
         extensions: [".js", ".elm", ".scss", ".css"],
     },

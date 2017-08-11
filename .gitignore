@@ -24,7 +24,7 @@ erl_crash.dump
 elm-stuff
 
 # Custom added
-/node_modules
+/assets/node_modules
 *.DS_Store
 npm-debug.log
 
