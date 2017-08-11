@@ -13,8 +13,8 @@ Apart from cloning the repository, you will have to install any missing tools su
 
 To start the app run the following:
   * Install Mix dependencies with `mix deps.get`
-  * Install Node packages. Go to /assets and run `npm install` or `yarn install`
-  * Install Elm packages. Go to /assets/elm and run `elm package install`, then go back to project root.
+  * Install Node packages. Go to assets and run `npm install` or `yarn install`
+  * Install Elm packages. Go to assets/elm and run `elm package install`, then go back to project root.
   * Run PostgreSQL in the terminal with `psql` and run `CREATE USER postgres SUPERUSER;`
   * Create PostgreSQL database `app_dev` with Phoenix Ecto, run `mix ecto.create`
   * Create required tables `mix ecto.migrate`
