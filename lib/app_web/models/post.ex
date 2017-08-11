@@ -1,5 +1,5 @@
-defmodule App.Post do
-  use App.Web, :model
+defmodule AppWeb.Post do
+  use AppWeb, :model
 
   schema "posts" do
     field :title, :string

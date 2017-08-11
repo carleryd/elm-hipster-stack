@@ -24,9 +24,11 @@ erl_crash.dump
 elm-stuff
 
 # Custom added
-/node_modules
+/assets/node_modules
+/assets/yarn.lock
+/assets/package-lock.json
 *.DS_Store
-npm-debug.log
+/assets/npm-debug.log
 
 #RethinkDB
 rethinkdb_data

@@ -1,15 +1,15 @@
-defmodule App.Schema do
+defmodule AppWeb.Schema do
   use Absinthe.Schema
-  import_types App.Schema.Types
+  import_types AppWeb.Schema.Types
 
   query do
     field :posts, list_of(:post) do
-      resolve &App.PostResolver.all/2
+      resolve &AppWeb.PostResolver.all/2
     end
 
     field :post, type: :post do
       arg :id, non_null(:id)
-      resolve &App.PostResolver.find/2
+      resolve &AppWeb.PostResolver.find/2
     end
   end
 
@@ -23,20 +23,20 @@ defmodule App.Schema do
       arg :title, non_null(:string)
       arg :body, non_null(:string)
 
-      resolve &App.PostResolver.create/2
+      resolve &AppWeb.PostResolver.create/2
     end
 
     field :update_post, type: :post do
       arg :id, non_null(:integer)
       arg :post, :update_post_params
 
-      resolve &App.PostResolver.update/2
+      resolve &AppWeb.PostResolver.update/2
     end
 
     field :delete_post, type: :post do
       arg :id, non_null(:integer)
 
-      resolve &App.PostResolver.delete/2
+      resolve &AppWeb.PostResolver.delete/2
     end
   end
 

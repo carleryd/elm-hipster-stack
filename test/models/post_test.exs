@@ -1,7 +1,7 @@
 defmodule App.PostTest do
   use App.ModelCase
 
-  alias App.Post
+  alias AppWeb.Post
 
   @valid_attrs %{body: "some content", title: "some content"}
   @invalid_attrs %{}
