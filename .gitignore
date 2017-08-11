@@ -28,7 +28,7 @@ elm-stuff
 /assets/yarn.lock
 /assets/package-lock.json
 *.DS_Store
-npm-debug.log
+/assets/npm-debug.log
 
 #RethinkDB
 rethinkdb_data
