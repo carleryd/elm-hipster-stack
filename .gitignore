@@ -23,6 +23,16 @@ erl_crash.dump
 #ELM
 elm-stuff
 
+# Emacs
+*~
+\#*\#
+/.emacs.desktop
+/.emacs.desktop.lock
+*.elc
+auto-save-list
+tramp
+.\#*
+
 # Custom added
 /assets/node_modules
 /assets/yarn.lock
