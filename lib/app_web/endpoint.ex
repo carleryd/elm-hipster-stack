@@ -38,5 +38,6 @@ defmodule AppWeb.Endpoint do
     key: "_app_key",
     signing_salt: "NSSIozsy"
 
+  plug CORSPlug
   plug AppWeb.Router
 end
